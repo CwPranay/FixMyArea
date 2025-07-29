@@ -98,7 +98,7 @@ const Header = () => {
       <>
         {/* Backdrop */}
         <div
-          className={`fixed inset-0 z-[998] transition-opacity duration-300 ease-in-out ${
+          className={`fixed inset-0 z-[998]  transition-opacity duration-300 ease-in-out ${
             menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
           }`}
           onClick={() => setMenuOpen(false)}
@@ -106,11 +106,11 @@ const Header = () => {
 
         {/* Mobile Sidebar */}
         <div
-          className={`fixed top-0 left-0 h-full w-[80%] bg-white z-[999] transition-transform duration-300 ease-in-out rounded-r-lg ${
+          className={`fixed top-0 left-0  h-full w-[80%] bg-white z-[999] transition-transform duration-300 ease-in-out rounded-r ${
             menuOpen ? 'transform translate-x-0' : 'transform -translate-x-full'
           }`}
         >
-          <div className="flex items-center justify-between px-6 py-4  ">
+          <div style={{ boxShadow: '2px 0 10px -5px rgba(0, 0, 0, 0.3)' }}  className="flex items-center   justify-between px-6 py-4  ">
             <div className="flex items-center space-x-2 text-lg font-semibold">
               <MapPin size={20} className="text-cyan-600" />
               <span>FixMyArea</span>
@@ -124,7 +124,7 @@ const Header = () => {
             </button>
           </div>
 
-          <nav className="flex flex-col px-6 py-6 space-y-6 text-lg">
+          <nav className="flex flex-col h-[100vh] shadow-lg border-gray-400 px-6 py-6 space-y-6 text-lg">
             {navLinks.map((link, index) => (
               <Link
                 key={link.name}
