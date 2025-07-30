@@ -1,0 +1,11 @@
+{
+    "Header": {
+        "title": "FixMyArea",
+        "home": "Home",
+        "myRequests": "My Requests",
+        "reportIssue": "Report Issue",
+         "login":"Log in",
+         "sign up":"Sign up"
+       
+    }
+}
