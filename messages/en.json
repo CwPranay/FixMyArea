@@ -4,8 +4,12 @@
         "home": "Home",
         "myRequests": "My Requests",
         "reportIssue": "Report Issue",
-         "login":"Log in",
-         "sign up":"Sign up"
-       
+        "login":"Log in",
+        "sign up":"Sign up"
+    },
+    "LanguageSwitcher": {
+        "language": "Language",
+        "english": "English",
+        "hindi": "Hindi"
     }
 }

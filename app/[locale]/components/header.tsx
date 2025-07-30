@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, MapPin } from 'lucide-react';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header = () => {
   const t = useTranslations('Header');
@@ -33,7 +34,7 @@ const Header = () => {
   }, [menuOpen]);
 
   return (
-    <header className="bg-white/80 navbar backdrop-blur-lg text-gray-900 fixed top-0 left-0 w-full z-50 shadow-lg border-b border-white/20 [font-family:var(--font-poppins)]">
+    <header className="bg-white/80 navbar backdrop-blur-lg text-gray-900 relative w-full z-50 shadow-lg border-b border-white/20 [font-family:var(--font-poppins)]">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
         {/* Hamburger */}
@@ -64,6 +65,9 @@ const Header = () => {
               {link.name}
             </Link>
           ))}
+          <div className="relative">
+            <LanguageSwitcher/>
+          </div>
           <div className="flex space-x-4 ml-3">
             <Link
               href="/login"
@@ -117,7 +121,7 @@ const Header = () => {
               <X size={24} />
             </button>
           </div>
-          <nav className="flex flex-col h-[100vh] px-6 py-6 space-y-6 text-lg">
+          <nav className="flex shadow-[5px_0_10px_-5px_rgba(0,0,0,0.15)] flex-col h-[100vh] px-6 py-6 space-y-6 text-lg">
             {navLinks.map((link, index) => (
               <Link
                 key={link.href}
@@ -134,6 +138,9 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
+            <div className="relative">
+              <LanguageSwitcher/>
+            </div>
           </nav>
         </div>
       </>
