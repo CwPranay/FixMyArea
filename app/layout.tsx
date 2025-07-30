@@ -8,15 +8,18 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params,
 }: {
   children: ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>; // Fixed: removed duplicate "params:"
 }) {
+  // Await params before accessing properties
+  const { locale } = await params;
+  
   return (
-    <html lang={params.locale} className={poppins.variable}>
+    <html lang={locale} className={poppins.variable}>
       <body>{children}</body>
     </html>
   );
