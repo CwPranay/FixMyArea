@@ -20,21 +20,21 @@ const Sidebar = ({ menuOpen, setMenuOpen, mounted, navLinks }: SidebarProps) => 
     <>
       {/* Overlay */}
       <div
-        className={`fixed inset-0 bg-black/70 z-[2000] transition-opacity duration-300 ease-in-out ${
-          menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
+        className={`fixed inset-0 bg-black/70 z-[2000] transition-opacity duration-300 ease-in-out ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}
         onClick={() => setMenuOpen(false)}
       />
       {/* Sidebar */}
       <div
-        className={`fixed top-0 [font-family:var(--font-poppins)] left-0 h-full w-[80%] bg-white z-[2001] transition-transform duration-300 text-black ease-in-out rounded-r ${
-          menuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 [font-family:var(--font-poppins)] left-0 h-full w-[80%] bg-white z-[2001] transition-transform duration-300 text-black ease-in-out rounded-r ${menuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <div style={{ boxShadow: '2px 0 10px -5px rgba(0, 0, 0, 0.3)' }} className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-2 text-lg font-semibold">
-            <MapPin size={20} className="text-cyan-600" />
-            <span>{t('title')}</span>
+            <Link href="/" className="flex items-center space-x-1 text-xl font-semibold text-gray-800">
+              <MapPin size={22} className="text-cyan-600" />
+              <span>{t('title')}</span>
+            </Link>
           </div>
           <button
             onClick={() => setMenuOpen(false)}
@@ -50,9 +50,8 @@ const Sidebar = ({ menuOpen, setMenuOpen, mounted, navLinks }: SidebarProps) => 
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className={`transition-all duration-200 hover:text-cyan-600 hover:translate-x-2 ${
-                mounted && pathname === link.href ? 'text-cyan-600 font-medium' : ''
-              }`}
+              className={`transition-all duration-200 hover:text-cyan-600 hover:translate-x-2 ${mounted && pathname === link.href ? 'text-cyan-600 font-medium' : ''
+                }`}
               style={{
                 animationDelay: menuOpen ? `${index * 100}ms` : '0ms',
                 animation: menuOpen ? 'slideInFromLeft 0.3s ease-out forwards' : 'none'
@@ -62,7 +61,7 @@ const Sidebar = ({ menuOpen, setMenuOpen, mounted, navLinks }: SidebarProps) => 
             </Link>
           ))}
           <div className="relative">
-            <LanguageSwitcher/>
+            <LanguageSwitcher />
           </div>
         </nav>
       </div>
