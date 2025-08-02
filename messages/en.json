@@ -11,5 +11,11 @@
         "language": "Language",
         "english": "English",
         "hindi": "Hindi"
+    },
+    "HeroSection":{
+        "title":"Spotted a Problem? Fix It Here.",
+        "subTitle":" From potholes to streetlights — raise it, track it, solve it.",
+        "ReportButton": "Report an Issue",
+        "viewAllIssue": "View All Issues"
     }
 }

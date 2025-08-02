@@ -1,42 +1,24 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, MapPin } from 'lucide-react';
+import { Menu, MapPin } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const Header = () => {
+type HeaderProps = {
+  menuOpen: boolean;
+  setMenuOpen: (open: boolean) => void;
+  mounted: boolean;
+  navLinks: Array<{ name: string; href: string }>;
+};
+
+const Header = ({ menuOpen, setMenuOpen, mounted, navLinks }: HeaderProps) => {
   const t = useTranslations('Header');
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
-  const navLinks = [
-    { name: t('home'), href: '/' },
-    { name: t('reportIssue'), href: '/report' },
-    { name: t('myRequests'), href: '/my-reports' }
-  ];
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMenuOpen(false);
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [menuOpen]);
-
   return (
-    <header className="bg-white/80 navbar backdrop-blur-lg text-gray-900 relative w-full z-50 shadow-lg border-b border-white/20 [font-family:var(--font-poppins)]">
+    <header className="bg-white/80 sticky top-0 navbar backdrop-blur-lg text-gray-900 w-full z-[1999] shadow-lg border-b border-white/20 [font-family:var(--font-poppins)]">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-
         {/* Hamburger */}
         <button
           onClick={() => setMenuOpen(true)}
@@ -94,69 +76,6 @@ const Header = () => {
           </Link>
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      <>
-        <div
-          className={`fixed inset-0 z-[998] transition-opacity duration-300 ease-in-out ${
-            menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-          }`}
-          onClick={() => setMenuOpen(false)}
-        />
-        <div
-          className={`fixed top-0 left-0 h-full w-[80%] bg-white z-[999] transition-transform duration-300 ease-in-out rounded-r ${
-            menuOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
-        >
-          <div style={{ boxShadow: '2px 0 10px -5px rgba(0, 0, 0, 0.3)' }} className="flex items-center justify-between px-6 py-4">
-            <div className="flex items-center space-x-2 text-lg font-semibold">
-              <MapPin size={20} className="text-cyan-600" />
-              <span>{t('title')}</span>
-            </div>
-            <button
-              onClick={() => setMenuOpen(false)}
-              aria-label="Close Menu"
-              className="transition-transform duration-200 hover:scale-110 hover:rotate-90"
-            >
-              <X size={24} />
-            </button>
-          </div>
-          <nav className="flex shadow-[5px_0_10px_-5px_rgba(0,0,0,0.15)] flex-col h-[100vh] px-6 py-6 space-y-6 text-lg">
-            {navLinks.map((link, index) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`transition-all duration-200 hover:text-cyan-600 hover:translate-x-2 ${
-                  mounted && pathname === link.href ? 'text-cyan-600 font-medium' : ''
-                }`}
-                style={{
-                  animationDelay: menuOpen ? `${index * 100}ms` : '0ms',
-                  animation: menuOpen ? 'slideInFromLeft 0.3s ease-out forwards' : 'none'
-                }}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <div className="relative">
-              <LanguageSwitcher/>
-            </div>
-          </nav>
-        </div>
-      </>
-
-      <style jsx>{`
-        @keyframes slideInFromLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      `}</style>
     </header>
   );
 };

@@ -13,14 +13,17 @@ export default async function RootLayout({
   params,
 }: {
   children: ReactNode;
-  params: Promise<{ locale: string }>; // Fixed: removed duplicate "params:"
+  params: Promise<{ locale: string }>;
 }) {
-  // Await params before accessing properties
   const { locale } = await params;
   
   return (
     <html lang={locale} className={poppins.variable}>
-      <body>{children}</body>
+      <body className="relative">
+        <div id="root-content" className="relative z-0">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

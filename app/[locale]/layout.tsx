@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
+import MobileSidebarWrapper from './components/MobileSidebarWrapper';
 
 type Props = {
   children: ReactNode;
-  params: Promise<{ locale: 'en' | 'hi' }>; // Changed to Promise
+  params: Promise<{ locale: 'en' | 'hi' }>;
 };
 
 const messagesMap = {
@@ -13,13 +14,12 @@ const messagesMap = {
 } as const;
 
 export default async function LocaleLayout({ children, params }: Props) {
-  // Await params before accessing its properties
   const { locale } = await params;
   
   const loadMessages = messagesMap[locale];
 
   if (!loadMessages) {
-    return notFound(); // ✅ this prevents continuing
+    return notFound();
   }
 
   let messages;
@@ -32,12 +32,13 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      {children}
+      <MobileSidebarWrapper>
+        {children}
+      </MobileSidebarWrapper>
     </NextIntlClientProvider>
   );
 }
 
-// Optional: Generate static params for better performance
 export async function generateStaticParams() {
   return [
     { locale: 'en' as const },

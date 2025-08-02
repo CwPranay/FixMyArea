@@ -1,12 +1,7 @@
-import Header from "@/app/[locale]/components/header";
+'use client';
 
-import Image from "next/image";
+import HeroSection from './components/Herosection';
 
 export default function Home() {
-  return (
-    <>
-    <Header/>
-    
-    </>
-  );
+  return <HeroSection />;
 }
