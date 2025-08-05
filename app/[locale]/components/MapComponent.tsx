@@ -32,7 +32,7 @@ const issues = [
   {
     id: 2,
     position: [19.2183, 72.9781] as LatLngExpression,
-    description: 'Broken street light in Borivali',
+    description: 'Broken street light in Thane',
   },
 ];
 
