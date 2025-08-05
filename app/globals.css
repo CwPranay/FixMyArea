@@ -42,9 +42,9 @@ html {
 
 /* Secondary Glass Button */
 .btn-secondary-glass {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgb(255, 255, 255);
   color: #2563eb;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgb(0, 47, 255);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   padding: 0.5rem 1.25rem;
