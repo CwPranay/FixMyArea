@@ -36,7 +36,7 @@ const issues = [
   },
 ];
 
-const centerPosition: LatLngExpression = [19.1071, 72.8376];
+const centerPosition: LatLngExpression = [19.0760, 72.8777];
 
 const MapComponent = () => {
   return (
