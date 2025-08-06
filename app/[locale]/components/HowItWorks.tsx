@@ -1,22 +1,14 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 export default function HowItWorksSection() {
+  const t = useTranslations('HowItWorks');
+
   const steps = [
-    {
-      title: 'Find Your Area',
-      description: 'Select your location to view or report nearby issues.',
-      icon: '📍',
-    },
-    {
-      title: 'Report the Issue',
-      description: 'Fill a short form to describe the issue and submit.',
-      icon: '📝',
-    },
-    {
-      title: 'Get It Resolved',
-      description: 'Your issue is visible to local authorities and others.',
-      icon: '⚙️',
-    },
+    { key:"step1", icon: '📍' },
+    { key:"step2", icon: '📝' },
+    { key:"step3", icon: '⚙️' }
   ];
 
   return (
@@ -26,7 +18,7 @@ export default function HowItWorksSection() {
     >
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-gray-900">
-          How It Works
+          {t('title')}
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
@@ -37,10 +29,10 @@ export default function HowItWorksSection() {
             >
               <div className="text-5xl mb-4">{step.icon}</div>
               <h3 className="text-lg sm:text-xl font-semibold mb-2 text-gray-800 text-center">
-                {step.title}
+                {t(`${step.key}.title`)}
               </h3>
               <p className="text-gray-600 text-sm sm:text-base text-center leading-relaxed">
-                {step.description}
+                {t(`${step.key}.description`)}
               </p>
             </div>
           ))}

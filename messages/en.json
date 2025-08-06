@@ -17,5 +17,20 @@
         "subTitle":" From potholes to streetlights — raise it, track it, solve it.",
         "ReportButton": "Report an Issue",
         "viewAllIssue": "View All Issues"
+    },
+    "HowItWorks": {
+        "title": "How It Works",
+        "step1": {
+            "title": "Report an Issue",
+            "description": "Log any issue in your area."
+        },
+        "step2": {
+            "title": "Community Feedback",
+            "description": "Other users can comment on your report."
+        },
+        "step3": {
+            "title": "Issue Resolved",
+            "description": "The local authority resolves the issue."
+        }
     }
 }
