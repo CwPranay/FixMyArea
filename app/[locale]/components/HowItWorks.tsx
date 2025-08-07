@@ -17,7 +17,7 @@ export default function HowItWorksSection() {
       id="how-it-works"
     >
       <div className="max-w-6xl mx-auto text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-gray-900">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 text-gray-900">
           {t('title')}
         </h2>
 
