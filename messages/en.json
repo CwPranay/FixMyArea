@@ -32,5 +32,26 @@
             "title": "Issue Resolved",
             "description": "The local authority resolves the issue."
         }
+    },
+    "RecentIssues": {
+        "title": "Recent Issues",
+        "viewAll": "View All Issues",
+        "issues": {
+            "pothole": {
+                "title": "Pothole on Main Street",
+                "description": "Damaging vehicles. Needs repair.",
+                "location": "Andheri West, Mumbai"
+            },
+            "streetlight": {
+                "title": "Streetlight Outage",
+                "description": "Streetlight not working for 2 weeks.",
+                "location": "Juhu, Mumbai"
+            },
+            "garbageOverflow": {
+                "title": "Garbage Overflow",
+                "description": "No collection for 3 days.",
+                "location": "Bandra, Mumbai"
+            }
+        }
     }
 }

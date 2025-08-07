@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
   // Ensure proper handling of i18n routes on Vercel
   trailingSlash: false,
   skipTrailingSlashRedirect: true,
+    images: {
+    domains: ['source.unsplash.com','media.istockphoto.com'],
+     // 👈 allow external image domain
+  },
 };
 
 export default withNextIntl(nextConfig);
