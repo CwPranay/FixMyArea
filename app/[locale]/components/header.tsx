@@ -75,7 +75,7 @@ const Header = ({
         </nav>
 
         {/* Mobile Login */}
-        <div className="md:hidden flex ml-auto gap-5 hover:shadow-md hover:shadow-cyan-100">
+        <div className="md:hidden flex gap-2 ml-auto hover:shadow-md hover:shadow-cyan-100">
           <button
             onClick={onLoginClick}
             className="btn-primary-gradient text-white px-3 py-1.5 text-sm rounded-md transition hover:opacity-90 shadow"
