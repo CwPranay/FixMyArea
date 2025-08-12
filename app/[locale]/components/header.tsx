@@ -75,19 +75,14 @@ const Header = ({
         </nav>
 
         {/* Mobile Login */}
-        <div className="md:hidden flex gap-2 ml-auto hover:shadow-md hover:shadow-cyan-100">
+        <div className="md:hidden flex ml-auto hover:shadow-md hover:shadow-cyan-100">
           <button
             onClick={onLoginClick}
             className="btn-primary-gradient text-white px-3 py-1.5 text-sm rounded-md transition hover:opacity-90 shadow"
           >
             {t('login')}
           </button>
-          <button
-            onClick={onSignupClick}
-            className="btn-secondary-glass px-3 py-1.5 rounded-md transition text-sm hover:opacity-90 shadow"
-          >
-            {t('sign up')}
-          </button>
+          
         </div>
       </div>
     </header>
