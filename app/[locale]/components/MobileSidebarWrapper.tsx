@@ -3,7 +3,8 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import Header from './header';
 import Sidebar from './Sidebar';
-import LoginRoleModal from '../Modals/LoginRoleModals';
+import { useRouter } from 'next/navigation';
+import RoleModal from '../Modals/RoleModal';
 
 type MobileSidebarWrapperProps = {
   children: ReactNode;
@@ -13,12 +14,22 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
   const t = useTranslations('Header');
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   const navLinks = [
     { name: t('home'), href: '/' },
     { name: t('reportIssue'), href: '/report' },
     { name: t('myRequests'), href: '/my-reports' }
   ];
+  const [modalType, setModalType] = useState<'login' | 'signup' | null>(null);
+  const handleRoleSelect = (role: 'user' | 'authority') => {
+    setModalType(null);
+    if (modalType === 'login') {
+      router.push(`/login/${role}`);
+    } else if (modalType === 'signup') {
+      router.push(`/signup/${role}`);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -35,8 +46,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [menuOpen]);
 
-  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const [isSignupModalOpen, setSignupModalOpen] = useState(false);
+  
 
   return (
     <div className="relative isolate">
@@ -46,19 +56,19 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
         setMenuOpen={setMenuOpen}
         mounted={mounted}
         navLinks={navLinks}
-        onLoginClick={() => setLoginModalOpen(true)}
-        onSignupClick={() => setSignupModalOpen(true)}
+        onLoginClick={() => setModalType('login')}
+        onSignupClick={() => setModalType('signup')}
       />
       <div className='z-[999]'>
-        <LoginRoleModal 
-        isOpen={isLoginModalOpen}
-        onClose={() => setLoginModalOpen(false)}
-        onSelect={(role) => {
-          setLoginModalOpen(false);
-          // redirect or show login form
-        }}
-      />
+        <RoleModal
+           isOpen={modalType !== null}
+        type={modalType || 'login'}
+        onClose={() => setModalType(null)}
+        onSelect={handleRoleSelect}
+          
+        />
       </div>
+
       <Sidebar
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}

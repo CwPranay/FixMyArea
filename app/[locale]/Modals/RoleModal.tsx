@@ -3,19 +3,20 @@
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
-interface LoginRoleModalProps {
+interface RoleModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (role: 'user' | 'authority') => void;
+  type?: 'login' | 'signup';
 }
 
-export default function LoginRoleModal({ isOpen, onClose, onSelect }: LoginRoleModalProps) {
+export default function RoleModal({ isOpen,type, onClose, onSelect }: RoleModalProps) {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-lg max-w-md w-full mx-4 p-6 [font-family:var(--font-poppins)] relative">
-        <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Log in as</h2>
+        <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">{type === 'login' ? 'Log in as' : 'Sign up as'}</h2>
 
         <div className="flex flex-col sm:flex-row gap-4">
           <button
