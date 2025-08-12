@@ -49,9 +49,8 @@ const Header = ({
             <Link
               key={link.href}
               href={link.href}
-              className={`transition hover:text-cyan-600 ${
-                mounted && pathname === link.href ? 'text-cyan-600 font-medium' : ''
-              }`}
+              className={`transition hover:text-cyan-600 ${mounted && pathname === link.href ? 'text-cyan-600 font-medium' : ''
+                }`}
             >
               {link.name}
             </Link>
@@ -76,12 +75,18 @@ const Header = ({
         </nav>
 
         {/* Mobile Login */}
-        <div className="md:hidden ml-auto hover:shadow-md hover:shadow-cyan-100">
+        <div className="md:hidden flex ml-auto gap-5 hover:shadow-md hover:shadow-cyan-100">
           <button
             onClick={onLoginClick}
             className="btn-primary-gradient text-white px-3 py-1.5 text-sm rounded-md transition hover:opacity-90 shadow"
           >
             {t('login')}
+          </button>
+          <button
+            onClick={onSignupClick}
+            className="btn-secondary-glass px-3 py-1.5 rounded-md transition text-sm hover:opacity-90 shadow"
+          >
+            {t('sign up')}
           </button>
         </div>
       </div>

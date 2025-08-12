@@ -21,14 +21,10 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
     { name: t('reportIssue'), href: '/report' },
     { name: t('myRequests'), href: '/my-reports' }
   ];
-  const [modalType, setModalType] = useState<'login' | 'signup' | null>(null);
-  const handleRoleSelect = (role: 'user' | 'authority') => {
-    setModalType(null);
-    if (modalType === 'login') {
-      router.push(`/login/${role}`);
-    } else if (modalType === 'signup') {
-      router.push(`/signup/${role}`);
-    }
+  const [isSignupModalOpen, setSignupModalOpen] = useState(false);
+  const handleSignupRoleSelect = (role: 'user' | 'authority') => {
+    setSignupModalOpen(false);
+    router.push(`/signup/${role}`);
   };
 
   useEffect(() => {
@@ -46,7 +42,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [menuOpen]);
 
-  
+
 
   return (
     <div className="relative isolate">
@@ -56,16 +52,15 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
         setMenuOpen={setMenuOpen}
         mounted={mounted}
         navLinks={navLinks}
-        onLoginClick={() => setModalType('login')}
-        onSignupClick={() => setModalType('signup')}
+        onLoginClick={() => router.push('/login')} // Direct login
+        onSignupClick={() => setSignupModalOpen(true)}
       />
       <div className='z-[999]'>
         <RoleModal
-           isOpen={modalType !== null}
-        type={modalType || 'login'}
-        onClose={() => setModalType(null)}
-        onSelect={handleRoleSelect}
-          
+          isOpen={isSignupModalOpen}
+          onClose={() => setSignupModalOpen(false)}
+          onSelect={handleSignupRoleSelect}
+
         />
       </div>
 
