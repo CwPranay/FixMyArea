@@ -3,6 +3,7 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import Header from './header';
 import Sidebar from './Sidebar';
+import LoginRoleModal from '../Modals/LoginRoleModals';
 
 type MobileSidebarWrapperProps = {
   children: ReactNode;
@@ -34,14 +35,30 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [menuOpen]);
 
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [isSignupModalOpen, setSignupModalOpen] = useState(false);
+
   return (
     <div className="relative isolate">
+
       <Header
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
         mounted={mounted}
         navLinks={navLinks}
+        onLoginClick={() => setLoginModalOpen(true)}
+        onSignupClick={() => setSignupModalOpen(true)}
       />
+      <div className='z-[999]'>
+        <LoginRoleModal 
+        isOpen={isLoginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        onSelect={(role) => {
+          setLoginModalOpen(false);
+          // redirect or show login form
+        }}
+      />
+      </div>
       <Sidebar
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}

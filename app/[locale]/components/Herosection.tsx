@@ -38,7 +38,7 @@ export default function HeroSection() {
         </div>
 
         {/* RIGHT: Map — only visible on md+ */}
-        <div className="hidden md:block lg:block rounded-xl overflow-hidden shadow-lg">
+        <div className="hidden md:block lg:block rounded-xl z-0 overflow-hidden shadow-lg">
           <MapComponent />
         </div>
       </div>

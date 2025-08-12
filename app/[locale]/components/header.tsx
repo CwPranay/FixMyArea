@@ -10,9 +10,18 @@ type HeaderProps = {
   setMenuOpen: (open: boolean) => void;
   mounted: boolean;
   navLinks: Array<{ name: string; href: string }>;
+  onLoginClick: () => void;
+  onSignupClick: () => void;
 };
 
-const Header = ({ menuOpen, setMenuOpen, mounted, navLinks }: HeaderProps) => {
+const Header = ({
+  menuOpen,
+  setMenuOpen,
+  mounted,
+  navLinks,
+  onLoginClick,
+  onSignupClick
+}: HeaderProps) => {
   const t = useTranslations('Header');
   const pathname = usePathname();
 
@@ -48,32 +57,32 @@ const Header = ({ menuOpen, setMenuOpen, mounted, navLinks }: HeaderProps) => {
             </Link>
           ))}
           <div className="relative">
-            <LanguageSwitcher/>
+            <LanguageSwitcher />
           </div>
           <div className="flex space-x-4 ml-3">
-            <Link
-              href="/login"
+            <button
+              onClick={onLoginClick}
               className="btn-primary-gradient text-white px-4 py-2 rounded-md transition hover:opacity-90 shadow"
             >
               {t('login')}
-            </Link>
-            <Link
-              href="/login"
+            </button>
+            <button
+              onClick={onSignupClick}
               className="btn-secondary-glass px-4 py-2 rounded-md transition hover:opacity-90 shadow"
             >
               {t('sign up')}
-            </Link>
+            </button>
           </div>
         </nav>
 
         {/* Mobile Login */}
         <div className="md:hidden ml-auto hover:shadow-md hover:shadow-cyan-100">
-          <Link
-            href="/login"
+          <button
+            onClick={onLoginClick}
             className="btn-primary-gradient text-white px-3 py-1.5 text-sm rounded-md transition hover:opacity-90 shadow"
           >
             {t('login')}
-          </Link>
+          </button>
         </div>
       </div>
     </header>

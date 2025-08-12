@@ -40,7 +40,7 @@ const centerPosition: LatLngExpression = [19.0760, 72.8777];
 
 const MapComponent = () => {
   return (
-    <div className="w-full max-w-[700px] h-[400px] hidden lg:block md:block rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+    <div className="w-full max-w-[700px] z-0 h-[400px] hidden lg:block md:block rounded-2xl overflow-hidden shadow-lg border border-gray-200">
       <MapContainer
         center={centerPosition}
         zoom={13}
