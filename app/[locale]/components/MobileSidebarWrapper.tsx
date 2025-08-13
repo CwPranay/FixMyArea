@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import Header from './header';
 import Sidebar from './Sidebar';
 import { useRouter } from 'next/navigation';
-import RoleModal from '../Modals/RoleModal';
+import RoleModal from './RoleModal';
 
 type MobileSidebarWrapperProps = {
   children: ReactNode;
