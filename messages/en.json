@@ -4,17 +4,17 @@
         "home": "Home",
         "myRequests": "My Requests",
         "reportIssue": "Report Issue",
-        "login":"Log in",
-        "sign up":"Sign up"
+        "login": "Log in",
+        "sign up": "Sign up"
     },
     "LanguageSwitcher": {
         "language": "Language",
         "english": "English",
         "hindi": "Hindi"
     },
-    "HeroSection":{
-        "title":"Spotted a Problem? Fix It Here.",
-        "subTitle":" From potholes to streetlights — raise it, track it, solve it.",
+    "HeroSection": {
+        "title": "Spotted a Problem? Fix It Here.",
+        "subTitle": " From potholes to streetlights — raise it, track it, solve it.",
         "ReportButton": "Report an Issue",
         "viewAllIssue": "View All Issues"
     },
@@ -51,8 +51,12 @@
                 "title": "Garbage Overflow",
                 "description": "No collection for 3 days.",
                 "location": "Bandra, Mumbai"
-                
             }
         }
+    },
+    "RoleModal": {
+        "signup": "Sign up as",
+        "user": "User",
+        "authority": "Authority"
     }
 }
