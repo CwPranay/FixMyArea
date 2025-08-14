@@ -6,6 +6,8 @@ const userSchema = new Schema({
   password: { type: String }, // only for credentials login
   image: { type: String },
   role: { type: String, enum: ["user", "authority"], default: "user" },
+  authorityDocs: { type: [String] }, // URLs or file references
+  authorityVerified: { type: Boolean, default: false }, // Verification status
 }, { timestamps: true });
 
 export default models.User || model("User", userSchema);

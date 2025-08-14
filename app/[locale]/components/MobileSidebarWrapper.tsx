@@ -5,6 +5,7 @@ import Header from './header';
 import Sidebar from './Sidebar';
 import { useRouter } from 'next/navigation';
 import RoleModal from './RoleModal';
+import { useLocale } from 'next-intl';
 
 type MobileSidebarWrapperProps = {
   children: ReactNode;
@@ -15,6 +16,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
+  const locale = useLocale();
 
   const navLinks = [
     { name: t('home'), href: '/' },
@@ -24,7 +26,9 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
   const [isSignupModalOpen, setSignupModalOpen] = useState(false);
   const handleSignupRoleSelect = (role: 'user' | 'authority') => {
     setSignupModalOpen(false);
-    router.push(`/signup/${role}`);
+    router.push(`/${locale}/signup?role=${role}`);
+
+  
   };
 
   useEffect(() => {
