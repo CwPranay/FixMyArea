@@ -109,7 +109,7 @@ const Header = ({
                 <div className="w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                   {getInitials(user.name)}
                 </div>
-                <span className="hidden lg:block text-sm font-medium">{user.name.split(' ')[0]}</span>
+                
               </button>
 
               {/* Dropdown Menu */}

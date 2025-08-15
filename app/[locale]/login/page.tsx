@@ -33,21 +33,23 @@ export default function LoginPage() {
         password: form.password,
       });
 
-      // Store token or handle authentication
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
+        
+        // Create and dispatch a CustomEvent instead of Event
+        const authEvent = new CustomEvent('auth-change', {
+          detail: { token: res.data.token }
+        });
+        window.dispatchEvent(authEvent);
+        
+        setMessage("Login successful! Redirecting...");
+        
+        // Add a small delay before redirect to allow state updates
+        await new Promise(resolve => setTimeout(resolve, 100));
+        router.push('/');
       }
-
-      setMessage("Login successful! Redirecting...");
-      
-      // Redirect based on user role or to dashboard
-      setTimeout(() => {
-        router.push(res.data.redirectTo || "/dashboard");
-      }, 1000);
-
     } catch (error: any) {
-      const errorMessage = error.response?.data?.error || "Login failed. Please try again.";
-      setMessage(errorMessage);
+      setMessage(error.response?.data?.error || "Login failed");
     } finally {
       setLoading(false);
     }
