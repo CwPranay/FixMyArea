@@ -56,7 +56,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
         setMenuOpen={setMenuOpen}
         mounted={mounted}
         navLinks={navLinks}
-        onLoginClick={() => router.push('/login')} // Direct login
+        onLoginClick={() => router.push(`/${locale}/login`)} // Direct login
         onSignupClick={() => setSignupModalOpen(true)}
       />
       <div className='z-[999]'>
