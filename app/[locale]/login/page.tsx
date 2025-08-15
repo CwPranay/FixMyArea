@@ -2,12 +2,15 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
+import axios from "axios";
 import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations('Auth.Login');
 
   const [form, setForm] = useState({
     email: "",
@@ -60,23 +63,23 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo/Brand Section */}
         <div className="text-center mb-8">
-          <p className="text-slate-600 text-sm">Welcome back! Sign in to your account</p>
+          <p className="text-slate-600 text-sm">{t('secureLogin')}</p>
         </div>
 
         {/* Login Form Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-slate-800 text-center mb-2">
-              Sign In
+              {t('title')}
             </h2>
             <p className="text-slate-600 text-center text-sm">
-              Access your account to manage local issues
+              {t('welcomeBack')}
             </p>
           </div>
 
           {message && (
             <div className={`p-3 rounded-lg text-sm text-center mb-4 ${
-              message.includes("successful") 
+              message.includes("successful")
                 ? "bg-green-50 text-green-700 border border-green-200"
                 : "bg-red-50 text-red-700 border border-red-200"
             }`}>
@@ -87,28 +90,28 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Email Address
+                {t('emailLabel')}
               </label>
               <input
                 type="email"
                 name="email"
-                placeholder="Enter your email"
+                placeholder={t('emailPlaceholder')}
                 value={form.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 text-black border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
+                className="w-full text-black px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Password
+                {t('passwordLabel')}
               </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
-                  placeholder="Enter your password"
+                  placeholder={t('passwordPlaceholder')}
                   value={form.password}
                   onChange={handleChange}
                   required
@@ -136,10 +139,10 @@ export default function LoginPage() {
             {/* Forgot Password Link */}
             <div className="text-right">
               <Link 
-                href="/forgot-password" 
+                href={`/${locale}/forgot-password`}
                 className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
               >
-                Forgot your password?
+                {t('forgotPassword')}
               </Link>
             </div>
 
@@ -151,10 +154,10 @@ export default function LoginPage() {
               {loading ? (
                 <div className="flex items-center justify-center space-x-2">
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Signing In...</span>
+                  <span>{t('signingIn')}</span>
                 </div>
               ) : (
-                "Sign In"
+                t('signInButton')
               )}
             </button>
           </form>
@@ -169,20 +172,20 @@ export default function LoginPage() {
           {/* Sign Up Links */}
           <div className="space-y-3">
             <p className="text-center text-sm text-slate-600">
-              Don't have an account?
+              {t('noAccount')}
             </p>
             <div className="flex flex-col space-y-2">
               <Link 
-                href="/signup?role=user"
+                href={`/${locale}/signup?role=user`}
                 className="w-full px-4 py-3 btn-secondary-glass text-center border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-400 transition-colors"
               >
-                Sign up as Community Member
+                {t('signUpUser')}
               </Link>
               <Link 
-                href="/signup?role=authority"
-                className="w-full px-4 py-3 text-center border btn-primary-gradient  bg-blue-50 rounded-xl hover:bg-blue-100 hover:border-blue-400 transition-colors"
+                href={`/${locale}/signup?role=authority`}
+                className="w-full px-4 py-3 text-center border btn-primary-gradient bg-blue-50 rounded-xl hover:bg-blue-100 hover:border-blue-400 transition-colors"
               >
-                🏛️ Sign up as Local Authority
+                {t('signUpAuthority')}
               </Link>
             </div>
           </div>
@@ -191,7 +194,7 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="text-center mt-6">
           <p className="text-xs text-slate-500">
-            Secure login to help make your community better
+            {t('secureLogin')}
           </p>
         </div>
       </div>

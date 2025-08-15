@@ -5,11 +5,14 @@ import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useLocale } from 'next-intl';
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function SignupPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
- const locale =useLocale()
+  const locale = useLocale();
+  const t = useTranslations('Auth.Signup');
+  
   // Null-safe role fetching
   const role = useMemo(() => searchParams?.get("role") || "user", [searchParams]);
 
@@ -88,22 +91,22 @@ export default function SignupPage() {
         {/* Logo/Brand Section */}
         <div className="text-center mb-8">
          
-          <p className="text-slate-600 text-sm">Join our community to report and fix local issues</p>
+          <p className="text-slate-600 text-sm">{t('joinCommunity')}</p>
         </div>
 
         {/* Signup Form Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-slate-800 text-center mb-2">
-              Create Account
+              {t('title')}
             </h2>
             <p className="text-slate-600 text-center text-sm">
-              {role === "authority" ? "Join as a Local Authority" : "Join as a Community Member"}
+              {role === "authority" ? t('asAuthority') : t('asUser')}
             </p>
             {role === "authority" && (
               <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
                 <p className="text-blue-700 text-xs text-center">
-                  🏛️ Authority accounts require verification documents
+                  {t('authorityNotice')}
                 </p>
               </div>
             )}
@@ -111,13 +114,13 @@ export default function SignupPage() {
 
           {signupSuccess ? (
             <div className="p-3 rounded-lg text-sm text-center mb-4 bg-green-50 text-green-700 border border-green-200">
-              {message}
+              {role === "authority" ? t('success.authority') : t('success.user')}
               <div className="mt-4">
                 <button
-                  className="px-4 py-2 btn-primary-gradient text-white rounded-lg  transition"
+                  className="px-4 py-2 btn-primary-gradient text-white rounded-lg transition"
                   onClick={() => router.push(`/${locale}/login`)}
                 >
-                  Go to Login
+                  {t('success.goToLogin')}
                 </button>
               </div>
             </div>
@@ -136,12 +139,12 @@ export default function SignupPage() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Full Name
+                    {t('fullNameLabel')}
                   </label>
                   <input
                     type="text"
                     name="name"
-                    placeholder="Enter your full name"
+                    placeholder={t('fullNamePlaceholder')}
                     value={form.name}
                     onChange={handleChange}
                     required
@@ -151,27 +154,27 @@ export default function SignupPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Email Address
+                    {t('emailLabel')}
                   </label>
                   <input
                     type="email"
                     name="email"
-                    placeholder="Enter your email"
+                    placeholder={t('emailPlaceholder')}
                     value={form.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 text-black border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
+                    className="w-full text-black px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Password
+                    {t('passwordLabel')}
                   </label>
                   <input
                     type="password"
                     name="password"
-                    placeholder="Create a strong password"
+                    placeholder={t('passwordPlaceholder')}
                     value={form.password}
                     onChange={handleChange}
                     required
@@ -181,12 +184,12 @@ export default function SignupPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Confirm Password
+                    {t('confirmPasswordLabel')}
                   </label>
                   <input
                     type="password"
                     name="confirmPassword"
-                    placeholder="Confirm your password"
+                    placeholder={t('confirmPasswordPlaceholder')}
                     value={form.confirmPassword}
                     onChange={handleChange}
                     required
@@ -197,14 +200,14 @@ export default function SignupPage() {
                     }`}
                   />
                   {!passwordMatch && form.confirmPassword && (
-                    <p className="mt-1 text-sm text-red-600">Passwords do not match</p>
+                    <p className="mt-1 text-sm text-red-600">{t('passwordMismatch')}</p>
                   )}
                 </div>
 
                 {role === "authority" && (
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      📄 Authority Verification Documents
+                      📄 {t('docsLabel')}
                     </label>
                     <div className="border-2 border-dashed border-slate-300 rounded-xl p-4 hover:border-blue-400 transition-colors">
                       <input
@@ -216,12 +219,12 @@ export default function SignupPage() {
                         className="w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                       />
                       <p className="text-xs text-slate-500 mt-2">
-                        Upload ID proof, official documents (JPG, PNG, PDF)
+                        {t('docsHelper')}
                       </p>
                     </div>
                     {authorityDocs.length > 0 && (
                       <div className="mt-2 text-sm text-slate-600">
-                        ✓ {authorityDocs.length} file(s) selected
+                        ✓ {authorityDocs.length} {t('filesSelected')}
                       </div>
                     )}
                   </div>
@@ -230,15 +233,15 @@ export default function SignupPage() {
                 <button
                   type="submit"
                   disabled={loading || !passwordMatch}
-                  className="w-full btn-primary-gradient  active:scale-[0.98]"
+                  className="w-full btn-primary-gradient active:scale-[0.98]"
                 >
                   {loading ? (
                     <div className="flex items-center justify-center space-x-2">
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Creating Account...</span>
+                      <span>{t('creatingAccount')}</span>
                     </div>
                   ) : (
-                    `Create ${role === "authority" ? "Authority" : "User"} Account`
+                    role === "authority" ? t('createAuthorityButton') : t('createUserButton')
                   )}
                 </button>
               </form>
@@ -249,7 +252,7 @@ export default function SignupPage() {
         {/* Footer */}
         <div className="text-center mt-6">
           <p className="text-xs text-slate-500">
-            By creating an account, you agree to help make your community better
+            {t('agreement')}
           </p>
         </div>
       </div>
