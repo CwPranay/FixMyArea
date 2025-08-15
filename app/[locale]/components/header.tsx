@@ -202,13 +202,13 @@ export default function Header({
                     className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     onClick={() => setShowDropdown(false)}
                   >
-                    Profile
+                    {t('profile.settings')}
                   </Link>
                   <button
                     onClick={handleLogout}
                     className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                   >
-                    Sign Out
+                   {t('profile.signOut')}
                   </button>
                 </div>
               )}
