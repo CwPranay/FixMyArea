@@ -5,7 +5,15 @@
         "myRequests": "My Requests",
         "reportIssue": "Report Issue",
         "login": "Log in",
-        "sign up": "Sign up"
+        "sign up": "Sign up",
+        "profile": {
+            "settings": "Profile Settings",
+            "myAccount": "My Account",
+            "signOut": "Sign Out",
+            "userRole": "Community Member",
+            "authorityRole": "Local Authority",
+            "adminRole": "Administrator"
+        }
     },
     "LanguageSwitcher": {
         "language": "Language",
