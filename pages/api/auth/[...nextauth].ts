@@ -24,7 +24,7 @@ export default NextAuth({
         if (!isValid) throw new Error("Invalid password");
 
         // Block authority login if not verified
-        if (user.role === "authority" && !user.isVerified) {
+        if (user.role === "authority" && !user.authorityVerified) {
           throw new Error("Authority account pending verification");
         }
 
@@ -59,12 +59,12 @@ export default NextAuth({
             email: user.email,
             password: null, // no password for Google
             role: "user", // can be changed later if needed
-            isVerified: true,
+            authorityVerified: true, // in Google signup
           });
         }
 
         // Block authority Google login if not verified
-        if (existingUser.role === "authority" && !existingUser.isVerified) {
+        if (existingUser.role === "authority" && !existingUser.authorityVerified) {
           throw new Error("Authority account pending verification");
         }
 

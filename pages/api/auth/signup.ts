@@ -3,7 +3,7 @@ import { connectDB } from "@/lib/db";
 import User from "@/models/user";
 import bcrypt from "bcrypt";
 import path from "path";
-import formidable from "formidable";
+import formidable, { File } from "formidable";
 
 export const config = {
   api: { bodyParser: false },
@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await connectDB();
 
   const form = formidable({
-    uploadDir: path.join(process.cwd(), "/public/uploads"), // Store in /public/uploads
+    uploadDir: path.join(process.cwd(), "/public/uploads"),
     keepExtensions: true,
     maxFileSize: 5 * 1024 * 1024, // 5MB
     multiples: true,
@@ -25,28 +25,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
-      console.error(err);
+      console.error("Formidable error:", err);
       return res.status(500).json({ error: "File upload failed" });
     }
 
     try {
-      const { name, email, password, role } = fields;
+      // Validate required fields
+      if (!fields.name || !fields.email || !fields.password) {
+        return res.status(400).json({ error: "Name, email, and password are required" });
+      }
+
+      // Extract and type fields
+      const name = Array.isArray(fields.name) ? fields.name[0] : fields.name;
+      const email = Array.isArray(fields.email) ? fields.email[0] : fields.email;
+      const password = Array.isArray(fields.password) ? fields.password[0] : fields.password;
+      const role = Array.isArray(fields.role) ? fields.role[0] : fields.role || "user";
 
       // Check if email already exists
-      const existingUser = await User.findOne({ email: email?.toString() });
+      const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(400).json({ error: "Email already registered" });
       }
 
-      let hashedPassword = null;
-      if (password) {
-        hashedPassword = await bcrypt.hash(password.toString(), 10);
-      }
+      // Hash password
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       // Handle authority document uploads
       let authorityDocs: string[] = [];
-      if (role?.toString() === "authority" && files.authorityDocs) {
-        const uploadedFiles = Array.isArray(files.authorityDocs)
+      if (role === "authority" && files.authorityDocs) {
+        const uploadedFiles: File[] = Array.isArray(files.authorityDocs)
           ? files.authorityDocs
           : [files.authorityDocs];
 
@@ -58,21 +65,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name,
         email,
         password: hashedPassword,
-        role: role?.toString() || "user",
+        role,
         authorityDocs: authorityDocs.length ? authorityDocs : undefined,
-        authorityVerified: role?.toString() === "authority" ? false : true,
+        authorityVerified: role === "authority" ? false : true,
       });
 
       await newUser.save();
 
       res.status(201).json({
         message:
-          role?.toString() === "authority"
+          role === "authority"
             ? "Signup successful. Pending admin approval."
             : "Signup successful. You can now log in.",
       });
     } catch (error) {
-      console.error(error);
+      console.error("Signup error:", error);
       res.status(500).json({ error: "Server error" });
     }
   });
