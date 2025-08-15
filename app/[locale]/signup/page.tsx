@@ -3,12 +3,13 @@
 
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
+import { useLocale } from 'next-intl';
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignupPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
+ const locale =useLocale()
   // Null-safe role fetching
   const role = useMemo(() => searchParams?.get("role") || "user", [searchParams]);
 
@@ -114,7 +115,7 @@ export default function SignupPage() {
               <div className="mt-4">
                 <button
                   className="px-4 py-2 btn-primary-gradient text-white rounded-lg  transition"
-                  onClick={() => router.push("/login")}
+                  onClick={() => router.push(`/${locale}/login`)}
                 >
                   Go to Login
                 </button>
