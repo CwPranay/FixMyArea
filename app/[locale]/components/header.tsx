@@ -79,7 +79,7 @@ export default function Header({
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-1 text-xl font-semibold text-gray-800">
           <MapPin size={22} className="text-cyan-600" />
-          <span>{t('title')}</span>
+          <span>FixMyArea</span>
         </Link>
 
         {/* Desktop Nav */}
