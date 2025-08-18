@@ -7,6 +7,7 @@ import { useTranslations, useLocale } from "next-intl";
 import axios from "axios";
 import Link from "next/link";
 
+
 export default function LoginPage() {
   const router = useRouter();
   const locale = useLocale();
@@ -49,7 +50,7 @@ export default function LoginPage() {
         
         // Add a small delay before redirect to allow state updates
         await new Promise(resolve => setTimeout(resolve, 100));
-        router.push('/');
+       router.push(res.data.redirectTo || '/')
       }
     } catch (error: any) {
       setMessage(error.response?.data?.error || "Login failed");

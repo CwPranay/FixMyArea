@@ -65,7 +65,7 @@ export default function Header({
   };
 
   return (
-    <header className="bg-white/80 sticky top-0 navbar backdrop-blur-lg text-gray-900 w-full z-[1999] shadow-lg border-b border-white/20">
+    <header className="bg-white/80 [font-family:var(--font-poppins)] sticky top-0 navbar backdrop-blur-lg text-gray-900 w-full z-[1999] shadow-lg border-b border-white/20">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Hamburger */}
         <button
@@ -89,7 +89,7 @@ export default function Header({
               key={link.href}
               href={link.href}
               className={`transition hover:text-cyan-600 ${
-                mounted && pathname === link.href ? 'text-cyan-600 font-medium' : ''
+                pathname === link.href ? 'text-cyan-600 font-medium' : ''
               }`}
             >
               {link.name}

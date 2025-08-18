@@ -5,7 +5,7 @@ import MobileSidebarWrapper from './components/MobileSidebarWrapper';
 
 type Props = {
   children: ReactNode;
-  params: Promise<{ locale: 'en' | 'hi' }>;
+  params: { locale: 'en' | 'hi' };
 };
 
 const messagesMap = {
@@ -14,7 +14,7 @@ const messagesMap = {
 } as const;
 
 export default async function LocaleLayout({ children, params }: Props) {
-  const { locale } = await params;
+  const { locale } =await params;
   
   const loadMessages = messagesMap[locale];
 
@@ -39,9 +39,9 @@ export default async function LocaleLayout({ children, params }: Props) {
   );
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return [
-    { locale: 'en' as const },
-    { locale: 'hi' as const }
+    { locale: 'en' },
+    { locale: 'hi' }
   ];
 }

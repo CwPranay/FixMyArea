@@ -1,4 +1,3 @@
-// pages/signup.tsx
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
@@ -6,6 +5,24 @@ import axios from "axios";
 import { useLocale } from 'next-intl';
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { X, FileText, Image } from "lucide-react";
+interface SignupForm {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface UploadedFile {
+  url: string;
+  name: string;
+}
+
+interface SelectedFile {
+  file: File;
+  preview: string;
+  name: string;
+}
 
 export default function SignupPage() {
   const router = useRouter();
@@ -13,26 +30,25 @@ export default function SignupPage() {
   const locale = useLocale();
   const t = useTranslations('Auth.Signup');
   
-  // Null-safe role fetching
   const role = useMemo(() => searchParams?.get("role") || "user", [searchParams]);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<SignupForm>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [authorityDocs, setAuthorityDocs] = useState<File[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<SelectedFile[]>([]);
+  const [authorityDocs, setAuthorityDocs] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
-  const [signupSuccess, setSignupSuccess] = useState(false);
+    const [signupSuccess, setSignupSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
 
-    // Check password match in real-time
     if (name === "confirmPassword" || name === "password") {
       const newForm = { ...form, [name]: value };
       setPasswordMatch(newForm.password === newForm.confirmPassword || newForm.confirmPassword === "");
@@ -41,15 +57,52 @@ export default function SignupPage() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setAuthorityDocs(Array.from(e.target.files));
+      const files = Array.from(e.target.files);
+      
+      // Validate file types and sizes
+      const validFiles = files.filter(file => {
+        const isValidType = file.type.startsWith("image/") || file.type === "application/pdf";
+        const isValidSize = file.size <= 4 * 1024 * 1024; // 4MB
+        return isValidType && isValidSize;
+      });
+      
+      // Create preview URLs for images
+      const newSelectedFiles: SelectedFile[] = validFiles.map(file => ({
+        file,
+        preview: file.type.startsWith("image/") ? URL.createObjectURL(file) : "",
+        name: file.name
+      }));
+      
+      setSelectedFiles(prev => [...prev, ...newSelectedFiles]);
+      
+      // Show warning if any files were invalid
+      if (validFiles.length !== files.length) {
+        setMessage(t('errors.invalidFiles'));
+      }
     }
+  };
+
+  const removeSelectedFile = (index: number) => {
+    setSelectedFiles(prev => {
+      const newFiles = prev.filter((_, i) => i !== index);
+      // Revoke object URL to prevent memory leaks
+      if (prev[index].preview) {
+        URL.revokeObjectURL(prev[index].preview);
+      }
+      return newFiles;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
-      setMessage("Passwords do not match.");
+      setMessage(t('passwordMismatch'));
+      return;
+    }
+
+    if (role === "authority" && selectedFiles.length === 0) {
+      setMessage(t('documentsRequired'));
       return;
     }
 
@@ -58,28 +111,67 @@ export default function SignupPage() {
     setSignupSuccess(false);
 
     try {
-      const formData = new FormData();
-      formData.append("name", form.name);
-      formData.append("email", form.email);
-      formData.append("password", form.password);
-      formData.append("role", role);
+      let uploadedFiles: UploadedFile[] = [];
+      
+      // Upload files to UploadThing if authority role
+      if (role === "authority" && selectedFiles.length > 0) {
+        setMessage(t('uploadingDocuments'));
+        
+        try {
+          console.log("Starting upload for", selectedFiles.length, "files");
+          
+          const formData = new FormData();
+          selectedFiles.forEach(file => {
+            formData.append("files", file.file);
+          });
 
-      if (role === "authority") {
-        authorityDocs.forEach((file) => formData.append("authorityDocs", file));
+          const uploadResponse = await fetch("/api/upload-files", {
+            method: "POST",
+            body: formData
+          });
+
+          if (!uploadResponse.ok) {
+            const errorData = await uploadResponse.json();
+            throw new Error(errorData.error || t('errors.uploadFailed'));
+          }
+
+          const uploadData = await uploadResponse.json();
+          console.log("Upload response:", uploadData);
+          
+          uploadedFiles = uploadData.files;
+          console.log("Extracted files:", uploadedFiles);
+        } catch (uploadError) {
+          console.error("Upload error:", uploadError);
+          throw new Error(t('errors.uploadFailed'));
+        }
       }
 
-      const res = await axios.post("/api/auth/signup", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      setMessage(t('creatingAccount'));
+      const response = await axios.post("/api/auth/signup", {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        role,
+        authorityDocs: uploadedFiles.map(file => file.url)
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
-      setSignupSuccess(true);
-      if (role === "authority") {
-        setMessage("Account created! Your documents are under verification. You can login after approval.");
-      } else {
-        setMessage("Account created! You can login now.");
+      if (!response.data.success) {
+        throw new Error(response.data.error || t('errors.signupFailed'));
       }
+
+      setSignupSuccess(true);
+      setMessage(
+        role === "authority" 
+          ? t('success.authority')
+          : t('success.user')
+      );
     } catch (error: any) {
-      setMessage(error.response?.data?.error || "Signup failed.");
+      console.error("Signup error:", error);
+      setMessage(error.response?.data?.error || error.message || t('errors.signupFailed'));
     } finally {
       setLoading(false);
     }
@@ -88,13 +180,10 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen [font-family:var(--font-poppins)] bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo/Brand Section */}
         <div className="text-center mb-8">
-         
           <p className="text-slate-600 text-sm">{t('joinCommunity')}</p>
         </div>
 
-        {/* Signup Form Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-slate-800 text-center mb-2">
@@ -112,12 +201,14 @@ export default function SignupPage() {
             )}
           </div>
 
+
+
           {signupSuccess ? (
             <div className="p-3 rounded-lg text-sm text-center mb-4 bg-green-50 text-green-700 border border-green-200">
-              {role === "authority" ? t('success.authority') : t('success.user')}
+              {message}
               <div className="mt-4">
                 <button
-                  className="px-4 py-2 btn-primary-gradient text-white rounded-lg transition"
+                  className="px-4 py-2 btn-primary-gradient transition"
                   onClick={() => router.push(`/${locale}/login`)}
                 >
                   {t('success.goToLogin')}
@@ -128,7 +219,7 @@ export default function SignupPage() {
             <>
               {message && (
                 <div className={`p-3 rounded-lg text-sm text-center mb-4 ${
-                  message.includes("successful") || message.includes("created")
+                  message.includes(t('success.user')) 
                     ? "bg-green-50 text-green-700 border border-green-200"
                     : "bg-red-50 text-red-700 border border-red-200"
                 }`}>
@@ -148,7 +239,7 @@ export default function SignupPage() {
                     value={form.name}
                     onChange={handleChange}
                     required
-                    className="w-full text-black px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
+                    className="w-full px-4 py-3 text-black border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
                   />
                 </div>
 
@@ -163,7 +254,7 @@ export default function SignupPage() {
                     value={form.email}
                     onChange={handleChange}
                     required
-                    className="w-full text-black px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
+                    className="w-full px-4 py-3 border text-black border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
                   />
                 </div>
 
@@ -178,7 +269,7 @@ export default function SignupPage() {
                     value={form.password}
                     onChange={handleChange}
                     required
-                    className="w-full text-black px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
+                    className="w-full px-4 py-3 text-black border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-slate-400"
                   />
                 </div>
 
@@ -193,7 +284,7 @@ export default function SignupPage() {
                     value={form.confirmPassword}
                     onChange={handleChange}
                     required
-                    className={`w-full text-black px-4 py-3 border rounded-xl transition-colors placeholder-slate-400 focus:ring-2 ${
+                    className={`w-full px-4 py-3 text-black border rounded-xl transition-colors placeholder-slate-400 focus:ring-2 ${
                       passwordMatch 
                         ? "border-slate-300 focus:ring-blue-500 focus:border-blue-500" 
                         : "border-red-300 focus:ring-red-500 focus:border-red-500"
@@ -215,16 +306,53 @@ export default function SignupPage() {
                         multiple
                         accept="image/*,.pdf"
                         onChange={handleFileChange}
-                        required
+                        required={role === "authority"}
                         className="w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                       />
                       <p className="text-xs text-slate-500 mt-2">
                         {t('docsHelper')}
                       </p>
                     </div>
-                    {authorityDocs.length > 0 && (
-                      <div className="mt-2 text-sm text-slate-600">
-                        ✓ {authorityDocs.length} {t('filesSelected')}
+                    
+                    {/* Selected Files Preview */}
+                    {selectedFiles.length > 0 && (
+                      <div className="mt-4 space-y-3">
+                        <h4 className="text-sm font-medium text-slate-700">{t('selectedFiles')}:</h4>
+                        <div className="space-y-2">
+                          {selectedFiles.map((file, index) => (
+                            <div 
+                              key={index} 
+                              className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"
+                            >
+                              <div className="flex items-center space-x-3">
+                                {file.preview ? (
+                                  <img 
+                                    src={file.preview} 
+                                    alt={file.name}
+                                    className="w-10 h-10 object-cover rounded"
+                                  />
+                                ) : (
+                                  <FileText className="w-10 h-10 text-red-500" />
+                                )}
+                                <div>
+                                  <p className="text-sm font-medium text-slate-700 truncate max-w-xs">
+                                    {file.name}
+                                  </p>
+                                  <p className="text-xs text-slate-500">
+                                    {(file.file.size / 1024 / 1024).toFixed(2)} MB
+                                  </p>
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => removeSelectedFile(index)}
+                                className="p-1 hover:bg-slate-200 rounded-full transition-colors"
+                              >
+                                <X className="w-4 h-4 text-slate-500" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -233,7 +361,7 @@ export default function SignupPage() {
                 <button
                   type="submit"
                   disabled={loading || !passwordMatch}
-                  className="w-full btn-primary-gradient active:scale-[0.98]"
+                  className="w-full px-4 py-3 btn-primary-gradient disabled:bg-blue-300 transition-colors"
                 >
                   {loading ? (
                     <div className="flex items-center justify-center space-x-2">
@@ -249,7 +377,6 @@ export default function SignupPage() {
           )}
         </div>
 
-        {/* Footer */}
         <div className="text-center mt-6">
           <p className="text-xs text-slate-500">
             {t('agreement')}

@@ -92,3 +92,48 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* UploadThing component styles */
+.ut-upload-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.ut-button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ut-button:hover {
+  background: #2563eb;
+}
+
+.ut-allowed-content {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+.ut-dropzone {
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.ut-dropzone:hover {
+  border-color: #3b82f6;
+}
+
+.ut-dropzone-active {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}

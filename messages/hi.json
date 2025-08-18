@@ -1,117 +1,130 @@
 {
-    "Header": {
-        
-        "home": "होम",
-        "myRequests": "मेरी शिकायतें",
-        "reportIssue": "शिकायत दर्ज करें",
-        "login": "लॉगिन",
-        "sign up": "रजिस्टर करें",
-        "profile": {
-            "settings": "प्रोफ़ाइल सेटिंग्स",
-            "myAccount": "मेरा खाता",
-            "signOut": "लॉग आउट",
-            "userRole": "नागरिक",
-            "authorityRole": "सरकारी अधिकारी",
-            "adminRole": "एडमिन"
-        }
-    },
-    "LanguageSwitcher": {
-        "language": "भाषा",
-        "english": "अंग्रेज़ी",
-        "hindi": "हिंदी"
-    },
-    "HeroSection": {
-        "title": "आपके इलाके में कोई समस्या है? यहाँ शिकायत करें।",
-        "subTitle": "सड़क के गड्ढे हो या स्ट्रीट लाइट की खराबी — शिकायत दर्ज करें और समाधान पाएं।",
-        "ReportButton": "शिकायत दर्ज करें",
-        "viewAllIssue": "सभी शिकायतें देखें"
-    },
-    "HowItWorks": {
-        "title": "यह कैसे काम करता है",
-        "step1": {
-            "title": "शिकायत दर्ज करें",
-            "description": "अपने इलाके की किसी भी समस्या की शिकायत करें।"
-        },
-        "step2": {
-            "title": "लोगों की राय",
-            "description": "दूसरे लोग भी आपकी शिकायत पर अपनी बात रख सकते हैं।"
-        },
-        "step3": {
-            "title": "समस्या का समाधान",
-            "description": "सरकारी अधिकारी आपकी समस्या का समाधान करते हैं।"
-        }
-    },
-    "RecentIssues": {
-        "title": "हाल की शिकायतें",
-        "viewAll": "सभी शिकायतें देखें",
-        "issues": {
-            "pothole": {
-                "title": "मुख्य सड़क पर बड़ा गड्ढा",
-                "description": "गाड़ियों को नुकसान हो रहा है। जल्दी मरम्मत कराएं।",
-                "location": "अंधेरी वेस्ट, मुंबई"
-            },
-            "streetlight": {
-                "title": "स्ट्रीट लाइट जल नहीं रही",
-                "description": "2 हफ्तों से स्ट्रीट लाइट बंद है।",
-                "location": "जूहू, मुंबई"
-            },
-            "garbageOverflow": {
-                "title": "कचरा भरा पड़ा है",
-                "description": "3 दिनों से कचरा नहीं उठाया गया।",
-                "location": "बांद्रा, मुंबई"
-            }
-        }
-    },
-    "RoleModal": {
-        "signup": "के रूप में रजिस्टर करें",
-        "user": "नागरिक",
-        "authority": "सरकारी अधिकारी"
-    },
-    "Auth": {
-        "Login": {
-            "title": "लॉगिन करें",
-            "welcomeBack": "वापस आपका स्वागत है! अपने खाते में लॉगिन करें",
-            "accessAccount": "अपने इलाके की समस्याओं के लिए अपना खाता खोलें",
-            "emailLabel": "ईमेल आईडी",
-            "emailPlaceholder": "अपनी ईमेल आईडी डालें",
-            "passwordLabel": "पासवर्ड",
-            "passwordPlaceholder": "अपना पासवर्ड डालें",
-            "forgotPassword": "पासवर्ड भूल गए?",
-            "signInButton": "लॉगिन करें",
-            "signingIn": "लॉगिन हो रहा है...",
-            "noAccount": "खाता नहीं है?",
-            "signUpUser": "नागरिक के रूप में रजिस्टर करें",
-            "signUpAuthority": "सरकारी अधिकारी के रूप में रजिस्टर करें",
-            "secureLogin": "अपने इलाके को बेहतर बनाने के लिए सुरक्षित लॉगिन"
-        },
-        "Signup": {
-            "title": "नया खाता बनाएं",
-            "joinCommunity": "अपने इलाके की समस्याओं की शिकायत करने और उन्हें ठीक कराने के लिए जुड़ें",
-            "asUser": "नागरिक के रूप में जुड़ें",
-            "asAuthority": "सरकारी अधिकारी के रूप में जुड़ें",
-            "authorityNotice": "सरकारी अधिकारियों के खाते के लिए पहचान के कागजात चाहिए",
-            "fullNameLabel": "पूरा नाम",
-            "fullNamePlaceholder": "अपना पूरा नाम डालें",
-            "emailLabel": "ईमेल आईडी",
-            "emailPlaceholder": "अपनी ईमेल आईडी डालें",
-            "passwordLabel": "पासवर्ड",
-            "passwordPlaceholder": "मजबूत पासवर्ड बनाएं",
-            "confirmPasswordLabel": "पासवर्ड दोबारा डालें",
-            "confirmPasswordPlaceholder": "पासवर्ड की पुष्टि करें",
-            "passwordMismatch": "दोनों पासवर्ड अलग हैं",
-            "docsLabel": "पहचान के कागजात",
-            "docsHelper": "आईडी प्रूफ और सरकारी कागजात अपलोड करें (JPG, PNG, PDF)",
-            "filesSelected": "फ़ाइल चुनी गई",
-            "createButton": "खाता बनाएं",
-            "creatingAccount": "खाता बन रहा है...",
-            "createUserButton": "नागरिक खाता बनाएं",
-            "createAuthorityButton": "सरकारी अधिकारी खाता बनाएं",
-            "agreement": "खाता बनाकर आप अपने इलाके को बेहतर बनाने में मदद करने के लिए सहमत हैं",
-            "success": {
-                "user": "खाता बन गया! अब आप लॉगिन कर सकते हैं।",
-                "authority": "खाता बन गया! आपके कागजात की जांच हो रही है। स्वीकृति के बाद लॉगिन कर सकेंगे।",
-                "goToLogin": "लॉगिन करें"
-            }
-        }
+  "Header": {
+    "home": "होम",
+    "myRequests": "मेरी शिकायतें",
+    "reportIssue": "शिकायत दर्ज करें",
+    "login": "लॉगिन",
+    "sign up": "रजिस्टर करें",
+    "profile": {
+      "settings": "प्रोफ़ाइल सेटिंग्स",
+      "myAccount": "मेरा खाता",
+      "signOut": "लॉग आउट",
+      "userRole": "नागरिक",
+      "authorityRole": "सरकारी अधिकारी",
+      "adminRole": "एडमिन"
     }
+  },
+  "LanguageSwitcher": {
+    "language": "भाषा",
+    "english": "अंग्रेज़ी",
+    "hindi": "हिंदी"
+  },
+  "HeroSection": {
+    "title": "आपके इलाके में कोई समस्या है? यहाँ शिकायत करें।",
+    "subTitle": "सड़क के गड्ढे हो या स्ट्रीट लाइट की खराबी — शिकायत दर्ज करें और समाधान पाएं।",
+    "ReportButton": "शिकायत दर्ज करें",
+    "viewAllIssue": "सभी शिकायतें देखें"
+  },
+  "HowItWorks": {
+    "title": "यह कैसे काम करता है",
+    "step1": {
+      "title": "शिकायत दर्ज करें",
+      "description": "अपने इलाके की किसी भी समस्या की शिकायत करें।"
+    },
+    "step2": {
+      "title": "लोगों की राय",
+      "description": "दूसरे लोग भी आपकी शिकायत पर अपनी बात रख सकते हैं।"
+    },
+    "step3": {
+      "title": "समस्या का समाधान",
+      "description": "सरकारी अधिकारी आपकी समस्या का समाधान करते हैं।"
+    }
+  },
+  "RecentIssues": {
+    "title": "हाल की शिकायतें",
+    "viewAll": "सभी शिकायतें देखें",
+    "issues": {
+      "pothole": {
+        "title": "मुख्य सड़क पर बड़ा गड्ढा",
+        "description": "गाड़ियों को नुकसान हो रहा है। जल्दी मरम्मत कराएं।",
+        "location": "अंधेरी वेस्ट, मुंबई"
+      },
+      "streetlight": {
+        "title": "स्ट्रीट लाइट जल नहीं रही",
+        "description": "2 हफ्तों से स्ट्रीट लाइट बंद है।",
+        "location": "जूहू, मुंबई"
+      },
+      "garbageOverflow": {
+        "title": "कचरा भरा पड़ा है",
+        "description": "3 दिनों से कचरा नहीं उठाया गया।",
+        "location": "बांद्रा, मुंबई"
+      }
+    }
+  },
+  "RoleModal": {
+    "signup": "के रूप में रजिस्टर करें",
+    "user": "नागरिक",
+    "authority": "सरकारी अधिकारी"
+  },
+  "Auth": {
+    "Login": {
+      "title": "लॉगिन करें",
+      "welcomeBack": "वापस आपका स्वागत है! अपने खाते में लॉगिन करें",
+      "accessAccount": "अपने इलाके की समस्याओं के लिए अपना खाता खोलें",
+      "emailLabel": "ईमेल आईडी",
+      "emailPlaceholder": "अपनी ईमेल आईडी डालें",
+      "passwordLabel": "पासवर्ड",
+      "passwordPlaceholder": "अपना पासवर्ड डालें",
+      "forgotPassword": "पासवर्ड भूल गए?",
+      "signInButton": "लॉगिन करें",
+      "signingIn": "लॉगिन हो रहा है...",
+      "noAccount": "खाता नहीं है?",
+      "signUpUser": "नागरिक के रूप में रजिस्टर करें",
+      "signUpAuthority": "सरकारी अधिकारी के रूप में रजिस्टर करें",
+      "secureLogin": "अपने इलाके को बेहतर बनाने के लिए सुरक्षित लॉगिन"
+    },
+    "Signup": {
+      "title": "नया खाता बनाएं",
+      "joinCommunity": "अपने इलाके की समस्याओं की शिकायत करने और उन्हें ठीक कराने के लिए जुड़ें",
+      "asUser": "नागरिक के रूप में जुड़ें",
+      "asAuthority": "सरकारी अधिकारी के रूप में जुड़ें",
+      "authorityNotice": "सरकारी अधिकारियों के खाते के लिए पहचान के कागजात चाहिए",
+      "fullNameLabel": "पूरा नाम",
+      "fullNamePlaceholder": "अपना पूरा नाम डालें",
+      "emailLabel": "ईमेल आईडी",
+      "emailPlaceholder": "अपनी ईमेल आईडी डालें",
+      "passwordLabel": "पासवर्ड",
+      "passwordPlaceholder": "मजबूत पासवर्ड बनाएं",
+      "confirmPasswordLabel": "पासवर्ड दोबारा डालें",
+      "confirmPasswordPlaceholder": "पासवर्ड की पुष्टि करें",
+      "passwordMismatch": "दोनों पासवर्ड अलग हैं",
+      "docsLabel": "पहचान के कागजात",
+      "docsHelper": "आईडी प्रूफ और सरकारी कागजात अपलोड करें (JPG, PNG, PDF)",
+      "filesSelected": "फ़ाइल चुनी गई",
+      "createButton": "खाता बनाएं",
+      "creatingAccount": "खाता बन रहा है...",
+      "createUserButton": "नागरिक खाता बनाएं",
+      "createAuthorityButton": "सरकारी अधिकारी खाता बनाएं",
+      "agreement": "खाता बनाकर आप अपने इलाके को बेहतर बनाने में मदद करने के लिए सहमत हैं",
+      "success": {
+        "user": "खाता बन गया! अब आप लॉगिन कर सकते हैं।",
+        "authority": "खाता बन गया! आपके कागजात की जांच हो रही है। स्वीकृति के बाद लॉगिन कर सकेंगे।",
+        "goToLogin": "लॉगिन करें"
+      },
+      "errors": {
+        "uploadFailed": "अपलोड विफल: {error}",
+        "signupFailed": "रजिस्ट्रेशन विफल। कृपया पुनः प्रयास करें।",
+        "invalidFiles": "कुछ फ़ाइलें अमान्य थीं। केवल 4MB से कम की छवियां और PDF अनुमत हैं।"
+      },
+      "docsUploaded": "दस्तावेज़ सफलतापूर्वक अपलोड हो गए!",
+      "filesUploaded": "फ़ाइल(एँ) अपलोड हो गईं",
+      "uploadedFiles": "अपलोड की गई फ़ाइलें",
+      "selectedFiles": "चयनित फ़ाइलें",
+      "uploadedSuccessfully": "सफलतापूर्वक अपलोड हो गया",
+      "uploadRequirements": "अपलोड आवश्यकताएं",
+      "maxFileSize": "अधिकतम फ़ाइल आकार",
+      "maxFiles": "अधिकतम फ़ाइलें",
+      "allowedFormats": "स्वीकृत प्रारूप"
+    }
+  }
 }

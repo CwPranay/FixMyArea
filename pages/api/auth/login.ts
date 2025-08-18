@@ -32,13 +32,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Check if authority user is approved
-    if (user.role === 'authority' && user.status !== 'approved') {
-      let message = 'Account pending approval';
-      if (user.status === 'rejected') {
-        message = 'Account has been rejected. Please contact support.';
-      }
-      return res.status(403).json({ error: message });
+    // Check if authority user is verified
+    if (user.role === 'authority' && !user.authorityVerified) {
+      return res.status(403).json({ error: 'Authority account pending verification. Please wait for admin approval.' });
     }
 
     // Generate JWT token
@@ -58,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (user.role === 'authority') {
       redirectTo = '/authority-dashboard';
     } else if (user.role === 'admin') {
-      redirectTo = '/admin-dashboard';
+      redirectTo = '/admin/dashboard';
     }
 
     // Update last login
@@ -74,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name: user.name,
         email: user.email,
         role: user.role,
-        status: user.status
+        authorityVerified: user.authorityVerified
       },
       redirectTo
     });

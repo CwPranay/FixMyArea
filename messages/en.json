@@ -1,117 +1,132 @@
 {
-    "Header": {
-        
-        "home": "Home",
-        "myRequests": "My Requests",
-        "reportIssue": "Report Issue",
-        "login": "Log in",
-        "sign up": "Sign up",
-        "profile": {
-            "settings": "Profile Settings",
-            "myAccount": "My Account",
-            "signOut": "Sign Out",
-            "userRole": "Community Member",
-            "authorityRole": "Local Authority",
-            "adminRole": "Administrator"
-        }
-    },
-    "LanguageSwitcher": {
-        "language": "Language",
-        "english": "English",
-        "hindi": "Hindi"
-    },
-    "HeroSection": {
-        "title": "Spotted a Problem? Fix It Here.",
-        "subTitle": " From potholes to streetlights — raise it, track it, solve it.",
-        "ReportButton": "Report an Issue",
-        "viewAllIssue": "View All Issues"
-    },
-    "HowItWorks": {
-        "title": "How It Works",
-        "step1": {
-            "title": "Report an Issue",
-            "description": "Log any issue in your area."
-        },
-        "step2": {
-            "title": "Community Feedback",
-            "description": "Other users can comment on your report."
-        },
-        "step3": {
-            "title": "Issue Resolved",
-            "description": "The local authority resolves the issue."
-        }
-    },
-    "RecentIssues": {
-        "title": "Recent Issues",
-        "viewAll": "View All Issues",
-        "issues": {
-            "pothole": {
-                "title": "Pothole on Main Street",
-                "description": "Damaging vehicles. Needs repair.",
-                "location": "Andheri West, Mumbai"
-            },
-            "streetlight": {
-                "title": "Streetlight Outage",
-                "description": "Streetlight not working for 2 weeks.",
-                "location": "Juhu, Mumbai"
-            },
-            "garbageOverflow": {
-                "title": "Garbage Overflow",
-                "description": "No collection for 3 days.",
-                "location": "Bandra, Mumbai"
-            }
-        }
-    },
-    "RoleModal": {
-        "signup": "Sign up as",
-        "user": "User",
-        "authority": "Authority"
-    },
-    "Auth": {
-        "Login": {
-            "title": "Sign In",
-            "welcomeBack": "Welcome back! Sign in to your account",
-            "accessAccount": "Access your account to manage local issues",
-            "emailLabel": "Email Address",
-            "emailPlaceholder": "Enter your email",
-            "passwordLabel": "Password",
-            "passwordPlaceholder": "Enter your password",
-            "forgotPassword": "Forgot your password?",
-            "signInButton": "Sign In",
-            "signingIn": "Signing In...",
-            "noAccount": "Don't have an account?",
-            "signUpUser": "Sign up as Community Member",
-            "signUpAuthority": "Sign up as Local Authority",
-            "secureLogin": "Secure login to help make your community better"
-        },
-        "Signup": {
-            "title": "Create Account",
-            "joinCommunity": "Join our community to report and fix local issues",
-            "asUser": "Join as a Community Member",
-            "asAuthority": "Join as a Local Authority",
-            "authorityNotice": "Authority accounts require verification documents",
-            "fullNameLabel": "Full Name",
-            "fullNamePlaceholder": "Enter your full name",
-            "emailLabel": "Email Address",
-            "emailPlaceholder": "Enter your email",
-            "passwordLabel": "Password",
-            "passwordPlaceholder": "Create a strong password",
-            "confirmPasswordLabel": "Confirm Password",
-            "confirmPasswordPlaceholder": "Confirm your password",
-            "passwordMismatch": "Passwords do not match",
-            "docsLabel": "Authority Verification Documents",
-            "docsHelper": "Upload ID proof, official documents (JPG, PNG, PDF)",
-            "filesSelected": "file(s) selected",
-            "createButton": "Create Account",
-            "creatingAccount": "Creating Account...",
-            "createUserButton": "Create User Account",
-            "createAuthorityButton": "Create Authority Account",
-            "agreement": "By creating an account, you agree to help make your community better",
-            "success": {
-                "user": "Account created! You can login now.",
-                "authority": "Account created! Your documents are under verification. You can login after approval.",
-                "goToLogin": "Go to Login"
-            }
-        }
+  "Header": {
+    "home": "Home",
+    "myRequests": "My Requests",
+    "reportIssue": "Report Issue",
+    "login": "Log in",
+    "sign up": "Sign up",
+    "profile": {
+      "settings": "Profile Settings",
+      "myAccount": "My Account",
+      "signOut": "Sign Out",
+      "userRole": "Community Member",
+      "authorityRole": "Local Authority",
+      "adminRole": "Administrator"
     }
+  },
+  "LanguageSwitcher": {
+    "language": "Language",
+    "english": "English",
+    "hindi": "Hindi"
+  },
+  "HeroSection": {
+    "title": "Spotted a Problem? Fix It Here.",
+    "subTitle": " From potholes to streetlights — raise it, track it, solve it.",
+    "ReportButton": "Report an Issue",
+    "viewAllIssue": "View All Issues"
+  },
+  "HowItWorks": {
+    "title": "How It Works",
+    "step1": {
+      "title": "Report an Issue",
+      "description": "Log any issue in your area."
+    },
+    "step2": {
+      "title": "Community Feedback",
+      "description": "Other users can comment on your report."
+    },
+    "step3": {
+      "title": "Issue Resolved",
+      "description": "The local authority resolves the issue."
+    }
+  },
+  "RecentIssues": {
+    "title": "Recent Issues",
+    "viewAll": "View All Issues",
+    "issues": {
+      "pothole": {
+        "title": "Pothole on Main Street",
+        "description": "Damaging vehicles. Needs repair.",
+        "location": "Andheri West, Mumbai"
+      },
+      "streetlight": {
+        "title": "Streetlight Outage",
+        "description": "Streetlight not working for 2 weeks.",
+        "location": "Juhu, Mumbai"
+      },
+      "garbageOverflow": {
+        "title": "Garbage Overflow",
+        "description": "No collection for 3 days.",
+        "location": "Bandra, Mumbai"
+      }
+    }
+  },
+  "RoleModal": {
+    "signup": "Sign up as",
+    "user": "User",
+    "authority": "Authority"
+  },
+  "Auth": {
+    "Login": {
+      "title": "Sign In",
+      "welcomeBack": "Welcome back! Sign in to your account",
+      "accessAccount": "Access your account to manage local issues",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "forgotPassword": "Forgot your password?",
+      "signInButton": "Sign In",
+      "signingIn": "Signing In...",
+      "noAccount": "Don't have an account?",
+      "signUpUser": "Sign up as Community Member",
+      "signUpAuthority": "Sign up as Local Authority",
+      "secureLogin": "Secure login to help make your community better"
+    },
+    "Signup": {
+      "title": "Create Account",
+      "joinCommunity": "Join our community to report and fix local issues",
+      "asUser": "Join as a Community Member",
+      "asAuthority": "Join as a Local Authority",
+      "authorityNotice": "Authority accounts require verification documents",
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Create a strong password",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "uploadingDocuments": "Uploading documents...",
+      "documentsRequired": "Please upload required documents",
+      "passwordMismatch": "Passwords do not match",
+      "docsLabel": "Authority Verification Documents",
+      "docsHelper": "Upload ID proof, official documents (JPG, PNG, PDF)",
+      "filesSelected": "file(s) selected",
+      "createButton": "Create Account",
+      "creatingAccount": "Creating Account...",
+      "createUserButton": "Create User Account",
+      "createAuthorityButton": "Create Authority Account",
+      "agreement": "By creating an account, you agree to help make your community better",
+      "success": {
+        "user": "Account created! You can login now.",
+        "authority": "Account created! Your documents are under verification. You can login after approval.",
+        "goToLogin": "Go to Login"
+      },
+      "errors": {
+        "uploadFailed": "Upload failed: {error}",
+        "signupFailed": "Signup failed. Please try again.",
+        "invalidFiles": "Some files were invalid. Only images and PDFs under 4MB are allowed."
+      },
+      "docsUploaded": "Documents uploaded successfully!",
+      "filesUploaded": "file(s) uploaded",
+      "uploadedFiles": "Uploaded Files",
+      "selectedFiles": "Selected Files",
+      "uploadedSuccessfully": "Uploaded successfully",
+      "uploadRequirements": "Upload Requirements",
+      "maxFileSize": "Maximum file size",
+      "maxFiles": "Maximum files",
+      "allowedFormats": "Allowed formats"
+    }
+  }
 }
