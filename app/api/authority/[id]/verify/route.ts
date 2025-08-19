@@ -8,7 +8,7 @@ interface RouteParams {
   };
 }
 
-export async function PATCH(req: NextRequest, { params }: RouteParams){
+export async function PATCH(req : NextRequest, { params }: RouteParams){
 
     try{
         await connectDB();
