@@ -1,8 +1,14 @@
 import { NextResponse,NextRequest } from "next/server";
 import user from "@/models/user";
 import { connectDB } from "@/lib/db";
+ 
+interface RouteParams {
+  params: {
+    id: string;
+  };
+}
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: RouteParams){
 
     try{
         await connectDB();
