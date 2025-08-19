@@ -31,7 +31,7 @@ export default function Home() {
 
   // Don't show anything until we check user role
   if (!showHomePage) {
-    return <div>Loading...</div>;
+    return <div>Loading..</div>;
   }
 
   // Only render home page for non-admin users
