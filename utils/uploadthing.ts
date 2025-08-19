@@ -1,9 +1,6 @@
 import { UTApi } from "uploadthing/server";
-import { ourFileRouter } from "@/app/api/uploadthing/core";
 
-export type OurFileRouter = typeof ourFileRouter;
-
-// UTApi initialization with token
+// UTApi initialization with token - CORRECTED
 export const utapi = new UTApi({
-  apiKey: process.env.UPLOADTHING_TOKEN
+  token: process.env.UPLOADTHING_TOKEN
 });

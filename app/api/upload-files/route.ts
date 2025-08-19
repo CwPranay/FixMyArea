@@ -4,22 +4,11 @@ import { utapi } from "@/utils/uploadthing";
 export async function POST(request: NextRequest) {
   try {
     console.log("=== UPLOAD START ===");
-    console.log("Environment check:", {
-      hasToken: !!process.env.UPLOADTHING_TOKEN,
-      tokenLength: process.env.UPLOADTHING_TOKEN?.length || 0
-    });
     
     const formData = await request.formData();
     const files = formData.getAll("files") as File[];
 
     console.log("Files received:", files.length);
-    files.forEach((file, index) => {
-      console.log(`File ${index + 1}:`, {
-        name: file.name,
-        size: file.size,
-        type: file.type
-      });
-    });
 
     if (!files || files.length === 0) {
       console.log("No files provided");
@@ -31,8 +20,12 @@ export async function POST(request: NextRequest) {
 
     console.log("Starting UploadThing upload...");
 
-    // Upload files using UploadThing API
-    const uploadResults = await utapi.uploadFiles(files, "authorityDocuments");
+    // Upload files individually
+    const uploadPromises = files.map(file => 
+      utapi.uploadFiles(file) // Remove the second parameter entirely
+    );
+
+    const uploadResults = await Promise.all(uploadPromises);
 
     console.log("UploadThing response:", uploadResults);
 
@@ -55,4 +48,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

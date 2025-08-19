@@ -2,7 +2,7 @@
 import { utapi } from "@/utils/uploadthing";
 import { NextResponse } from "next/server";
 
-export const maxDuration = 300; // 5 minutes for large files
+export const maxDuration = 300;
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
@@ -32,8 +32,11 @@ export async function POST(req: Request) {
       );
     }
 
-    // Upload files
-    const response = await utapi.uploadFiles(validFiles);
+    // FIXED: Upload files individually
+    const uploadPromises = validFiles.map(file => 
+      utapi.uploadFiles(file)
+    );
+    const response = await Promise.all(uploadPromises);
 
     return NextResponse.json({
       success: true,

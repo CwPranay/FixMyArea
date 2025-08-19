@@ -39,10 +39,11 @@ export default function LoginPage() {
 
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         
         // Create and dispatch a CustomEvent instead of Event
         const authEvent = new CustomEvent('auth-change', {
-          detail: { token: res.data.token }
+          detail: { token: res.data.token,user:res.data.user }
         });
         window.dispatchEvent(authEvent);
         
