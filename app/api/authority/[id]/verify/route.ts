@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse,NextRequest } from "next/server";
 import user from "@/models/user";
 import { connectDB } from "@/lib/db";
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
 
     try{
         await connectDB();
