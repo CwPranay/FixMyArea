@@ -33,8 +33,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Check if authority user is verified
-    if (user.role === 'authority' && !user.authorityVerified) {
+    if (user.role === 'authority' && user.authorityVerified=="pending") {
       return res.status(403).json({ error: 'Authority account pending verification. Please wait for admin approval.' });
+    }
+    if (user.role === 'authority' && user.authorityVerified=="rejected") {
+      return res.status(403).json({ error: 'Authority account Rejected' });
     }
 
     // Generate JWT token

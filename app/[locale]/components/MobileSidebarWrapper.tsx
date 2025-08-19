@@ -89,7 +89,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
   const navLinks = [
     { name: t('home'), href: '/' },
     { name: t('reportIssue'), href: '/report' },
-    { name: t('myRequests'), href: '/my-reports' }
+    { name: t('viewAllIssue'), href: '/my-reports' }
   ];
   const [isSignupModalOpen, setSignupModalOpen] = useState(false);
   const handleSignupRoleSelect = (role: 'user' | 'authority') => {

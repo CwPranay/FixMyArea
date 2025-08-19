@@ -31,8 +31,11 @@ export default NextAuth({
         if (!isValid) throw new Error("Invalid password");
 
         // Block authority login if not verified
-        if (user.role === "authority" && !user.authorityVerified) {
+        if (user.role === "authority" && user.authorityVerified === "pending") {
           throw new Error("Authority account pending verification");
+        }
+         if (user.role === "authority" && user.authorityVerified === "rejected") {
+          throw new Error("Authority account rejected");
         }
 
         return {

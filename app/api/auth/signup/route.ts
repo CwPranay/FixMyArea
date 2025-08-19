@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       password: hashedPassword,
       role,
       authorityDocs: role === "authority" ? authorityDocs : undefined,
-      authorityVerified: role === "authority" ? false : true,
+      authorityVerified: role === "authority" ? "pending" : "approved",
     });
 
     await newUser.save();
