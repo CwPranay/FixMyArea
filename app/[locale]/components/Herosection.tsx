@@ -3,15 +3,22 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-
+import { useAuth } from '@/context/AuthContext';
+import AdminDashboard from '../admin/dashboard/page';
 const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
 
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
-
-  return (
+  const {user,role}=useAuth();
+  if(role==="admin")
+  {
+    return <AdminDashboard/>
+  }
+  else
+       return (
     <section className="pt-52 md:pt-20 lg:pt-20   min-h-[calc(100vh-80px)] [font-family:var(--font-poppins)] bg-gray-50 px-4">
-      <div className="max-w-7xl  mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+      
+       <div className="max-w-7xl  mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
         
         {/* LEFT: Text & Buttons */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left justify-center">

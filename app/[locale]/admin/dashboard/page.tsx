@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function AdminDashboard() {
   const [authorities, setAuthorities] = useState<any[]>([]);
-  
+
   useEffect(() => {
     async function fetchAuthorities() {
       const res = await fetch("/api/authorities"); // you'll need an API route that returns authorities
@@ -22,9 +22,9 @@ export default function AdminDashboard() {
         body: JSON.stringify({ status }),
       });
       if (!res.ok) throw new Error("Failed to update");
-      
+
       setAuthorities(prev => prev.map(auth => auth._id === id ? { ...auth, authorityVerified: status } : auth))
-    
+
     } catch (err) {
       console.error(err);
     }
@@ -81,15 +81,15 @@ export default function AdminDashboard() {
                     </span>
                   </td>
                   <td className="px-6 py-4 flex justify-end gap-3">
-                    <button 
-                      onClick={() => handleVerify(auth._id, "approved")} 
+                    <button
+                      onClick={() => handleVerify(auth._id, "approved")}
                       className="px-4 cursor-pointer py-1.5 text-xs font-medium rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-sm hover:shadow-md hover:scale-105 transition"
                     >
                       <CheckCircle size={14} className="inline mr-1" />
                       Approve
                     </button>
-                    <button 
-                      onClick={() => handleVerify(auth._id, "rejected")} 
+                    <button
+                      onClick={() => handleVerify(auth._id, "rejected")}
                       className="px-4 cursor-pointer py-1.5 text-xs font-medium rounded-full bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-sm hover:shadow-md hover:scale-105 transition"
                     >
                       <XCircle size={14} className="inline mr-1" />
@@ -137,24 +137,26 @@ export default function AdminDashboard() {
                 </a>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <button 
-                  onClick={() => handleVerify(auth._id, "approved")} 
-                  className="flex-1 px-4 py-3 text-sm font-medium rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-sm hover:shadow-md active:scale-95 transition-all duration-200 touch-manipulation"
-                >
-                  <CheckCircle size={16} className="inline mr-2" />
-                  Approve
-                </button>
-                <button 
-                  onClick={() => handleVerify(auth._id, "rejected")} 
-                  className="flex-1 px-4 py-3 text-sm font-medium rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-sm hover:shadow-md active:scale-95 transition-all duration-200 touch-manipulation"
-                >
-                  <XCircle size={16} className="inline mr-2" />
-                  Reject
-                </button>
-              </div>
+              {auth.authorityVerified === "approved" || auth.authorityVerified === "rejected" ? null : (
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleVerify(auth._id, "approved")}
+                    className="flex-1 px-4 py-3 text-sm font-medium rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-sm hover:shadow-md active:scale-95 transition-all duration-200 touch-manipulation"
+                  >
+                    <CheckCircle size={16} className="inline mr-2" />
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => handleVerify(auth._id, "rejected")}
+                    className="flex-1 px-4 py-3 text-sm font-medium rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-sm hover:shadow-md active:scale-95 transition-all duration-200 touch-manipulation"
+                  >
+                    <XCircle size={16} className="inline mr-2" />
+                    Reject
+                  </button>
+                </div>
+              )}
             </div>
+
           ))}
         </div>
 

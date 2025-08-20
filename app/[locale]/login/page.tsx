@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import axios from "axios";
 import Link from "next/link";
+import { useAuth } from '@/context/AuthContext'; // adjust path
+
 
 
 export default function LoginPage() {
@@ -20,6 +22,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,23 +39,21 @@ export default function LoginPage() {
       const res = await axios.post("/api/auth/login", {
         email: form.email,
         password: form.password,
+      }, {
+        withCredentials: true, // important: send cookies
       });
+      await new Promise(res => setTimeout(res, 50));
+      window.dispatchEvent(new CustomEvent('auth-change'));
 
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        
-        // Create and dispatch a CustomEvent instead of Event
-        const authEvent = new CustomEvent('auth-change', {
-          detail: { token: res.data.token,user:res.data.user }
-        });
-        window.dispatchEvent(authEvent);
-        
+
+      if (res.data.user) {
+        // Update AuthContext instead of localStorage
+        await login(form.email, form.password);// updates user state after login
+        // call your context's refreshUser or checkAuthStatus
+
         setMessage("Login successful! Redirecting...");
-        
-        // Add a small delay before redirect to allow state updates
         await new Promise(resolve => setTimeout(resolve, 100));
-       router.push(res.data.redirectTo || '/')
+        router.push(res.data.redirectTo || '/');
       }
     } catch (error: any) {
       setMessage(error.response?.data?.error || "Login failed");
@@ -59,6 +61,7 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen [font-family:var(--font-poppins)] bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
@@ -80,11 +83,10 @@ export default function LoginPage() {
           </div>
 
           {message && (
-            <div className={`p-3 rounded-lg text-sm text-center mb-4 ${
-              message.includes("successful")
+            <div className={`p-3 rounded-lg text-sm text-center mb-4 ${message.includes("successful")
                 ? "bg-green-50 text-green-700 border border-green-200"
                 : "bg-red-50 text-red-700 border border-red-200"
-            }`}>
+              }`}>
               {message}
             </div>
           )}
@@ -140,7 +142,7 @@ export default function LoginPage() {
 
             {/* Forgot Password Link */}
             <div className="text-right">
-              <Link 
+              <Link
                 href={`/${locale}/forgot-password`}
                 className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
               >
@@ -177,13 +179,13 @@ export default function LoginPage() {
               {t('noAccount')}
             </p>
             <div className="flex flex-col space-y-2">
-              <Link 
+              <Link
                 href={`/${locale}/signup?role=user`}
                 className="w-full px-4 py-3 btn-secondary-glass text-center border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-400 transition-colors"
               >
                 {t('signUpUser')}
               </Link>
-              <Link 
+              <Link
                 href={`/${locale}/signup?role=authority`}
                 className="w-full px-4 py-3 text-center border btn-primary-gradient bg-blue-50 rounded-xl hover:bg-blue-100 hover:border-blue-400 transition-colors"
               >

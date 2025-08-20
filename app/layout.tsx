@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 import { Poppins } from 'next/font/google';
 import { ReactNode } from 'react';
@@ -7,6 +8,8 @@ const poppins = Poppins({
   weight: ['400', '500', '600'],
   variable: '--font-poppins',
 });
+
+
 
 export default async function RootLayout({
   children,
@@ -21,7 +24,9 @@ export default async function RootLayout({
     <html lang={locale} className={poppins.variable}>
       <body className="relative">
         <div id="root-content" className="relative z-0">
+          <AuthProvider>
           {children}
+          </AuthProvider>
         </div>
       </body>
     </html>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
 
 interface Issue {
@@ -34,7 +35,10 @@ const recentIssues: Issue[] = [
 
 export default function RecentIssues() {
   const t = useTranslations('RecentIssues');
-
+  const {role} =useAuth()
+ if(role==="admin")
+ {return null;}
+ else
   return (
     <section
       id="recent-issues"

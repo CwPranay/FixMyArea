@@ -1,16 +1,22 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import {useAuth} from '@/context/AuthContext';
 
 export default function HowItWorksSection() {
   const t = useTranslations('HowItWorks');
+  const {role} = useAuth();
 
   const steps = [
     { key:"step1", icon: '📍' },
     { key:"step2", icon: '📝' },
     { key:"step3", icon: '⚙️' }
   ];
+  if(role==="admin"){
+    return null
+  }
 
+  else
   return (
     <section
       className="py-12 px-4 sm:px-6 md:px-8 bg-gray-50 [font-family:var(--font-poppins)]"

@@ -6,13 +6,7 @@ import Sidebar from './Sidebar';
 import { useRouter } from 'next/navigation';
 import RoleModal from './RoleModal';
 import { useLocale } from 'next-intl';
-
-type UserData = {
-  id: string;
-  name: string;
-  email: string;
-  role: 'user' | 'authority' | 'admin';
-};
+import { useAuth } from '@/context/AuthContext'; // Use centralized auth
 
 type MobileSidebarWrapperProps = {
   children: ReactNode;
@@ -22,68 +16,34 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
   const t = useTranslations('Header');
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<UserData | null>(null);
+  const [isSignupModalOpen, setSignupModalOpen] = useState(false);
   const router = useRouter();
   const locale = useLocale();
 
+  // Use centralized auth context
+  const { user, isAuthenticated, logout } = useAuth();
+
   useEffect(() => {
     setMounted(true);
-    
-    // Initial auth check
-    checkAuthStatus();
 
-    // Define the handler
-    const handleAuthChange = (event: Event) => {
-      console.log('Auth change detected');  // Debug log
-      checkAuthStatus();
+    // Lock scroll when mobile menu is open
+    document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
     };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [menuOpen]);
 
-    // Add both event listeners
-    window.addEventListener('auth-change', handleAuthChange);
-    window.addEventListener('storage', handleAuthChange);
+  const handleLogout = async () => {
+    await logout(); // Clears context state and triggers re-render
+    setMenuOpen(false); // Close menu if open
+    router.push('/');   // Optional: redirect home
+  };
 
-    // Cleanup function
-    return () => {
-      window.removeEventListener('auth-change', handleAuthChange);
-      window.removeEventListener('storage', handleAuthChange);
-    };
-  }, []);
-
-  // Update checkAuthStatus to include console logs
-  const checkAuthStatus = () => {
-    const token = localStorage.getItem('token');
-    console.log('Checking auth status, token:', token ? 'exists' : 'none');
-    
-    if (!token) {
-      setIsAuthenticated(false);
-      setUser(null);
-      return;
-    }
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      if (payload.exp && payload.exp < Date.now() / 1000) {
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-        setUser(null);
-        return;
-      }
-
-      setUser({
-        id: payload.userId,
-        name: payload.name,
-        email: payload.email,
-        role: payload.role
-      });
-      setIsAuthenticated(true);
-      console.log('Auth status updated, user:', payload.name);
-    } catch (error) {
-      console.error('Error checking auth status:', error);
-      localStorage.removeItem('token');
-      setIsAuthenticated(false);
-      setUser(null);
-    }
+  const handleSignupRoleSelect = (role: 'user' | 'authority') => {
+    setSignupModalOpen(false);
+    router.push(`/${locale}/signup?role=${role}`);
   };
 
   const navLinks = [
@@ -91,29 +51,6 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
     { name: t('reportIssue'), href: '/report' },
     { name: t('viewAllIssue'), href: '/my-reports' }
   ];
-  const [isSignupModalOpen, setSignupModalOpen] = useState(false);
-  const handleSignupRoleSelect = (role: 'user' | 'authority') => {
-    setSignupModalOpen(false);
-    router.push(`/${locale}/signup?role=${role}`);
-  };
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMenuOpen(false);
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [menuOpen]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
-    setUser(null);
-    router.push('/');
-  };
 
   return (
     <div className="relative isolate">
@@ -122,26 +59,26 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
         setMenuOpen={setMenuOpen}
         mounted={mounted}
         navLinks={navLinks}
-        isAuthenticated={isAuthenticated}
-        user={user}
         onLogout={handleLogout}
-        onLoginClick={() => router.push(`/${locale}/login`)} // Direct login
+        onLoginClick={() => router.push(`/${locale}/login`)}
         onSignupClick={() => setSignupModalOpen(true)}
       />
-      <div className='z-[999]'>
-        <RoleModal
-          isOpen={isSignupModalOpen}
-          onClose={() => setSignupModalOpen(false)}
-          onSelect={handleSignupRoleSelect}
-        />
-      </div>
 
-      <Sidebar
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-        mounted={mounted}
-        navLinks={navLinks}
+      <RoleModal
+        isOpen={isSignupModalOpen}
+        onClose={() => setSignupModalOpen(false)}
+        onSelect={handleSignupRoleSelect}
       />
+
+      {user?.role !== 'admin' && (
+        <Sidebar
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+          mounted={mounted}
+          navLinks={navLinks}
+        />
+      )}
+
       <main className="relative">{children}</main>
     </div>
   );
