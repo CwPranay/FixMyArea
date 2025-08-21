@@ -5,12 +5,13 @@ import MobileSidebarWrapper from './components/MobileSidebarWrapper';
 
 type Props = {
   children: ReactNode;
-  params: { locale: 'en' | 'hi' };
+  params: { locale: 'en' | 'hi' | 'mr' };
 };
 
 const messagesMap = {
   en: () => import('../../messages/en.json'),
   hi: () => import('../../messages/hi.json'),
+  mr: () => import('../../messages/mr.json'),
 } as const;
 
 export default async function LocaleLayout({ children, params }: Props) {
@@ -42,6 +43,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 export function generateStaticParams() {
   return [
     { locale: 'en' },
-    { locale: 'hi' }
+    { locale: 'hi' },
+    { locale: 'mr' }
   ];
 }

@@ -1,0 +1,131 @@
+{
+  "Header": {
+    "home": "मुख्यपृष्ठ",
+    "viewAllIssue": "सर्व तक्रारी पहा",
+    "reportIssue": "तक्रार नोंदवा",
+    "login": "लॉगिन",
+    "sign up": "नोंदणी करा",
+    "profile": {
+      "settings": "प्रोफाइल सेटिंग्ज",
+      "myAccount": "माझं खाते",
+      "signOut": "लॉग आऊट",
+      "userRole": "नागरिक",
+      "authorityRole": "शासकीय अधिकारी",
+      "adminRole": "प्रशासक"
+    }
+  },
+  "LanguageSwitcher": {
+    "language": "भाषा",
+    "english": "इंग्रजी",
+    "hindi": "हिंदी",
+    "marathi": "मराठी"
+  },
+  "HeroSection": {
+    "title": "तुमच्या परिसरात काही समस्या आहे? येथे तक्रार नोंदवा.",
+    "subTitle": "रस्त्यावर खड्डे असो किंवा स्ट्रीट लाइट बंद — तक्रार नोंदवा आणि उपाय मिळवा.",
+    "ReportButton": "तक्रार नोंदवा",
+    "viewAllIssue": "सर्व तक्रारी पहा"
+  },
+  "HowItWorks": {
+    "title": "हे कसं काम करतं",
+    "step1": {
+      "title": "तक्रार नोंदवा",
+      "description": "तुमच्या परिसरातील कोणत्याही समस्येची तक्रार नोंदवा."
+    },
+    "step2": {
+      "title": "लोकांची मते",
+      "description": "इतर लोकही तुमच्या तक्रारीवर आपली मते देऊ शकतात."
+    },
+    "step3": {
+      "title": "समस्येचं निराकरण",
+      "description": "शासकीय अधिकारी तुमची समस्या सोडवतात."
+    }
+  },
+  "RecentIssues": {
+    "title": "नुकत्याच झालेल्या तक्रारी",
+    "viewAll": "सर्व तक्रारी पहा",
+    "issues": {
+      "pothole": {
+        "title": "मुख्य रस्त्यावर मोठा खड्डा",
+        "description": "गाड्यांचं नुकसान होत आहे. लवकर दुरुस्ती करा.",
+        "location": "अंधेरी वेस्ट, मुंबई"
+      },
+      "streetlight": {
+        "title": "स्ट्रीट लाइट सुरू नाही",
+        "description": "२ आठवड्यांपासून स्ट्रीट लाइट बंद आहे.",
+        "location": "जुहू, मुंबई"
+      },
+      "garbageOverflow": {
+        "title": "कचरा भरून पडला आहे",
+        "description": "३ दिवसांपासून कचरा उचलला गेलेला नाही.",
+        "location": "बांद्रा, मुंबई"
+      }
+    }
+  },
+  "RoleModal": {
+    "signup": "या रूपाने नोंदणी करा",
+    "user": "नागरिक",
+    "authority": "शासकीय अधिकारी"
+  },
+  "Auth": {
+    "Login": {
+      "title": "लॉगिन करा",
+      "welcomeBack": "परत स्वागत आहे! तुमच्या खात्यात लॉगिन करा",
+      "accessAccount": "तुमच्या परिसरातील समस्यांसाठी तुमचं खाते उघडा",
+      "emailLabel": "ईमेल आयडी",
+      "emailPlaceholder": "तुमचा ईमेल आयडी टाका",
+      "passwordLabel": "पासवर्ड",
+      "passwordPlaceholder": "तुमचा पासवर्ड टाका",
+      "forgotPassword": "पासवर्ड विसरलात?",
+      "signInButton": "लॉगिन करा",
+      "signingIn": "लॉगिन होत आहे...",
+      "noAccount": "खाते नाही?",
+      "signUpUser": "नागरिक म्हणून नोंदणी करा",
+      "signUpAuthority": "शासकीय अधिकारी म्हणून नोंदणी करा",
+      "secureLogin": "तुमच्या परिसराला सुधारण्यासाठी सुरक्षित लॉगिन"
+    },
+    "Signup": {
+      "title": "नवं खाते तयार करा",
+      "joinCommunity": "तुमच्या परिसरातील समस्यांची तक्रार नोंदवण्यासाठी आणि त्या सोडवण्यासाठी सामील व्हा",
+      "asUser": "नागरिक म्हणून सामील व्हा",
+      "asAuthority": "शासकीय अधिकारी म्हणून सामील व्हा",
+      "authorityNotice": "शासकीय अधिकाऱ्यांच्या खात्यासाठी ओळखीची कागदपत्रं आवश्यक आहेत",
+      "fullNameLabel": "पूर्ण नाव",
+      "fullNamePlaceholder": "तुमचं पूर्ण नाव टाका",
+      "emailLabel": "ईमेल आयडी",
+      "emailPlaceholder": "तुमचा ईमेल आयडी टाका",
+      "passwordLabel": "पासवर्ड",
+      "passwordPlaceholder": "मजबूत पासवर्ड तयार करा",
+      "confirmPasswordLabel": "पासवर्ड पुन्हा टाका",
+      "confirmPasswordPlaceholder": "पासवर्डची पुष्टी करा",
+      "passwordMismatch": "दोन्ही पासवर्ड वेगळे आहेत",
+      "docsLabel": "ओळखपत्रं",
+      "docsHelper": "आयडी प्रूफ आणि शासकीय कागदपत्रं अपलोड करा (JPG, PNG, PDF)",
+      "filesSelected": "फाईल निवडली",
+      "createButton": "खाते तयार करा",
+      "creatingAccount": "खाते तयार होत आहे...",
+      "createUserButton": "नागरिक खाते तयार करा",
+      "createAuthorityButton": "शासकीय अधिकारी खाते तयार करा",
+      "agreement": "खाते तयार करून तुम्ही तुमच्या परिसराला सुधारण्यात मदत करण्यास सहमती देता",
+      "success": {
+        "user": "खाते तयार झालं! आता तुम्ही लॉगिन करू शकता.",
+        "authority": "खाते तयार झालं! तुमची कागदपत्रं तपासली जात आहेत. मंजुरीनंतर लॉगिन करू शकता.",
+        "goToLogin": "लॉगिन करा"
+      },
+      "errors": {
+        "uploadFailed": "अपलोड अयशस्वी: {error}",
+        "signupFailed": "नोंदणी अयशस्वी. कृपया पुन्हा प्रयत्न करा.",
+        "invalidFiles": "काही फाईल्स अवैध होत्या. फक्त 4MB पेक्षा कमीच्या इमेजेस आणि PDF मान्य आहेत."
+      },
+      "docsUploaded": "कागदपत्रं यशस्वीपणे अपलोड झाली!",
+      "filesUploaded": "फाईल(स) अपलोड झाली",
+      "uploadedFiles": "अपलोड केलेल्या फाईल्स",
+      "selectedFiles": "निवडलेल्या फाईल्स",
+      "uploadedSuccessfully": "यशस्वीपणे अपलोड झाली",
+      "uploadRequirements": "अपलोड आवश्यकता",
+      "maxFileSize": "कमाल फाईल साईज",
+      "maxFiles": "कमाल फाईल्स",
+      "allowedFormats": "मान्य स्वरूप"
+    }
+  }
+}

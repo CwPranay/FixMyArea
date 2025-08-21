@@ -15,7 +15,8 @@ export default function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
 
   useEffect(() => {
     setMounted(true);
@@ -26,7 +27,8 @@ export default function LanguageSwitcher() {
       const rect = buttonRef.current.getBoundingClientRect();
       setDropdownPosition({
         top: rect.bottom + window.scrollY + 4,
-        left: rect.right - 128 + window.scrollX // 128px is dropdown width (w-32)
+        left: rect.left + window.scrollX,
+        width: rect.width
       });
     }
     setIsOpen(!isOpen);
@@ -34,10 +36,8 @@ export default function LanguageSwitcher() {
 
   const switchLocale = (newLocale: string) => {
     // Remove the current locale from pathname and add the new one
-    const pathWithoutLocale = pathname?.replace(`/${locale}`, '') ?? '';
-
+    const pathWithoutLocale = pathname?.replace(`/${locale}`, '') || '/';
     const newPath = `/${newLocale}${pathWithoutLocale}`;
-
     router.push(newPath);
     setIsOpen(false);
   };
@@ -46,8 +46,7 @@ export default function LanguageSwitcher() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (buttonRef.current && !buttonRef.current.contains(event.target as Node)) {
-        const dropdownElement = document.getElementById('language-dropdown');
-        if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
           setIsOpen(false);
         }
       }
@@ -59,7 +58,7 @@ export default function LanguageSwitcher() {
     }
   }, [isOpen]);
 
-  // Close dropdown on Escape key
+  // Close dropdown on Escape key and update position on scroll/resize
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -67,13 +66,13 @@ export default function LanguageSwitcher() {
       }
     };
 
-    // Update position on scroll/resize
     const handlePositionUpdate = () => {
       if (isOpen && buttonRef.current) {
         const rect = buttonRef.current.getBoundingClientRect();
         setDropdownPosition({
           top: rect.bottom + window.scrollY + 4,
-          left: rect.right - 128 + window.scrollX
+          left: rect.left + window.scrollX,
+          width: rect.width
         });
       }
     };
@@ -91,38 +90,67 @@ export default function LanguageSwitcher() {
     }
   }, [isOpen]);
 
-  const dropdownContent = isOpen && mounted ? (
-    <div
-      id="language-dropdown"
-      className="fixed bg-white left-[50px] md:left-[700px] lg:left-[900px] lg:top-[59px] rounded-md shadow-lg border border-gray-200 overflow-hidden w-32 z-[10000]"
-      style={{
-        top: `${dropdownPosition.top}px`,
+  // Get display text for current locale
+  const getLocaleDisplayText = () => {
+    switch (locale) {
+      case 'en': return 'EN';
+      case 'hi': return 'हिं';
+      case 'mr': return 'मर';
+      default: return 'EN';
+    }
+  };
 
-      }}
-    >
-      <button
-        onClick={() => switchLocale('en')}
-        className={`block w-full text-left px-4 py-2 text-sm transition-colors ${locale === 'en'
-            ? 'bg-cyan-50 text-cyan-700 font-medium cursor-default'
-            : 'hover:bg-gray-50 text-gray-700 focus:bg-gray-50'
-          }`}
-        disabled={locale === 'en'}
-        type="button"
+  // Render dropdown using portal for proper positioning
+  const dropdownContent = isOpen && mounted ? (
+    createPortal(
+      <div
+        ref={dropdownRef}
+        className="fixed bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden z-50"
+        style={{
+          top: dropdownPosition.top,
+          left: dropdownPosition.left,
+          width: dropdownPosition.width
+        }}
       >
-        English
-      </button>
-      <button
-        onClick={() => switchLocale('hi')}
-        className={`block w-full text-left px-4 py-2 text-sm transition-colors ${locale === 'hi'
-            ? 'bg-cyan-50 text-cyan-700 font-medium cursor-default'
-            : 'hover:bg-gray-50 text-gray-700 focus:bg-gray-50'
+        <button
+          onClick={() => switchLocale('en')}
+          className={`block w-full text-left px-4 py-2 text-sm transition-colors ${
+            locale === 'en'
+              ? 'bg-cyan-50 text-cyan-700 font-medium cursor-default'
+              : 'hover:bg-gray-50 text-gray-700 focus:bg-gray-50'
           }`}
-        disabled={locale === 'hi'}
-        type="button"
-      >
-        हिंदी
-      </button>
-    </div>
+          disabled={locale === 'en'}
+          type="button"
+        >
+          English
+        </button>
+        <button
+          onClick={() => switchLocale('hi')}
+          className={`block w-full text-left px-4 py-2 text-sm transition-colors ${
+            locale === 'hi'
+              ? 'bg-cyan-50 text-cyan-700 font-medium cursor-default'
+              : 'hover:bg-gray-50 text-gray-700 focus:bg-gray-50'
+          }`}
+          disabled={locale === 'hi'}
+          type="button"
+        >
+          हिंदी
+        </button>
+        <button
+          onClick={() => switchLocale('mr')}
+          className={`block w-full text-left px-4 py-2 text-sm transition-colors ${
+            locale === 'mr'
+              ? 'bg-cyan-50 text-cyan-700 font-medium cursor-default'
+              : 'hover:bg-gray-50 text-gray-700 focus:bg-gray-50'
+          }`}
+          disabled={locale === 'mr'}
+          type="button"
+        >
+          मराठी
+        </button>
+      </div>,
+      document.body
+    )
   ) : null;
 
   return (
@@ -137,37 +165,9 @@ export default function LanguageSwitcher() {
         type="button"
       >
         <Globe size={18} />
-        <span className="text-sm font-medium min-w-[24px]">{locale === 'en' ? 'EN' : 'हिं'}</span>
+        <span className="text-sm font-medium min-w-[24px]">{getLocaleDisplayText()}</span>
       </button>
-
-      {isOpen && (
-        <div
-          id="language-dropdown"
-          className="absolute left-4 right-0 mt-2 w-32 rounded-md shadow-lg border border-gray-200 bg-white z-50"
-        >
-          <button
-            onClick={() => switchLocale('en')}
-            className={`block w-full text-left px-4 py-2 text-sm transition-colors ${locale === 'en'
-                ? 'bg-cyan-50 text-cyan-700 font-medium cursor-default'
-                : 'hover:bg-gray-50 text-gray-700 focus:bg-gray-50'
-              }`}
-            disabled={locale === 'en'}
-          >
-            English
-          </button>
-          <button
-            onClick={() => switchLocale('hi')}
-            className={`block w-full text-left px-4 py-2 text-sm transition-colors ${locale === 'hi'
-                ? 'bg-cyan-50 text-cyan-700 font-medium cursor-default'
-                : 'hover:bg-gray-50 text-gray-700 focus:bg-gray-50'
-              }`}
-            disabled={locale === 'hi'}
-          >
-            हिंदी
-          </button>
-        </div>
-      )}
+      {dropdownContent}
     </div>
   );
-
 }
