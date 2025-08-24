@@ -19,7 +19,7 @@ export default function HowItWorksSection() {
   else
   return (
     <section
-      className="py-12 px-4 sm:px-6 md:px-8 bg-gray-50 [font-family:var(--font-poppins)]"
+      className="py-12 mt-14 lg:mt-0 px-4 sm:px-6 md:px-8 bg-gray-50 [font-family:var(--font-poppins)]"
       id="how-it-works"
     >
       <div className="max-w-6xl mx-auto text-center">

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background:  rgb(249 250 251);
   --foreground: #ffffff;
   --primary-btn: linear-gradient(to right, #3b82f6, #06b6d4); 
   --secondary-btn: linear-gradient(to right, #ffffff, #e2e8f0);
@@ -17,7 +17,12 @@ html {
 }
 
 html, body {
-  font-family: var(--font-poppins)
+  font-family: var(--font-poppins),
+  
+}
+body{
+  background: rgb(249 250 251);
+
 }
 
 
@@ -89,7 +94,7 @@ html, body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ffffff;
+    --background: rgb(249 250 251);
     --foreground: #ededed;
   }
 }

@@ -16,7 +16,7 @@ export default function HeroSection() {
   }
   else
        return (
-    <section className="pt-52  lg:pt-20    sm:h-auto md:height-auto  lg:min-h-[calc(100vh-80px)] [font-family:var(--font-poppins)] bg-gray-50 px-4">
+    <section className="pt-22  lg:pt-20    sm:h-auto md:height-auto  lg:min-h-[calc(100vh-80px)] [font-family:var(--font-poppins)] bg-gray-50 px-4">
       
        <div className="max-w-7xl  mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
         
