@@ -95,7 +95,7 @@ export default function LanguageSwitcher() {
     switch (locale) {
       case 'en': return 'EN';
       case 'hi': return 'हिं';
-      case 'mr': return 'मर';
+      case 'mr': return 'म';
       default: return 'EN';
     }
   };
