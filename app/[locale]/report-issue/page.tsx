@@ -11,8 +11,8 @@ export default function ReportIssue() {
     });
     const t = useTranslations('reportIssue');
 
-    const [selectedImages, setSelectedImages] = useState<File[]>([]);
-    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -23,33 +23,55 @@ export default function ReportIssue() {
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || []);
-        if (files.length + selectedImages.length > 3) {
-            alert(t('form.images.maxImagesError'));
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+        
+        // Only allow one image
+        const file = files[0];
+        
+        // Check file type
+        if (!file.type.startsWith('image/')) {
+            alert(t('form.images.invalidTypeError'));
+            return;
+        }
+        
+        // Check file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert(t('form.images.maxSizeError'));
             return;
         }
 
-        setSelectedImages(prev => [...prev, ...files]);
+        setSelectedImage(file);
 
-        // Create preview URLs
-        files.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                setImagePreviews(prev => [...prev, event.target?.result as string]);
-            };
-            reader.readAsDataURL(file);
-        });
+        // Create preview URL
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            setImagePreview(event.target?.result as string);
+        };
+        reader.readAsDataURL(file);
     };
 
-    const removeImage = (index: number) => {
-        setSelectedImages(prev => prev.filter((_, i) => i !== index));
-        setImagePreviews(prev => prev.filter((_, i) => i !== index));
+    const removeImage = () => {
+        setSelectedImage(null);
+        setImagePreview(null);
+        // Reset the file input
+        const fileInput = document.getElementById('images') as HTMLInputElement;
+        if (fileInput) {
+            fileInput.value = '';
+        }
     };
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        
+        // Validate form
+        if (!formData.title || !formData.description || !formData.location) {
+            alert(t('form.validationError'));
+            return;
+        }
+        
         console.log('Form submitted:', formData);
-        console.log('Images:', selectedImages);
+        console.log('Image:', selectedImage);
         // Handle form submission here
         alert(t('form.successMessage'));
         // Reset form
@@ -58,8 +80,8 @@ export default function ReportIssue() {
             description: '',
             location: ''
         });
-        setSelectedImages([]);
-        setImagePreviews([]);
+        setSelectedImage(null);
+        setImagePreview(null);
     };
 
     const tipsList = t.raw('form.tips.items') as string[];
@@ -130,7 +152,7 @@ export default function ReportIssue() {
                             </p>
                         </div>
 
-                        {/* Image Upload */}
+                        {/* Image Upload - Single Image Only */}
                         <div>
                             <label htmlFor="images" className="block text-sm font-semibold text-gray-700 mb-2">
                                 {t('form.images.label')}
@@ -139,7 +161,6 @@ export default function ReportIssue() {
                                 <input
                                     type="file"
                                     id="images"
-                                    multiple
                                     accept="image/*"
                                     onChange={handleImageUpload}
                                     className="hidden"
@@ -150,39 +171,33 @@ export default function ReportIssue() {
                                     </svg>
                                     <div className="mt-2">
                                         <span className="text-blue-600 font-medium">{t('form.images.uploadText')}</span>
-                                        <p className="text-gray-500 text-sm mt-1">{t('form.images.fileInfo')}</p>
+                                        <p className="text-gray-500 text-sm mt-1">{t('form.images.singleFileInfo')}</p>
                                     </div>
                                 </label>
                             </div>
                             
-                            {/* Image Previews */}
-                            {imagePreviews.length > 0 && (
+                            {/* Image Preview */}
+                            {imagePreview && (
                                 <div className="mt-4">
                                     <p className="text-sm font-medium text-gray-700 mb-3">
-                                        {t('form.images.selectedImages')} ({selectedImages.length}/3)
+                                        {t('form.images.selectedImage')}
                                     </p>
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                        {imagePreviews.map((preview, index) => (
-                                            <div key={index} className="relative group">
-                                                <img
-                                                    src={preview}
-                                                    alt={`Preview ${index + 1}`}
-                                                    className="w-full h-24 object-cover rounded-lg border border-gray-200"
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeImage(index)}
-                                                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
-                                                >
-                                                    ×
-                                                </button>
-                                                <div className="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
-                                                    {selectedImages[index]?.name.length > 15 
-                                                        ? selectedImages[index]?.name.substring(0, 15) + '...' 
-                                                        : selectedImages[index]?.name}
-                                                </div>
-                                            </div>
-                                        ))}
+                                    <div className="relative group max-w-xs mx-auto">
+                                        <img
+                                            src={imagePreview}
+                                            alt="Preview"
+                                            className="w-full h-48 object-contain rounded-lg border border-gray-200"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={removeImage}
+                                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                                        >
+                                            ×
+                                        </button>
+                                        <div className="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -216,7 +231,7 @@ export default function ReportIssue() {
                             <button
                                 type="button"
                                 onClick={handleSubmit}
-                                className="w-full sm:w-auto btn-primary-gradient text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                className="w-full bg-gradient-to-r btn-primary-gradient text-white font-semibold py-3 px-8 rounded-lg hover:from-blue-700 hover:to-blue-900 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >
                                 {t('form.submit')}
                             </button>
@@ -228,9 +243,6 @@ export default function ReportIssue() {
                         </div>
                     </div>
                 </div>
-
-                {/* Bottom Info Cards */}
-                
             </div>
         </div>
     );

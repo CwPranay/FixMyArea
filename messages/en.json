@@ -131,40 +131,42 @@
   },
   "reportIssue": {
     "title": "Report an Issue",
-    "subtitle": "Help us improve your area by reporting problems you've spotted",
+    "subtitle": "Help us make our community better by reporting issues you encounter",
     "form": {
       "issueTitle": {
         "label": "Issue Title",
-        "placeholder": "e.g., Broken streetlight on Main Street"
+        "placeholder": "Brief description of the issue"
       },
       "description": {
         "label": "Description",
-        "placeholder": "Please provide a detailed description of the issue, including when you first noticed it and any safety concerns..."
+        "placeholder": "Please provide detailed information about the issue"
       },
       "location": {
         "label": "Location",
-        "placeholder": "e.g., Corner of Main Street and Oak Avenue, or use your current location",
-        "helpText": "Be as specific as possible to help us locate the issue quickly"
+        "placeholder": "Where did you encounter this issue?",
+        "helpText": "Please be as specific as possible (e.g., Near Central Park, Main Road)"
       },
       "images": {
-        "label": "Upload Images (Optional)",
-        "uploadText": "Click to upload images",
-        "fileInfo": "PNG, JPG, JPEG up to 10MB each (max 3 images)",
-        "selectedImages": "Selected Images",
-        "maxImagesError": "You can upload a maximum of 3 images"
+        "label": "Upload Image",
+        "uploadText": "Click to upload an image",
+        "singleFileInfo": "PNG, JPG up to 5MB",
+        "maxSizeError": "Image size should be less than 5MB",
+        "invalidTypeError": "Please upload only image files",
+        "selectedImage": "Selected Image"
       },
       "tips": {
-        "title": "Tips for better reporting",
+        "title": "Tips for better reports",
         "items": [
-          "Include nearby landmarks or building numbers",
-          "Mention if the issue poses any immediate safety risks",
-          "Add photos to help identify the problem quickly",
-          "Multiple angles can provide better context"
+          "Provide clear and specific details",
+          "Include the exact location",
+          "Take a clear photo of the issue",
+          "Mention how long the issue has existed"
         ]
       },
-      "submit": "Submit Issue Report",
-      "successMessage": "Issue reported successfully!",
-      "footer": "Your report will be reviewed and forwarded to the appropriate authorities"
+      "submit": "Submit Report",
+      "footer": "Your report will be reviewed by your area authority",
+      "successMessage": "Thank you! Your issue has been reported successfully.",
+      "validationError": "Please fill all required fields"
     }
   }
 }
