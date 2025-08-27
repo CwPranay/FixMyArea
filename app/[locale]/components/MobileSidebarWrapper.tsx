@@ -48,7 +48,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
 
   const navLinks = [
     { name: t('home'), href: '/' },
-    { name: t('reportIssue'), href: '/report-issue' },
+    ...(!user || user?.role==="user" ?[{ name: t('reportIssue'), href: '/report-issue' }]:[]),
     { name: t('viewAllIssue'), href: '/my-reports' }
   ];
 

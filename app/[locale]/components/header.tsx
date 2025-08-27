@@ -88,7 +88,7 @@ export default function Header({
         </div>
 
         {/* Desktop Nav */}
-        {(!user || user.role === "user") && (
+        {(!user || user.role === "user" || user.role==="authority") && (
           <nav className="hidden md:flex space-x-8 items-center ml-auto">
 
             {navLinks.map((link) => (
