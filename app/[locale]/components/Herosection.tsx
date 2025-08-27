@@ -10,6 +10,8 @@ const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
   const {user,role}=useAuth();
+
+ 
   if(role==="admin")
   {
     return <AdminDashboard/>
@@ -30,7 +32,7 @@ export default function HeroSection() {
           </p>
           <div className="flex  sm:flex-row gap-4">
             <Link
-              href="/"
+              href="/report-issue"
               className="btn-primary-gradient text-white px-6 py-2 rounded-md transition hover:opacity-90 shadow text-center"
             >
               {t('ReportButton')}

@@ -128,5 +128,43 @@
       "maxFiles": "Maximum files",
       "allowedFormats": "Allowed formats"
     }
+  },
+  "reportIssue": {
+    "title": "Report an Issue",
+    "subtitle": "Help us improve your area by reporting problems you've spotted",
+    "form": {
+      "issueTitle": {
+        "label": "Issue Title",
+        "placeholder": "e.g., Broken streetlight on Main Street"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Please provide a detailed description of the issue, including when you first noticed it and any safety concerns..."
+      },
+      "location": {
+        "label": "Location",
+        "placeholder": "e.g., Corner of Main Street and Oak Avenue, or use your current location",
+        "helpText": "Be as specific as possible to help us locate the issue quickly"
+      },
+      "images": {
+        "label": "Upload Images (Optional)",
+        "uploadText": "Click to upload images",
+        "fileInfo": "PNG, JPG, JPEG up to 10MB each (max 3 images)",
+        "selectedImages": "Selected Images",
+        "maxImagesError": "You can upload a maximum of 3 images"
+      },
+      "tips": {
+        "title": "Tips for better reporting",
+        "items": [
+          "Include nearby landmarks or building numbers",
+          "Mention if the issue poses any immediate safety risks",
+          "Add photos to help identify the problem quickly",
+          "Multiple angles can provide better context"
+        ]
+      },
+      "submit": "Submit Issue Report",
+      "successMessage": "Issue reported successfully!",
+      "footer": "Your report will be reviewed and forwarded to the appropriate authorities"
+    }
   }
 }
