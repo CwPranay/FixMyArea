@@ -45,19 +45,45 @@ export default function LocationPicker({ onLocationSelect, selectedLocation }: L
         }
     }, []);
 
-    const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
-        try {
-            // Using Nominatim (OpenStreetMap's reverse geocoding service)
-            const response = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`
-            );
-            const data = await response.json();
-            return data.display_name || `${lat}, ${lng}`;
-        } catch (error) {
-            console.error('Reverse geocoding failed:', error);
-            return `${lat}, ${lng}`;
+   const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1&zoom=18`,
+            {
+                headers: {
+                    'User-Agent': 'Your-App-Name/1.0 (your@email.com)' // Replace with your app info
+                }
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    };
+        
+        const data = await response.json();
+        
+        // Construct address from components if available
+        if (data.address) {
+            const addr = data.address;
+            let formattedAddress = '';
+            
+            // Build a hierarchical address
+            if (addr.road) formattedAddress += `${addr.road}, `;
+            if (addr.neighbourhood) formattedAddress += `${addr.neighbourhood}, `;
+            if (addr.suburb) formattedAddress += `${addr.suburb}, `;
+            if (addr.city) formattedAddress += `${addr.city}, `;
+            if (addr.state) formattedAddress += `${addr.state}, `;
+            if (addr.country) formattedAddress += addr.country;
+            
+            if (formattedAddress) return formattedAddress;
+        }
+        
+        return data.display_name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+    } catch (error) {
+        console.error('Reverse geocoding failed:', error);
+        return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+    }
+};
 
     useEffect(() => {
         if (!isLoaded || !mapRef.current || !window.L) return;
