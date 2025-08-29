@@ -49,7 +49,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
   const navLinks = [
     { name: t('home'), href: '/' },
     ...(!user || user?.role==="user" ?[{ name: t('reportIssue'), href: '/report-issue' }]:[]),
-    { name: t('viewAllIssue'), href: '/my-reports' }
+    { name: t('viewAllIssue'), href: '/viewAll-issues' }
   ];
 
   return (

@@ -2,6 +2,8 @@ import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 import { Poppins } from 'next/font/google';
 import { ReactNode } from 'react';
+import 'leaflet/dist/leaflet.css';
+
 
 const poppins = Poppins({
   subsets: ['latin'],

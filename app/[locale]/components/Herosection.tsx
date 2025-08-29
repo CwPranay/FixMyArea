@@ -38,7 +38,7 @@ export default function HeroSection() {
               {t('ReportButton')}
             </Link>
             <Link
-              href="/"
+              href="/viewAll-issues"
               className="btn-secondary-glass px-6 py-2 rounded-md transition hover:opacity-90 shadow text-center"
             >
               {t('viewAllIssue')}

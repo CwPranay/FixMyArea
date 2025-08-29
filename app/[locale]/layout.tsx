@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import MobileSidebarWrapper from './components/MobileSidebarWrapper';
+import 'leaflet/dist/leaflet.css';
+
 
 type Props = {
   children: ReactNode;

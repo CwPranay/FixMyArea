@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from "next-intl";
+import LocationPicker from '../components/LocationPicker';
 
 export default function ReportIssue() {
     const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function ReportIssue() {
 
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isGettingLocation, setIsGettingLocation] = useState(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -25,16 +27,16 @@ export default function ReportIssue() {
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (!files || files.length === 0) return;
-        
+
         // Only allow one image
         const file = files[0];
-        
+
         // Check file type
         if (!file.type.startsWith('image/')) {
             alert(t('form.images.invalidTypeError'));
             return;
         }
-        
+
         // Check file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
             alert(t('form.images.maxSizeError'));
@@ -61,15 +63,79 @@ export default function ReportIssue() {
         }
     };
 
+    const getCurrentLocation = () => {
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by this browser.');
+            return;
+        }
+
+        setIsGettingLocation(true);
+
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords;
+                
+                try {
+                    // Reverse geocoding using Nominatim (OpenStreetMap)
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`
+                    );
+                    const data = await response.json();
+                    
+                    let address = `${latitude}, ${longitude}`;
+                    if (data.display_name) {
+                        address = data.display_name;
+                    }
+                    
+                    setFormData(prev => ({
+                        ...prev,
+                        location: `${address} (Lat: ${latitude}, Lng: ${longitude})`
+                    }));
+                } catch (error) {
+                    // Fallback to coordinates only
+                    setFormData(prev => ({
+                        ...prev,
+                        location: `Lat: ${latitude}, Lng: ${longitude}`
+                    }));
+                } finally {
+                    setIsGettingLocation(false);
+                }
+            },
+            (error) => {
+                setIsGettingLocation(false);
+                let errorMessage = 'Unable to retrieve your location.';
+                
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        errorMessage = 'Location access denied. Please enable location permissions.';
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        errorMessage = 'Location information is unavailable.';
+                        break;
+                    case error.TIMEOUT:
+                        errorMessage = 'Location request timed out.';
+                        break;
+                }
+                
+                alert(errorMessage);
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 60000
+            }
+        );
+    };
+
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        
+
         // Validate form
         if (!formData.title || !formData.description || !formData.location) {
             alert(t('form.validationError'));
             return;
         }
-        
+
         console.log('Form submitted:', formData);
         console.log('Image:', selectedImage);
         // Handle form submission here
@@ -134,9 +200,35 @@ export default function ReportIssue() {
 
                         {/* Location */}
                         <div>
-                            <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2">
-                                {t('form.location.label')}
-                            </label>
+                            <div className="flex items-center justify-between mb-2">
+                                <label className="block text-sm font-semibold text-gray-700">
+                                    {t('form.location.label')}
+                                </label>
+                                <button
+                                    type="button"
+                                    onClick={getCurrentLocation}
+                                    disabled={isGettingLocation}
+                                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    {isGettingLocation ? (
+                                        <>
+                                            <svg className="animate-spin -ml-1 mr-2 h-3 w-3 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Getting Location...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                                            </svg>
+                                            Use My Location
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+
                             <input
                                 type="text"
                                 id="location"
@@ -144,12 +236,24 @@ export default function ReportIssue() {
                                 value={formData.location}
                                 onChange={handleInputChange}
                                 placeholder={t('form.location.placeholder')}
-                                className="w-full text-black px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                className="w-full text-black px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors mb-4"
                                 required
+                                readOnly
                             />
-                            <p className="mt-1 text-sm text-gray-500">
-                                {t('form.location.helpText')}
-                            </p>
+
+                            <LocationPicker
+                                onLocationSelect={({ lat, lng, address }) => {
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        location: `${address} (Lat: ${lat}, Lng: ${lng})`
+                                    }));
+                                }}
+                                selectedLocation={formData.location ? {
+                                    lat: parseFloat(formData.location.match(/Lat: ([-\d.]+)/)?.[1] || '0'),
+                                    lng: parseFloat(formData.location.match(/Lng: ([-\d.]+)/)?.[1] || '0'),
+                                    address: formData.location.split(' (Lat:')[0] || ''
+                                } : undefined}
+                            />
                         </div>
 
                         {/* Image Upload - Single Image Only */}
@@ -175,7 +279,7 @@ export default function ReportIssue() {
                                     </div>
                                 </label>
                             </div>
-                            
+
                             {/* Image Preview */}
                             {imagePreview && (
                                 <div className="mt-4">
@@ -195,9 +299,6 @@ export default function ReportIssue() {
                                         >
                                             ×
                                         </button>
-                                        <div className="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
-                                            
-                                        </div>
                                     </div>
                                 </div>
                             )}

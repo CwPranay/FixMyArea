@@ -87,6 +87,7 @@ export default function RecentIssues() {
         </div>
 
         <button
+          onClick={() => (window.location.href = `/viewAll-issues`)}
           aria-label={t('viewAll')}
           title={t('viewAll')}
           className="mt-10 px-6 py-3 text-white font-semibold rounded-lg btn-primary-gradient transition"
