@@ -105,7 +105,7 @@ export default function LocationPicker({ onLocationSelect, selectedLocation }: L
                 const mapInstance = window.L.map(mapRef.current, {
                     center: center,
                     zoom: 15,
-                    zoomControl: true,
+                    zoomControl: false,
                     preferCanvas: false,
                 });
 
@@ -231,7 +231,7 @@ export default function LocationPicker({ onLocationSelect, selectedLocation }: L
     }
 
     return (
-        <div className="space-y-2">
+        <div className="space-y-2 z-[500]">
             <div 
                 ref={mapRef} 
                 className="w-full h-64 rounded-lg border border-gray-300"
