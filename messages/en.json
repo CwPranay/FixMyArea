@@ -133,6 +133,9 @@
     "title": "Report an Issue",
     "subtitle": "Help us make our community better by reporting issues you encounter",
     "form": {
+       "submitting": "Submitting...",
+      "uploadingImage": "Uploading image...",
+      
       "issueTitle": {
         "label": "Issue Title",
         "placeholder": "Brief description of the issue"

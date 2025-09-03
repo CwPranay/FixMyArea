@@ -1,19 +1,19 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectDB } from "../../../lib/db";
+import bcrypt from "bcryptjs";
+import { connectDB } from "@/lib/db";
 import User from "@/models/user";
-import bcrypt from "bcrypt";
+import { baseAuthOptions } from "@/lib/auth";
 
-// Cached MongoDB connection for serverless (Vercel) environment
 let cachedDB: any = null;
-
 async function dbConnect() {
   if (cachedDB) return cachedDB;
   cachedDB = await connectDB();
   return cachedDB;
 }
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
+  ...baseAuthOptions,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -27,14 +27,16 @@ export default NextAuth({
         const user = await User.findOne({ email: credentials?.email });
         if (!user) throw new Error("No user found");
 
-        const isValid = await bcrypt.compare(credentials!.password, user.password);
+        const isValid = await bcrypt.compare(
+          credentials!.password,
+          user.password
+        );
         if (!isValid) throw new Error("Invalid password");
 
-        // Block authority login if not verified
         if (user.role === "authority" && user.authorityVerified === "pending") {
           throw new Error("Authority account pending verification");
         }
-         if (user.role === "authority" && user.authorityVerified === "rejected") {
+        if (user.role === "authority" && user.authorityVerified === "rejected") {
           throw new Error("Authority account rejected");
         }
 
@@ -47,33 +49,6 @@ export default NextAuth({
       },
     }),
   ],
+};
 
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id || token.id;
-        token.role = user.role || token.role;
-      }
-      return token;
-    },
-
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
-      }
-      return session;
-    },
-  },
-
-  pages: {
-    signIn: "/auth/signin",
-  },
-
-  session: {
-    strategy: "jwt",
-  },
-
-  // Important: define this env var in Vercel for production
-  // NEXTAUTH_URL=https://fixmy-area.vercel.app
-});
+export default NextAuth(authOptions);

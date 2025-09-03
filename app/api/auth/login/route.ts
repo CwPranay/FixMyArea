@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { signToken } from "@/lib/jwt";
+import { serialize } from "cookie";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { connectDB } from "@/lib/db";
 import User from "@/models/user";
+import RoleModal from "@/app/[locale]/components/RoleModal";
 
 export async function POST(req: NextRequest) {
     try {
@@ -18,6 +21,8 @@ export async function POST(req: NextRequest) {
 
         const valid = await bcrypt.compare(password, user.password);
         if (!valid) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+          
+        
 
         // ✅ CRITICAL FIX: Prevent authority users with pending status from logging in
         if (user.role === "authority" && user.authorityVerified !== "approved") {
@@ -26,10 +31,10 @@ export async function POST(req: NextRequest) {
                 { status: 403 } // 403 Forbidden - user exists but not allowed
             );
         }
-
+       
         // JWT
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: "7d" });
-
+        const token =signToken({id:user._id.toString(),role:user.role});
+       
         // ✅ Build response and set cookie
         const res = NextResponse.json({
             message: "Login successful",
@@ -44,7 +49,7 @@ export async function POST(req: NextRequest) {
 
         res.cookies.set("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production" ? true : false,
+            secure: process.env.NODE_ENV === "production" ,
             sameSite: "strict",
             path: "/",
             maxAge: 60 * 60 * 24 * 7, // 7 days

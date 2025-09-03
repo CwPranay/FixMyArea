@@ -2,6 +2,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from "next-intl";
 import LocationPicker from '../components/LocationPicker';
+import { title } from 'process';
+import { useAuth } from '@/context/AuthContext';
 
 interface SearchSuggestion {
   display_name: string;
@@ -13,6 +15,7 @@ interface SearchSuggestion {
 }
 
 export default function ReportIssue() {
+  const { user, isAuthenticated, loading } = useAuth();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -23,6 +26,7 @@ export default function ReportIssue() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [formSuccess, setFormSuccess] = useState<string | null>(null);
@@ -277,30 +281,113 @@ export default function ReportIssue() {
     setFormErrors(prev => ({ ...prev, location: '' }));
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  e.preventDefault();
 
-    let errors: { [key: string]: string } = {};
-    if (!formData.title) errors.title = t('form.validationError');
-    if (!formData.description) errors.description = t('form.validationError');
-    if (!formData.location) errors.location = t('form.validationError');
+  let errors: { [key: string]: string } = {};
+  if (!formData.title) errors.title = t('form.validationError');
+  if (!formData.description) errors.description = t('form.validationError');
+  if (!formData.location) errors.location = t('form.validationError');
 
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      setFormSuccess(null);
-      return;
+  if (Object.keys(errors).length > 0) {
+    setFormErrors(errors);
+    setFormSuccess(null);
+    return;
+  }
+
+  if (!selectedLocationForMap) {
+    setFormErrors({ submit: 'Please select a valid location on the map' });
+    return;
+  }
+
+  setIsUploading(true);
+  try {
+    let imageUrls: string[] = [];
+    
+    // Upload image if selected
+    if (selectedImage) {
+      setFormSuccess(t('form.uploadingImage'));
+      
+      const uploadForm = new FormData();
+      uploadForm.append('files', selectedImage);
+      
+      const uploadRes = await fetch('/api/upload-files', {
+        method: 'POST',
+        body: uploadForm,
+      });
+      
+      if (!uploadRes.ok) {
+        const errorData = await uploadRes.json();
+        console.error('Upload error:', errorData);
+        throw new Error(errorData.error || 'Image upload failed');
+      }
+      
+      const uploadData = await uploadRes.json();
+      console.log('Upload success:', uploadData);
+      imageUrls = uploadData.files.map((f: any) => f.url);
     }
 
-    console.log('Form submitted:', formData);
-    console.log('Image:', selectedImage);
+    // Get user identifier
+    let userIdentifier: string = 'Anonymous';
+    
+    if (user) {
+      // Check common user ID properties
+      const userAny = user as any;
+      userIdentifier = userAny._id || userAny.id || user.name || user.email || 'Authenticated User';
+    }
 
+    const issueData = {
+      title: formData.title,
+      description: formData.description,
+      createdBy: userIdentifier, // This will be handled by the API
+      imageUrls: imageUrls,
+      location: {
+        coordinates: [selectedLocationForMap.lng, selectedLocationForMap.lat],
+        address: selectedLocationForMap.address || formData.location,
+      }
+    };
+
+    console.log('Submitting issue:', issueData);
+
+    // Submit the issue
+    const res = await fetch('/api/issue', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(issueData)
+    });
+    
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('Issue API error response:', errorText);
+      
+      let errorData;
+      try {
+        errorData = JSON.parse(errorText);
+      } catch (e) {
+        throw new Error(`HTTP error! status: ${res.status}, message: ${errorText}`);
+      }
+      
+      throw new Error(errorData.message || errorData.error || 'Issue submission failed');
+    }
+    
+    const result = await res.json();
+    console.log("Issue created successfully:", result);
+    
+    // Reset form on success
     setFormSuccess(t('form.successMessage'));
     setFormErrors({});
     setFormData({ title: '', description: '', location: '' });
     setSelectedImage(null);
     setImagePreview(null);
     setSelectedLocationForMap(undefined);
-  };
+    
+  } catch (err) {
+    console.error('Submission error details:', err);
+    setFormErrors({ submit: (err as Error).message || 'Submission failed' });
+  } finally {
+    setIsUploading(false);
+  }
+};
 
   // Close suggestions when clicking outside
   useEffect(() => {
@@ -409,7 +496,7 @@ export default function ReportIssue() {
                 </button>
               </div>
 
-              <div className="relative  " ref={suggestionRef}>
+              <div className="relative" ref={suggestionRef}>
                 <input
                   type="text"
                   id="location"
@@ -567,10 +654,21 @@ export default function ReportIssue() {
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full bg-gradient-to-r btn-primary-gradient text-white font-semibold py-3 px-8 rounded-lg hover:from-blue-700 hover:to-blue-900 transition-colors duration-200"
+                disabled={isUploading}
+                className="w-full bg-gradient-to-r btn-primary-gradient text-white font-semibold py-3 px-8 rounded-lg hover:from-blue-700 hover:to-blue-900 disabled:opacity-50 transition-colors duration-200"
               >
-                {t('form.submit')}
+                {isUploading ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>{t('form.submitting')}</span>
+                  </div>
+                ) : (
+                  t('form.submit')
+                )}
               </button>
+              {formErrors.submit && (
+                <p className="text-red-500 text-center mt-3">{formErrors.submit}</p>
+              )}
               {formSuccess && (
                 <p className="text-green-600 text-center mt-3">{formSuccess}</p>
               )}
