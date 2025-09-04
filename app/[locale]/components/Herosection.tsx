@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations,useLocale } from 'next-intl';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useAuth } from '@/context/AuthContext';
@@ -10,6 +10,7 @@ const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
   const {user,role}=useAuth();
+    const locale = useLocale();
 
  
   if(role==="admin")
@@ -32,13 +33,13 @@ export default function HeroSection() {
           </p>
           <div className="flex  sm:flex-row gap-4">
             <Link
-              href="/report-issue"
+              href={`/${locale}/report-issue`}
               className="btn-primary-gradient text-white px-6 py-2 rounded-md transition hover:opacity-90 shadow text-center"
             >
               {t('ReportButton')}
             </Link>
             <Link
-              href="/viewAll-issues"
+              href={`/${locale}/viewAll-issues`}
               className="btn-secondary-glass px-6 py-2 rounded-md transition hover:opacity-90 shadow text-center"
             >
               {t('viewAllIssue')}
