@@ -47,10 +47,13 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
   };
 
   const navLinks = [
-    { name: t('home'), href: '/' },
-    ...(!user || user?.role==="user" ?[{ name: t('reportIssue'), href: '/report-issue' }]:[]),
-    { name: t('viewAllIssue'), href: '/viewAll-issues' }
+    { name: t('home'), href: `/${locale}` },
+    ...(!user || user?.role === "user"
+      ? [{ name: t('reportIssue'), href: `/${locale}/report-issue` }]
+      : []),
+    { name: t('viewAllIssue'), href: `/${locale}/viewAll-issues` }
   ];
+
 
   return (
     <div className="relative isolate">

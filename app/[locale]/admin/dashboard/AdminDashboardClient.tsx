@@ -3,7 +3,7 @@
 import { CheckCircle, XCircle, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function AdminDashboardClient() {
+export default function AdminDashboardClient({ user }: { user: any }) {
   const [authorities, setAuthorities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

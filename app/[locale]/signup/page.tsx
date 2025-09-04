@@ -6,6 +6,7 @@ import { useLocale } from 'next-intl';
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { X, FileText, Image } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 interface SignupForm {
   name: string;
   email: string;
@@ -29,8 +30,19 @@ export default function SignupPage() {
   const searchParams = useSearchParams();
   const locale = useLocale();
   const t = useTranslations('Auth.Signup');
+  const { isAuthenticated, role: userRole } = useAuth();
   
   const role = useMemo(() => searchParams?.get("role") || "user", [searchParams]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (userRole === 'admin') {
+        router.push(`/${locale}/admin/dashboard`);
+      } else {
+        router.push(`/${locale}`);
+      }
+    }
+  }, [isAuthenticated, userRole, router, locale]);
 
   const [form, setForm] = useState<SignupForm>({
     name: "",

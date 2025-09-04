@@ -1,15 +1,4 @@
-
-import HeroSection from './components/Herosection';
-import HowItWorksSection from './components/HowItWorks';
-import RecentIssues from './components/RecentIssues';
-
-
+import HomeClient from "./components/Home";
 export default function Home() {
-  return (
-    <>
-      <HeroSection />
-      <HowItWorksSection />
-      <RecentIssues />
-    </>
-  );
+  return <HomeClient />;
 }

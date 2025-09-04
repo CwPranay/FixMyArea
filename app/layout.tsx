@@ -1,9 +1,8 @@
-import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 import { Poppins } from 'next/font/google';
 import { ReactNode } from 'react';
 import 'leaflet/dist/leaflet.css';
-
+import ClientProviders from './ClientProvider';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -11,24 +10,12 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
-
-
-export default async function RootLayout({
-  children,
-  params,
-}: {
-  children: ReactNode;
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang={locale} className={poppins.variable}>
+    <html lang="en" className={poppins.variable} data-scroll-behavior="smooth">
       <body className="relative">
         <div id="root-content" className="relative z-0">
-          <AuthProvider>
-          {children}
-          </AuthProvider>
+          <ClientProviders>{children}</ClientProviders>
         </div>
       </body>
     </html>

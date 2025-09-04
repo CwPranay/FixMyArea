@@ -1,11 +1,12 @@
 // app/login/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import axios from "axios";
 import Link from "next/link";
+
 import { useAuth } from '@/context/AuthContext'; // adjust path
 
 
@@ -14,6 +15,7 @@ export default function LoginPage() {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('Auth.Login');
+  const { isAuthenticated, role } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -23,6 +25,18 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (role === 'admin') {
+        console.log("Redirecting with locale:", locale);
+
+        router.push(`/${locale}/admin/dashboard`);
+      } else {
+        router.push(`/${locale}`);
+      }
+    }
+  }, [isAuthenticated, role, router, locale]);
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,13 +1,13 @@
+// app/[locale]/layout.tsx
 import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import MobileSidebarWrapper from './components/MobileSidebarWrapper';
 import 'leaflet/dist/leaflet.css';
 
-
 type Props = {
   children: ReactNode;
-  params: { locale: 'en' | 'hi' | 'mr' };
+  params: Promise<{ locale: 'en' | 'hi' | 'mr' }>;
 };
 
 const messagesMap = {
@@ -17,13 +17,10 @@ const messagesMap = {
 } as const;
 
 export default async function LocaleLayout({ children, params }: Props) {
-  const { locale } =await params;
-  
-  const loadMessages = messagesMap[locale];
+  const { locale } = await params;   // ✅ must await
 
-  if (!loadMessages) {
-    return notFound();
-  }
+  const loadMessages = messagesMap[locale];
+  if (!loadMessages) return notFound();
 
   let messages;
   try {
@@ -35,9 +32,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <MobileSidebarWrapper>
-        {children}
-      </MobileSidebarWrapper>
+      <MobileSidebarWrapper>{children}</MobileSidebarWrapper>
     </NextIntlClientProvider>
   );
 }
@@ -46,6 +41,6 @@ export function generateStaticParams() {
   return [
     { locale: 'en' },
     { locale: 'hi' },
-    { locale: 'mr' }
+    { locale: 'mr' },
   ];
 }
