@@ -18,7 +18,7 @@ const issueSchema = new Schema({
     },
     createdByType: {
         type: String,
-        enum: ["user", "anonymous", "guest"],
+        enum: ["user", "anonymous"],
         required: true,
         default: "anonymous"
     },
