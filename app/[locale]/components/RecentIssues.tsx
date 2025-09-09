@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations,useLocale } from 'next-intl';
 import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
 
@@ -34,6 +34,7 @@ const recentIssues: Issue[] = [
 ];
 
 export default function RecentIssues() {
+  const locale= useLocale()
   const t = useTranslations('RecentIssues');
   const {role} =useAuth()
  if(role==="admin")
@@ -87,7 +88,7 @@ export default function RecentIssues() {
         </div>
 
         <button
-          onClick={() => (window.location.href = `/viewAll-issues`)}
+          onClick={() => (window.location.href = `/${locale}/viewAll-issues`)}
           aria-label={t('viewAll')}
           title={t('viewAll')}
           className="mt-10 px-6 py-3 text-white font-semibold rounded-lg btn-primary-gradient transition"

@@ -32,6 +32,7 @@ export default function AdminDashboardPage() {
         const data = await res.json().catch(() => ({}));
         if (!data?.user) {
           router.push(`/${locale}/login`);
+          
           return;
         }
 
