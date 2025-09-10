@@ -1,8 +1,9 @@
 {
   "Header": {
     "home": "मुख्यपृष्ठ",
-    "viewAllIssue": "सर्व तक्रारी पहा",
+    "viewAllIssue": "सर्व तक्रारी",
     "reportIssue": "तक्रार नोंदवा",
+    "myIssue":" माझी तक्रारी",
     "login": "लॉगिन",
     "sign up": "नोंदणी करा",
     "profile": {

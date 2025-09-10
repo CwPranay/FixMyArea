@@ -1,9 +1,10 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import LocationPicker from '../components/LocationPicker';
 import { title } from 'process';
 import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface SearchSuggestion {
   display_name: string;
@@ -12,16 +13,21 @@ interface SearchSuggestion {
   place_id: string;
   type?: string;
   importance?: number;
-}
+} 
 
 export default function ReportIssue() {
   const { user, isAuthenticated, loading } = useAuth();
+  
+  const router = useRouter();
+  const locale =useLocale()
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     location: ''
   });
   const t = useTranslations('reportIssue');
+
+ 
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);

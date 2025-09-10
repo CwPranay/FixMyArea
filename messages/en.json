@@ -1,8 +1,9 @@
 {
   "Header": {
     "home": "Home",
-    "viewAllIssue": "View All Issues",
+    "viewAllIssue": "All Issues",
     "reportIssue": "Report Issue",
+    "myIssue":" My Issues",
     "login": "Log in",
     "sign up": "Sign up",
     "profile": {

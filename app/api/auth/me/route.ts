@@ -13,10 +13,17 @@ export async function GET(req: NextRequest) {
     if (!token) return NextResponse.json({ user: null }, { status: 200 });
 
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-    const user = await User.findById(decoded.userId).select("-password");
+   
+
+    const user = await User.findById(decoded.id).select("-password");
 
     // User not found - return 200 with user: null
     if (!user) return NextResponse.json({ user: null }, { status: 200 });
+    console.log("Auth check user:", {
+      id: user._id.toString(),
+      role: user.role,
+      authorityVerified: user.authorityVerified,
+    });
 
     // Authority not approved - return 200 with user: null and clear cookie
     if (user.role === "authority" && user.authorityVerified !== "approved") {
