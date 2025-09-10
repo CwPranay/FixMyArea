@@ -13,13 +13,13 @@ interface SearchSuggestion {
   place_id: string;
   type?: string;
   importance?: number;
-} 
+}
 
 export default function ReportIssue() {
   const { user, isAuthenticated, loading } = useAuth();
-  
+
   const router = useRouter();
-  const locale =useLocale()
+  const locale = useLocale()
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -27,7 +27,14 @@ export default function ReportIssue() {
   });
   const t = useTranslations('reportIssue');
 
- 
+  useEffect(() => {
+    if (user?.role === "authority") {
+      router.push(`/${locale}/access-denied`);
+    }
+  }, [user, locale, router]);
+
+
+
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -42,7 +49,7 @@ export default function ReportIssue() {
   const [isSearching, setIsSearching] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
-  const [selectedLocationForMap, setSelectedLocationForMap] = useState<{lat: number, lng: number, address: string} | undefined>(undefined);
+  const [selectedLocationForMap, setSelectedLocationForMap] = useState<{ lat: number, lng: number, address: string } | undefined>(undefined);
   const suggestionRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -87,11 +94,11 @@ export default function ReportIssue() {
           }
         }
       );
-      
+
       if (response.ok) {
         const results = await response.json();
         // Sort by importance (higher importance first)
-        const sortedResults = results.sort((a: SearchSuggestion, b: SearchSuggestion) => 
+        const sortedResults = results.sort((a: SearchSuggestion, b: SearchSuggestion) =>
           (b.importance || 0) - (a.importance || 0)
         );
         setSearchSuggestions(sortedResults);
@@ -107,19 +114,19 @@ export default function ReportIssue() {
     const lat = parseFloat(suggestion.lat);
     const lng = parseFloat(suggestion.lon);
     const locationString = `${suggestion.display_name} (Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
-    
+
     setFormData(prev => ({
       ...prev,
       location: locationString
     }));
-    
+
     // Update map location
     setSelectedLocationForMap({
       lat,
       lng,
       address: suggestion.display_name
     });
-    
+
     setShowSuggestions(false);
     setSearchSuggestions([]);
     setFormErrors(prev => ({ ...prev, location: '' }));
@@ -128,7 +135,7 @@ export default function ReportIssue() {
   const getPlaceTypeIcon = (suggestion: SearchSuggestion) => {
     const type = suggestion.type?.toLowerCase() || '';
     const displayName = suggestion.display_name.toLowerCase();
-    
+
     if (type.includes('restaurant') || type.includes('food') || displayName.includes('restaurant')) {
       return (
         <svg className="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
@@ -136,7 +143,7 @@ export default function ReportIssue() {
         </svg>
       );
     }
-    
+
     if (type.includes('school') || type.includes('education') || displayName.includes('school') || displayName.includes('college')) {
       return (
         <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
@@ -144,7 +151,7 @@ export default function ReportIssue() {
         </svg>
       );
     }
-    
+
     if (type.includes('hospital') || type.includes('medical') || displayName.includes('hospital')) {
       return (
         <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
@@ -152,7 +159,7 @@ export default function ReportIssue() {
         </svg>
       );
     }
-    
+
     if (type.includes('shop') || type.includes('retail') || displayName.includes('mall') || displayName.includes('market')) {
       return (
         <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -160,7 +167,7 @@ export default function ReportIssue() {
         </svg>
       );
     }
-    
+
     // Default location icon
     return (
       <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -232,14 +239,14 @@ export default function ReportIssue() {
             ...prev,
             location: locationString
           }));
-          
+
           // Update map location
           setSelectedLocationForMap({
             lat: latitude,
             lng: longitude,
             address
           });
-          
+
           setFormErrors(prev => ({ ...prev, location: '' }));
         } catch {
           const locationString = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}`;
@@ -247,7 +254,7 @@ export default function ReportIssue() {
             ...prev,
             location: locationString
           }));
-          
+
           // Update map location
           setSelectedLocationForMap({
             lat: latitude,
@@ -278,7 +285,7 @@ export default function ReportIssue() {
     );
   };
 
-  const handleMapLocationSelect = ({ lat, lng, address }: {lat: number, lng: number, address: string}) => {
+  const handleMapLocationSelect = ({ lat, lng, address }: { lat: number, lng: number, address: string }) => {
     const locationString = `${address} (Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
     setFormData(prev => ({
       ...prev,
@@ -287,113 +294,113 @@ export default function ReportIssue() {
     setFormErrors(prev => ({ ...prev, location: '' }));
   };
 
-const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
 
-  let errors: { [key: string]: string } = {};
-  if (!formData.title) errors.title = t('form.validationError');
-  if (!formData.description) errors.description = t('form.validationError');
-  if (!formData.location) errors.location = t('form.validationError');
+    let errors: { [key: string]: string } = {};
+    if (!formData.title) errors.title = t('form.validationError');
+    if (!formData.description) errors.description = t('form.validationError');
+    if (!formData.location) errors.location = t('form.validationError');
 
-  if (Object.keys(errors).length > 0) {
-    setFormErrors(errors);
-    setFormSuccess(null);
-    return;
-  }
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setFormSuccess(null);
+      return;
+    }
 
-  if (!selectedLocationForMap) {
-    setFormErrors({ submit: 'Please select a valid location on the map' });
-    return;
-  }
+    if (!selectedLocationForMap) {
+      setFormErrors({ submit: 'Please select a valid location on the map' });
+      return;
+    }
 
-  setIsUploading(true);
-  try {
-    let imageUrls: string[] = [];
-    
-    // Upload image if selected
-    if (selectedImage) {
-      setFormSuccess(t('form.uploadingImage'));
-      
-      const uploadForm = new FormData();
-      uploadForm.append('files', selectedImage);
-      
-      const uploadRes = await fetch('/api/upload-files', {
+    setIsUploading(true);
+    try {
+      let imageUrls: string[] = [];
+
+      // Upload image if selected
+      if (selectedImage) {
+        setFormSuccess(t('form.uploadingImage'));
+
+        const uploadForm = new FormData();
+        uploadForm.append('files', selectedImage);
+
+        const uploadRes = await fetch('/api/upload-files', {
+          method: 'POST',
+          body: uploadForm,
+        });
+
+        if (!uploadRes.ok) {
+          const errorData = await uploadRes.json();
+          console.error('Upload error:', errorData);
+          throw new Error(errorData.error || 'Image upload failed');
+        }
+
+        const uploadData = await uploadRes.json();
+        console.log('Upload success:', uploadData);
+        imageUrls = uploadData.files.map((f: any) => f.url);
+      }
+
+      // Get user identifier
+      let userIdentifier: string = 'Anonymous';
+
+      if (user) {
+        // Check common user ID properties
+        const userAny = user as any;
+        userIdentifier = userAny._id || userAny.id || user.name || user.email || 'Authenticated User';
+      }
+
+      const issueData = {
+        title: formData.title,
+        description: formData.description,
+        createdBy: userIdentifier, // This will be handled by the API
+        imageUrls: imageUrls,
+        location: {
+          coordinates: [selectedLocationForMap.lng, selectedLocationForMap.lat],
+          address: selectedLocationForMap.address || formData.location,
+        }
+      };
+
+      console.log('Submitting issue:', issueData);
+
+      // Submit the issue
+      const res = await fetch('/api/issue', {
         method: 'POST',
-        body: uploadForm,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(issueData)
       });
-      
-      if (!uploadRes.ok) {
-        const errorData = await uploadRes.json();
-        console.error('Upload error:', errorData);
-        throw new Error(errorData.error || 'Image upload failed');
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Issue API error response:', errorText);
+
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch (e) {
+          throw new Error(`HTTP error! status: ${res.status}, message: ${errorText}`);
+        }
+
+        throw new Error(errorData.message || errorData.error || 'Issue submission failed');
       }
-      
-      const uploadData = await uploadRes.json();
-      console.log('Upload success:', uploadData);
-      imageUrls = uploadData.files.map((f: any) => f.url);
+
+      const result = await res.json();
+      console.log("Issue created successfully:", result);
+
+      // Reset form on success
+      setFormSuccess(t('form.successMessage'));
+      setFormErrors({});
+      setFormData({ title: '', description: '', location: '' });
+      setSelectedImage(null);
+      setImagePreview(null);
+      setSelectedLocationForMap(undefined);
+
+    } catch (err) {
+      console.error('Submission error details:', err);
+      setFormErrors({ submit: (err as Error).message || 'Submission failed' });
+    } finally {
+      setIsUploading(false);
     }
-
-    // Get user identifier
-    let userIdentifier: string = 'Anonymous';
-    
-    if (user) {
-      // Check common user ID properties
-      const userAny = user as any;
-      userIdentifier = userAny._id || userAny.id || user.name || user.email || 'Authenticated User';
-    }
-
-    const issueData = {
-      title: formData.title,
-      description: formData.description,
-      createdBy: userIdentifier, // This will be handled by the API
-      imageUrls: imageUrls,
-      location: {
-        coordinates: [selectedLocationForMap.lng, selectedLocationForMap.lat],
-        address: selectedLocationForMap.address || formData.location,
-      }
-    };
-
-    console.log('Submitting issue:', issueData);
-
-    // Submit the issue
-    const res = await fetch('/api/issue', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(issueData)
-    });
-    
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error('Issue API error response:', errorText);
-      
-      let errorData;
-      try {
-        errorData = JSON.parse(errorText);
-      } catch (e) {
-        throw new Error(`HTTP error! status: ${res.status}, message: ${errorText}`);
-      }
-      
-      throw new Error(errorData.message || errorData.error || 'Issue submission failed');
-    }
-    
-    const result = await res.json();
-    console.log("Issue created successfully:", result);
-    
-    // Reset form on success
-    setFormSuccess(t('form.successMessage'));
-    setFormErrors({});
-    setFormData({ title: '', description: '', location: '' });
-    setSelectedImage(null);
-    setImagePreview(null);
-    setSelectedLocationForMap(undefined);
-    
-  } catch (err) {
-    console.error('Submission error details:', err);
-    setFormErrors({ submit: (err as Error).message || 'Submission failed' });
-  } finally {
-    setIsUploading(false);
-  }
-};
+  };
 
   // Close suggestions when clicking outside
   useEffect(() => {
@@ -445,9 +452,8 @@ const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
                 value={formData.title}
                 onChange={handleInputChange}
                 placeholder={t('form.issueTitle.placeholder')}
-                className={`w-full px-4 py-3 border rounded-lg outline-none transition-colors ${
-                  formErrors.title ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'
-                }`}
+                className={`w-full px-4 py-3 border rounded-lg outline-none transition-colors ${formErrors.title ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'
+                  }`}
               />
               {formErrors.title && <p className="text-red-500 text-sm mt-1">{formErrors.title}</p>}
             </div>
@@ -464,9 +470,8 @@ const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
                 onChange={handleInputChange}
                 rows={5}
                 placeholder={t('form.description.placeholder')}
-                className={`w-full px-4 py-3 border rounded-lg outline-none transition-colors resize-vertical ${
-                  formErrors.description ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'
-                }`}
+                className={`w-full px-4 py-3 border rounded-lg outline-none transition-colors resize-vertical ${formErrors.description ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'
+                  }`}
               />
               {formErrors.description && <p className="text-red-500 text-sm mt-1">{formErrors.description}</p>}
             </div>
@@ -510,9 +515,8 @@ const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
                   value={formData.location}
                   onChange={handleInputChange}
                   placeholder={t('form.location.placeholder')}
-                  className={`w-full px-4 py-3 border rounded-lg outline-none transition-colors ${
-                    formErrors.location ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'
-                  }`}
+                  className={`w-full px-4 py-3 border rounded-lg outline-none transition-colors ${formErrors.location ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'
+                    }`}
                 />
 
                 {/* Enhanced Search Suggestions Dropdown */}
@@ -573,7 +577,7 @@ const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
                   </div>
                 )}
               </div>
-              
+
               {formErrors.location && <p className="text-red-500 text-sm mt-1">{formErrors.location}</p>}
 
               <div className="mt-4">
