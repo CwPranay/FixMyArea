@@ -84,3 +84,23 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function GET(){
+  try {
+    await connectDB();
+    const issues =await Issue.find().sort({createdAt:-1});
+    return NextResponse.json({issues},{status:200});
+
+    
+  } catch (error) {
+    console.error("Error fetching issues:", error);
+    return NextResponse.json(
+      {
+        message:"Internal Server Error",
+
+      },
+      {status:500}
+
+    )
+  }
+}
