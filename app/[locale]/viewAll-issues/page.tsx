@@ -29,6 +29,8 @@ export default function ViewAllIssuesRoute({
   const { issues, loading, refreshIssues } = useIssues();
   const [selectedLocation, setSelectedLocation] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("All");
+
 
   const locations = ["All", ...new Set(
     issues
@@ -37,12 +39,13 @@ export default function ViewAllIssuesRoute({
   )];
 
   const filteredIssues = issues.filter((i: Issue) => {
-    const matchesLocation = selectedLocation ==="All" || i.location.address === selectedLocation;
+    const matchesLocation = selectedLocation === "All" || i.location.address === selectedLocation;
 
-    const matchsSearch = i.location.address.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) 
+    const matchsSearch = i.location.address.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())
     
+    const matchesStatus = selectedStatus === "All" || i.status.toLocaleLowerCase()===selectedStatus.toLocaleLowerCase();
 
-    return matchesLocation && matchsSearch;
+    return matchesLocation && matchsSearch && matchesStatus;
   })
 
   useEffect(() => {
@@ -79,20 +82,20 @@ export default function ViewAllIssuesRoute({
         </span>
 
         <div className=" items-center gap-2 mt-auto pt-2 border-t border-gray-100">
-          
+
           {/* Avatar Circle (WhatsApp-style) */}
           <span className="text-xs  bg-green-200 text-green-800 px-2 py-1 rounded">
-           Status: {issue.status}
+            Status: {issue.status}
           </span>
           <div className="flex items-center gap-2 mt-2">
             <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-sm font-bold text-white shadow">
-            {getInitial(issue.createdByName || "A")}
+              {getInitial(issue.createdByName || "A")}
+            </div>
+            <span className="text-xs text-gray-700 font-medium">
+              {issue.createdByName || "Anonymous"}
+            </span>
           </div>
-          <span className="text-xs text-gray-700 font-medium">
-            {issue.createdByName || "Anonymous"}
-          </span>
-          </div>
-          
+
         </div>
       </div>
     )
@@ -103,11 +106,11 @@ export default function ViewAllIssuesRoute({
   return (
     <div>
       <input
-      type="text"
-      placeholder="Search City..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="border text-black border-gray-500 rounded p-2 mb-4 w-full"
+        type="text"
+        placeholder="Search City..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="border text-black border-gray-500 rounded p-2 mb-4 w-full"
       />
 
       <select
@@ -123,8 +126,19 @@ export default function ViewAllIssuesRoute({
 
 
       </select>
+      <select
+        value={selectedStatus}
+        onChange={(e) => setSelectedStatus(e.target.value)}
+        className="border text-black rounded px-3 py-2"
+      >
+        <option value="All">All</option>
+        <option value="open">Open</option>
+        <option value="resolved">Resolved</option>
+        <option value="closed">Closed</option>
+      </select>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {filteredIssues.length>0 ? (
+        {filteredIssues.length > 0 ? (
           filteredIssues.map((issue) => (
             <IssueCard key={issue._id} issue={issue} />
           ))
