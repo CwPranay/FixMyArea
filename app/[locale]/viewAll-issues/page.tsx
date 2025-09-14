@@ -2,7 +2,7 @@
 import { useIssues } from "@/context/IssueContext";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
+import { useAuth } from "@/context/AuthContext";
 
 interface Issue {
   _id: string;
@@ -18,10 +18,12 @@ interface Issue {
 
 export default function ViewAllIssuesRoute() {
   const { issues, loading, refreshIssues } = useIssues();
+  const { user, isAuthenticated, role } = useAuth();
   const [selectedLocation, setSelectedLocation] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [updatingIssues, setUpdatingIssues] = useState<Set<string>>(new Set());
 
   const locations = ["All", ...new Set(
     issues
@@ -40,6 +42,44 @@ export default function ViewAllIssuesRoute() {
     refreshIssues();
   }, [refreshIssues]);
 
+  const updateIssueStatus = async (issueId: string, newStatus: string) => {
+    if (role !== 'authority') return;
+    
+    setUpdatingIssues(prev => new Set(prev).add(issueId));
+    
+    try {
+      const response = await fetch(`/api/issue`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          id: issueId, 
+          status: newStatus,
+          userRole: role 
+        }),
+      });
+
+      if (response.ok) {
+        // Refresh issues to get updated data
+        await refreshIssues();
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to update issue status');
+      }
+    } catch (error) {
+      console.error('Error updating issue status:', error);
+      // You might want to show a toast notification here
+      alert('Failed to update issue status. Please try again.');
+    } finally {
+      setUpdatingIssues(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(issueId);
+        return newSet;
+      });
+    }
+  };
+
   function getInitial(name?: string) {
     if (!name) return 'A';
     return name.charAt(0).toUpperCase();
@@ -52,6 +92,93 @@ export default function ViewAllIssuesRoute() {
       case 'closed': return 'bg-gray-50 text-gray-700 border border-gray-200';
       default: return 'bg-gray-50 text-gray-700 border border-gray-200';
     }
+  }
+
+  function AuthorityControls({ issue }: { issue: Issue }) {
+    if (role !== 'authority' || issue.status.toLowerCase() === 'closed') return null;
+
+    const isUpdating = updatingIssues.has(issue._id);
+    const canResolve = issue.status.toLowerCase() === 'open';
+    const canClose = issue.status.toLowerCase() === 'resolved';
+    const inProgress = issue.status.toLowerCase() === 'in-progress';
+
+    return (
+      <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
+         {inProgress && (
+          <button
+            onClick={() => updateIssueStatus(issue._id, 'in-progress')}
+            disabled={isUpdating}
+            className="flex-1 px-3 py-1.5 bg-yellow-50 hover:bg-yellow-100 text-yellow-700 text-xs font-medium rounded-md border border-yellow-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+          >
+            {isUpdating ? (
+              <>
+                <svg className="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Starting to Resolve
+              </>
+            ) : (
+              <>
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                In Progress
+              </>
+            )}
+          </button>
+        )}
+        {canResolve && (
+          <button
+            onClick={() => updateIssueStatus(issue._id, 'resolved')}
+            disabled={isUpdating}
+            className="flex-1 px-3 py-1.5 bg-green-50 hover:bg-green-100 text-green-700 text-xs font-medium rounded-md border border-green-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+          >
+            {isUpdating ? (
+              <>
+                <svg className="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Resolving...
+              </>
+            ) : (
+              <>
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                Mark Resolved
+              </>
+            )}
+          </button>
+        )}
+        
+        {canClose && (
+          <button
+            onClick={() => updateIssueStatus(issue._id, 'closed')}
+            disabled={isUpdating}
+            className="flex-1 px-3 py-1.5 bg-gray-50 hover:bg-gray-100 text-gray-700 text-xs font-medium rounded-md border border-gray-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+          >
+            {isUpdating ? (
+              <>
+                <svg className="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Closing...
+              </>
+            ) : (
+              <>
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Close Issue
+              </>
+            )}
+          </button>
+        )}
+      </div>
+    );
   }
 
   function GridIssueCard({ issue }: { issue: Issue }) {
@@ -97,6 +224,8 @@ export default function ViewAllIssuesRoute() {
               {issue.createdByName || "Anonymous"}
             </span>
           </div>
+
+          <AuthorityControls issue={issue} />
         </div>
       </div>
     );
@@ -150,6 +279,8 @@ export default function ViewAllIssuesRoute() {
                 </span>
               </div>
             </div>
+
+            <AuthorityControls issue={issue} />
           </div>
         </div>
       </div>
@@ -215,7 +346,14 @@ export default function ViewAllIssuesRoute() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900">All Issues</h1>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900">
+            All Issues
+            {role === 'authority' && (
+              <span className="ml-2 px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                Authority View
+              </span>
+            )}
+          </h1>
           <p className="text-gray-600 mt-1 text-sm sm:text-base">
             {filteredIssues.length} {filteredIssues.length === 1 ? 'issue' : 'issues'} found
           </p>

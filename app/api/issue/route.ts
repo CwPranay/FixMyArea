@@ -104,3 +104,45 @@ export async function GET(){
     )
   }
 }
+
+export async function PATCH(req:Request){
+  try{
+    await connectDB()
+    const body=await req.json();
+    const {id,status,userRole}=body;
+
+    if(!id || !status ){
+      return NextResponse.json({message:"Missing required fields: id or status"},{status:400});
+    }
+    if(userRole !=="authority"){
+      return NextResponse.json({message:"Unauthorized: Only authority users can update issue status"},{status:403});
+    }
+    const validStatuses=["open","in-progress","resolved","closed"];
+    if(!validStatuses.includes(status.toLowerCase())){
+      return NextResponse.json({message:"Invalid status value"},{status:400});
+  }
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    return NextResponse.json({message:"Invalid issue ID"},{status:400});
+  }
+  const updatedIssue=await Issue.findByIdAndUpdate(id,{status:status.toLowerCase(),updatedAt:new Date()},{new:true});
+  if(!updatedIssue){
+    return NextResponse.json({message:"Issue not found"},{status:404});
+  }
+  return NextResponse.json(
+      { 
+        message: "Issue status updated successfully", 
+        issue: updatedIssue 
+      }, 
+      { status: 200 }
+    );
+} catch (error) {
+    console.error("Error updating issue status:", error);
+    return NextResponse.json(
+      {
+        message: "Internal Server Error",
+        error: error instanceof Error ? error.message : "Unknown error"
+      },
+      { status: 500 }
+    );
+  }
+}
