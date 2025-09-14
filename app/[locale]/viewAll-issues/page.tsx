@@ -28,16 +28,22 @@ export default function ViewAllIssuesRoute({
 }: Issue) {
   const { issues, loading, refreshIssues } = useIssues();
   const [selectedLocation, setSelectedLocation] = useState<string>("All");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
   const locations = ["All", ...new Set(
     issues
       .map((i: Issue) => i.location?.address)
       .filter((address): address is string => Boolean(address))
   )];
 
-  const filteredIssues = selectedLocation === "All"
-    ? issues
-    : issues.filter((issue: Issue) => issue.location?.address === selectedLocation);
+  const filteredIssues = issues.filter((i: Issue) => {
+    const matchesLocation = selectedLocation ==="All" || i.location.address === selectedLocation;
 
+    const matchsSearch = i.location.address.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) 
+    
+
+    return matchesLocation && matchsSearch;
+  })
 
   useEffect(() => {
     refreshIssues();
@@ -96,6 +102,14 @@ export default function ViewAllIssuesRoute({
 
   return (
     <div>
+      <input
+      type="text"
+      placeholder="Search City..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="border text-black border-gray-500 rounded p-2 mb-4 w-full"
+      />
+
       <select
         value={selectedLocation}
         onChange={(e) => setSelectedLocation(e.target.value)}
