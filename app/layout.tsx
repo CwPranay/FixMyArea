@@ -9,6 +9,15 @@ const poppins = Poppins({
   weight: ['400', '500', '600'],
   variable: '--font-poppins',
 });
+// app/layout.tsx
+export const metadata = {
+  title: "FixMyArea",
+  description: "Report and resolve local issues",
+  icons: {
+    icon: "/fixmyarea_favicon_blue.ico",
+  },
+};
+
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

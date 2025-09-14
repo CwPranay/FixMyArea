@@ -19,7 +19,7 @@ type HeaderProps = {
   setMenuOpen: (open: boolean) => void;
   mounted: boolean;
   navLinks: Array<{ name: string; href: string }>;
-  
+
   onLogout: () => void;
   onLoginClick: () => void;
   onSignupClick: () => void;
@@ -30,7 +30,7 @@ export default function Header({
   setMenuOpen,
   mounted,
   navLinks,
-  
+
   onLogout,
   onLoginClick,
   onSignupClick
@@ -83,12 +83,46 @@ export default function Header({
 
         {/* Logo */}
         <div className="flex items-center space-x-1 text-xl font-semibold text-gray-800">
-          <MapPin size={22} className="text-cyan-600" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 64 64"
+            aria-label="FixMyArea logo"
+          >
+            {/* Gradient definition */}
+            <defs>
+              <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#3B82F6" />  {/* light blue (blue-500) */}
+                <stop offset="100%" stopColor="#60A5FA" /> {/* even lighter (blue-400) */}
+              </linearGradient>
+            </defs>
+
+            {/* Pin shape */}
+            <path
+              d="M32 8
+             C22 8 14 16 14 26
+             C14 40 32 56 32 56
+             C32 56 50 40 50 26
+             C50 16 42 8 32 8z"
+              fill="url(#blueGradient)"
+            />
+
+            {/* White checkmark */}
+            <path
+              d="M24 28l6 6 12-12"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
           <span>FixMyArea</span>
         </div>
 
         {/* Desktop Nav */}
-        {(!user || user.role === "user" || user.role==="authority") && (
+        {(!user || user.role === "user" || user.role === "authority") && (
           <nav className="hidden md:flex space-x-8 items-center ml-auto">
 
             {navLinks.map((link) => (
