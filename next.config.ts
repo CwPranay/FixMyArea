@@ -11,8 +11,15 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
     images: {
     domains: ['source.unsplash.com','media.istockphoto.com'],
-     // 👈 allow external image domain
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+      },
+    ],
+     
   },
+  
 };
 
 export default withNextIntl(nextConfig);
