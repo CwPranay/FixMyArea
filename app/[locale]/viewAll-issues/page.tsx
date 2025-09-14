@@ -166,7 +166,7 @@ export default function ViewAllIssuesRoute() {
           <div className="h-8 w-48 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse mb-2"></div>
           <div className="h-4 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
         </div>
-        <div className="h-10 w-32 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse"></div>
+        <div className="h-10 w-32 hidden md:flex bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse"></div>
       </div>
 
       {/* Filter Skeleton */}
@@ -222,7 +222,7 @@ export default function ViewAllIssuesRoute() {
         </div>
         
         {/* View Toggle */}
-        <div className="flex items-center bg-gray-100 rounded-lg p-1 w-fit">
+        <div className="hidden  md:flex items-center bg-gray-100 rounded-lg p-1 w-fit">
           <button
             onClick={() => setViewMode("grid")}
             className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
