@@ -15,15 +15,7 @@ interface Issue {
   createdByName?: string;
 }
 
-export default function ViewAllIssuesRoute({
-  _id,
-  title,
-  description,
-  status,
-  images,
-  location,
-  createdByName
-}: Issue) {
+export default function ViewAllIssuesRoute() {
   const { issues, loading, refreshIssues } = useIssues();
   const [selectedLocation, setSelectedLocation] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState<string>("");
