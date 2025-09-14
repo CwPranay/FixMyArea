@@ -3,6 +3,7 @@ import { useIssues } from "@/context/IssueContext";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+
 interface Issue {
   _id: string;
   title: string;
@@ -157,10 +158,55 @@ export default function ViewAllIssuesRoute() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-16">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-3 text-gray-600">Loading issues...</span>
+      <>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Header Skeleton */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+          <div className="h-8 w-48 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse mb-2"></div>
+          <div className="h-4 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+        </div>
+        <div className="h-10 w-32 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse"></div>
       </div>
+
+      {/* Filter Skeleton */}
+      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i}>
+              <div className="h-4 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-2"></div>
+              <div className="h-10 w-full bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Cards Skeleton */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <div className="aspect-video bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 animate-pulse"></div>
+            <div className="p-5">
+              <div className="flex justify-between items-start mb-3">
+                <div className="h-5 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-16 bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
+              </div>
+              <div className="space-y-2 mb-4">
+                <div className="h-4 w-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                <div className="h-4 w-3/4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+              </div>
+              <div className="h-3 w-24 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-4"></div>
+              <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
+                <div className="w-7 h-7 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded-full animate-pulse"></div>
+                <div className="h-3 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+      
+      </>
     );
   }
 
