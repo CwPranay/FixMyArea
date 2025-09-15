@@ -88,6 +88,7 @@ export default function ViewAllIssuesRoute() {
   function getStatusColor(status: string) {
     switch (status.toLowerCase()) {
       case 'open': return 'bg-blue-50 text-blue-700 border border-blue-200';
+      case 'in-progress': return 'bg-yellow-50 text-yellow-700 border border-yellow-200';
       case 'resolved': return 'bg-green-50 text-green-700 border border-green-200';
       case 'closed': return 'bg-gray-50 text-gray-700 border border-gray-200';
       default: return 'bg-gray-50 text-gray-700 border border-gray-200';
@@ -98,13 +99,14 @@ export default function ViewAllIssuesRoute() {
     if (role !== 'authority' || issue.status.toLowerCase() === 'closed') return null;
 
     const isUpdating = updatingIssues.has(issue._id);
+    const isOpen = issue.status.toLowerCase() === 'open';
     const canResolve = issue.status.toLowerCase() === 'open';
     const canClose = issue.status.toLowerCase() === 'resolved';
     const inProgress = issue.status.toLowerCase() === 'in-progress';
 
     return (
       <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
-         {inProgress && (
+         { isOpen && (
           <button
             onClick={() => updateIssueStatus(issue._id, 'in-progress')}
             disabled={isUpdating}
@@ -116,7 +118,7 @@ export default function ViewAllIssuesRoute() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Starting to Resolve
+                Started to Resolve
               </>
             ) : (
               <>
@@ -128,7 +130,7 @@ export default function ViewAllIssuesRoute() {
             )}
           </button>
         )}
-        {canResolve && (
+        {(isOpen || inProgress) && (
           <button
             onClick={() => updateIssueStatus(issue._id, 'resolved')}
             disabled={isUpdating}
