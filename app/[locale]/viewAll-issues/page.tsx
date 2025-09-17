@@ -3,6 +3,7 @@ import { useIssues } from "@/context/IssueContext";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
+import { set } from "mongoose";
 
 interface Issue {
   _id: string;
@@ -24,6 +25,7 @@ export default function ViewAllIssuesRoute() {
   const [selectedStatus, setSelectedStatus] = useState<string>("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [updatingIssues, setUpdatingIssues] = useState<Set<string>>(new Set());
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   const locations = ["All", ...new Set(
     issues
@@ -35,6 +37,7 @@ export default function ViewAllIssuesRoute() {
     const matchesLocation = selectedLocation === "All" || i.location.address === selectedLocation;
     const matchsSearch = i.location.address.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === "All" || i.status.toLowerCase() === selectedStatus.toLowerCase();
+
     return matchesLocation && matchsSearch && matchesStatus;
   });
 
@@ -42,21 +45,39 @@ export default function ViewAllIssuesRoute() {
     refreshIssues();
   }, [refreshIssues]);
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation not supported by this browser");
+    }
+  }, []);
+
   const updateIssueStatus = async (issueId: string, newStatus: string) => {
     if (role !== 'authority') return;
-    
+
     setUpdatingIssues(prev => new Set(prev).add(issueId));
-    
+
     try {
       const response = await fetch(`/api/issue`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          id: issueId, 
+        body: JSON.stringify({
+          id: issueId,
           status: newStatus,
-          userRole: role 
+          userRole: role
         }),
       });
 
@@ -106,7 +127,7 @@ export default function ViewAllIssuesRoute() {
 
     return (
       <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
-         { isOpen && (
+        {isOpen && (
           <button
             onClick={() => updateIssueStatus(issue._id, 'in-progress')}
             disabled={isUpdating}
@@ -154,7 +175,7 @@ export default function ViewAllIssuesRoute() {
             )}
           </button>
         )}
-        
+
         {canClose && (
           <button
             onClick={() => updateIssueStatus(issue._id, 'closed')}
@@ -195,7 +216,7 @@ export default function ViewAllIssuesRoute() {
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
-        
+
         <div className="p-4 sm:p-5">
           <div className="flex items-start justify-between mb-3">
             <h3 className="text-base sm:text-lg font-medium text-gray-900 capitalize line-clamp-2 pr-2">
@@ -205,11 +226,11 @@ export default function ViewAllIssuesRoute() {
               {issue.status}
             </span>
           </div>
-          
+
           <p className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">
             {issue.description}
           </p>
-          
+
           <div className="flex items-center text-xs text-gray-500 mb-4">
             <svg className="w-3.5 h-3.5 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -217,7 +238,7 @@ export default function ViewAllIssuesRoute() {
             </svg>
             <span className="truncate">{issue.location.address}</span>
           </div>
-          
+
           <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
             <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-medium text-white flex-shrink-0">
               {getInitial(issue.createdByName || "A")}
@@ -248,7 +269,7 @@ export default function ViewAllIssuesRoute() {
               />
             </div>
           </div>
-          
+
           <div className="flex-1 min-w-0">
             <div className="flex flex-col xs:flex-row xs:items-start xs:justify-between gap-2 mb-3">
               <h3 className="text-lg font-medium text-gray-900 capitalize">
@@ -258,11 +279,11 @@ export default function ViewAllIssuesRoute() {
                 {issue.status}
               </span>
             </div>
-            
+
             <p className="text-sm text-gray-600 mb-4 leading-relaxed">
               {issue.description}
             </p>
-            
+
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center text-sm text-gray-500">
                 <svg className="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -271,7 +292,7 @@ export default function ViewAllIssuesRoute() {
                 </svg>
                 <span className="truncate">{issue.location.address}</span>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-medium text-white flex-shrink-0">
                   {getInitial(issue.createdByName || "A")}
@@ -292,53 +313,53 @@ export default function ViewAllIssuesRoute() {
   if (loading) {
     return (
       <>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header Skeleton */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-          <div className="h-8 w-48 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse mb-2"></div>
-          <div className="h-4 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-        </div>
-        <div className="h-10 w-32 hidden md:flex bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse"></div>
-      </div>
-
-      {/* Filter Skeleton */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i}>
-              <div className="h-4 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-2"></div>
-              <div className="h-10 w-full bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header Skeleton */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div>
+              <div className="h-8 w-48 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse mb-2"></div>
+              <div className="h-4 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
             </div>
-          ))}
-        </div>
-      </div>
+            <div className="h-10 w-32 hidden md:flex bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse"></div>
+          </div>
 
-      {/* Cards Skeleton */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-            <div className="aspect-video bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 animate-pulse"></div>
-            <div className="p-5">
-              <div className="flex justify-between items-start mb-3">
-                <div className="h-5 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-                <div className="h-6 w-16 bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
-              </div>
-              <div className="space-y-2 mb-4">
-                <div className="h-4 w-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-                <div className="h-4 w-3/4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-              </div>
-              <div className="h-3 w-24 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-4"></div>
-              <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
-                <div className="w-7 h-7 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded-full animate-pulse"></div>
-                <div className="h-3 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-              </div>
+          {/* Filter Skeleton */}
+          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i}>
+                  <div className="h-4 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-10 w-full bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-      
+
+          {/* Cards Skeleton */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                <div className="aspect-video bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 animate-pulse"></div>
+                <div className="p-5">
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="h-5 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                    <div className="h-6 w-16 bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
+                  </div>
+                  <div className="space-y-2 mb-4">
+                    <div className="h-4 w-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                    <div className="h-4 w-3/4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                  </div>
+                  <div className="h-3 w-24 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-4"></div>
+                  <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
+                    <div className="w-7 h-7 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded-full animate-pulse"></div>
+                    <div className="h-3 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </>
     );
   }
@@ -360,16 +381,15 @@ export default function ViewAllIssuesRoute() {
             {filteredIssues.length} {filteredIssues.length === 1 ? 'issue' : 'issues'} found
           </p>
         </div>
-        
+
         {/* View Toggle */}
         <div className="hidden  md:flex items-center bg-gray-100 rounded-lg p-1 w-fit">
           <button
             onClick={() => setViewMode("grid")}
-            className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-              viewMode === "grid"
+            className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${viewMode === "grid"
                 ? "bg-white text-gray-900 shadow-sm"
                 : "text-gray-600 hover:text-gray-900"
-            }`}
+              }`}
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -378,11 +398,10 @@ export default function ViewAllIssuesRoute() {
           </button>
           <button
             onClick={() => setViewMode("list")}
-            className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-              viewMode === "list"
+            className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${viewMode === "list"
                 ? "bg-white text-gray-900 shadow-sm"
                 : "text-gray-600 hover:text-gray-900"
-            }`}
+              }`}
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
