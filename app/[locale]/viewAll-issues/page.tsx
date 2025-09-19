@@ -3,7 +3,6 @@ import { useIssues } from "@/context/IssueContext";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
-import { set } from "mongoose";
 
 interface Issue {
   _id: string;
@@ -12,6 +11,8 @@ interface Issue {
   status: string;
   images: string[];
   location: {
+    type: string;
+    coordinates: [number, number]; // [longitude, latitude] - GeoJSON format
     address: string;
   };
   createdByName?: string;
@@ -26,6 +27,9 @@ export default function ViewAllIssuesRoute() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [updatingIssues, setUpdatingIssues] = useState<Set<string>>(new Set());
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [distance, setDistance] = useState<number>(1);
+  const [geoError, setGeoError] = useState<string | null>(null);
+  const [isGettingLocation, setIsGettingLocation] = useState<boolean>(false);
 
   const locations = ["All", ...new Set(
     issues
@@ -35,33 +39,79 @@ export default function ViewAllIssuesRoute() {
 
   const filteredIssues = issues.filter((i: Issue) => {
     const matchesLocation = selectedLocation === "All" || i.location.address === selectedLocation;
-    const matchsSearch = i.location.address.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = i.location.address.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === "All" || i.status.toLowerCase() === selectedStatus.toLowerCase();
 
-    return matchesLocation && matchsSearch && matchesStatus;
+    // If user location is set, filter by distance
+    if (userLocation && i.location.coordinates && i.location.coordinates.length === 2) {
+      // GeoJSON format is [longitude, latitude], so we need to swap for our distance calculation
+      const [issueLng, issueLat] = i.location.coordinates;
+      const issueDistance = calculateDistance(
+        userLocation.lat,
+        userLocation.lng,
+        issueLat,
+        issueLng
+      );
+      const withinDistance = issueDistance <= distance;
+      return matchesLocation && matchesSearch && matchesStatus && withinDistance;
+    }
+
+    return matchesLocation && matchesSearch && matchesStatus;
   });
 
   useEffect(() => {
     refreshIssues();
   }, [refreshIssues]);
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("Geolocation error:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation not supported by this browser");
+  const handleUseMyLocation = () => {
+    if (!navigator.geolocation) {
+      setGeoError("Geolocation is not supported by your browser.");
+      alert("Geolocation is not supported by your browser.");
+      return;
     }
-  }, []);
+
+    setIsGettingLocation(true);
+    setGeoError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setIsGettingLocation(false);
+        setGeoError(null);
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        let errorMessage = "Unable to fetch your location.";
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = "Location access denied. Please enable location permissions.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "Location information is unavailable.";
+            break;
+          case error.TIMEOUT:
+            errorMessage = "Location request timed out.";
+            break;
+          default:
+            errorMessage = "An unknown error occurred while retrieving location.";
+            break;
+        }
+        
+        setGeoError(errorMessage);
+        alert(errorMessage);
+        setIsGettingLocation(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000 // 5 minutes
+      }
+    );
+  };
 
   const updateIssueStatus = async (issueId: string, newStatus: string) => {
     if (role !== 'authority') return;
@@ -104,6 +154,20 @@ export default function ViewAllIssuesRoute() {
   function getInitial(name?: string) {
     if (!name) return 'A';
     return name.charAt(0).toUpperCase();
+  }
+
+  function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+    const R = 6371; // Earth radius in km
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLng = (lng2 - lng1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) *
+      Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // distance in km
   }
 
   function getStatusColor(status: string) {
@@ -387,8 +451,8 @@ export default function ViewAllIssuesRoute() {
           <button
             onClick={() => setViewMode("grid")}
             className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${viewMode === "grid"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-600 hover:text-gray-900"
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-600 hover:text-gray-900"
               }`}
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -399,8 +463,8 @@ export default function ViewAllIssuesRoute() {
           <button
             onClick={() => setViewMode("list")}
             className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${viewMode === "list"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-600 hover:text-gray-900"
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-600 hover:text-gray-900"
               }`}
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -413,9 +477,9 @@ export default function ViewAllIssuesRoute() {
 
       {/* Filters */}
       <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Search Input */}
-          <div className="lg:col-span-1">
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Search Location</label>
             <div className="relative">
               <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -431,21 +495,58 @@ export default function ViewAllIssuesRoute() {
             </div>
           </div>
 
-          {/* Location Filter */}
+          {/* Use My Location Button */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
-            <select
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white text-sm"
+            <label className="block text-sm font-medium text-gray-700 mb-2">Location Filter</label>
+            <button
+              onClick={handleUseMyLocation}
+              disabled={isGettingLocation}
+              className="w-full px-3 py-2.5 btn-primary-gradient disabled:bg-blue-400 text-white rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
             >
-              {locations.map((loc, idx) => (
-                <option key={idx} value={loc}>
-                  {loc === "All" ? "All Locations" : loc}
-                </option>
-              ))}
-            </select>
+              {isGettingLocation ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Getting Location...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Use My Location
+                </>
+              )}
+            </button>
+            {userLocation && (
+              <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                Location detected - Filtering by distance
+              </p>
+            )}
           </div>
+
+          {/* Distance Filter - only show if user location is available */}
+          {userLocation && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Distance</label>
+              <select
+                value={distance}
+                onChange={(e) => setDistance(Number(e.target.value))}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white text-sm"
+              >
+                <option value={1}>Within 1 km</option>
+                <option value={2}>Within 2 km</option>
+                <option value={5}>Within 5 km</option>
+                <option value={10}>Within 10 km</option>
+              </select>
+            </div>
+          )}
 
           {/* Status Filter */}
           <div>
@@ -463,6 +564,18 @@ export default function ViewAllIssuesRoute() {
             </select>
           </div>
         </div>
+
+        {/* Clear Location Filter */}
+        {userLocation && (
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <button
+              onClick={() => setUserLocation(null)}
+              className="text-sm text-red-600 hover:text-red-700 font-medium"
+            >
+              Clear location filter
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Issues Display */}
