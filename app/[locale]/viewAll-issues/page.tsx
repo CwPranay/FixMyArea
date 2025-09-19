@@ -3,6 +3,7 @@ import { useIssues } from "@/context/IssueContext";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslations } from "next-intl";
 
 interface Issue {
   _id: string;
@@ -12,13 +13,14 @@ interface Issue {
   images: string[];
   location: {
     type: string;
-    coordinates: [number, number]; // [longitude, latitude] - GeoJSON format
+    coordinates: [number, number];
     address: string;
   };
   createdByName?: string;
 }
 
 export default function ViewAllIssuesRoute() {
+  const t = useTranslations("allIssues");
   const { issues, loading, refreshIssues } = useIssues();
   const { user, isAuthenticated, role } = useAuth();
   const [selectedLocation, setSelectedLocation] = useState<string>("All");
@@ -42,9 +44,7 @@ export default function ViewAllIssuesRoute() {
     const matchesSearch = i.location.address.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === "All" || i.status.toLowerCase() === selectedStatus.toLowerCase();
 
-    // If user location is set, filter by distance
     if (userLocation && i.location.coordinates && i.location.coordinates.length === 2) {
-      // GeoJSON format is [longitude, latitude], so we need to swap for our distance calculation
       const [issueLng, issueLat] = i.location.coordinates;
       const issueDistance = calculateDistance(
         userLocation.lat,
@@ -65,8 +65,8 @@ export default function ViewAllIssuesRoute() {
 
   const handleUseMyLocation = () => {
     if (!navigator.geolocation) {
-      setGeoError("Geolocation is not supported by your browser.");
-      alert("Geolocation is not supported by your browser.");
+      setGeoError(t("geolocationError"));
+      alert(t("geolocationError"));
       return;
     }
 
@@ -84,20 +84,20 @@ export default function ViewAllIssuesRoute() {
       },
       (error) => {
         console.error("Geolocation error:", error);
-        let errorMessage = "Unable to fetch your location.";
+        let errorMessage = t("unknownLocationError");
         
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            errorMessage = "Location access denied. Please enable location permissions.";
+            errorMessage = t("locationAccessDenied");
             break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage = "Location information is unavailable.";
+            errorMessage = t("locationUnavailable");
             break;
           case error.TIMEOUT:
-            errorMessage = "Location request timed out.";
+            errorMessage = t("locationTimeout");
             break;
           default:
-            errorMessage = "An unknown error occurred while retrieving location.";
+            errorMessage = t("unknownLocationError");
             break;
         }
         
@@ -108,7 +108,7 @@ export default function ViewAllIssuesRoute() {
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 300000 // 5 minutes
+        maximumAge: 300000
       }
     );
   };
@@ -132,16 +132,14 @@ export default function ViewAllIssuesRoute() {
       });
 
       if (response.ok) {
-        // Refresh issues to get updated data
         await refreshIssues();
       } else {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update issue status');
+        throw new Error(errorData.message || t("updateStatusError"));
       }
     } catch (error) {
       console.error('Error updating issue status:', error);
-      // You might want to show a toast notification here
-      alert('Failed to update issue status. Please try again.');
+      alert(t("updateStatusError"));
     } finally {
       setUpdatingIssues(prev => {
         const newSet = new Set(prev);
@@ -157,7 +155,7 @@ export default function ViewAllIssuesRoute() {
   }
 
   function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
-    const R = 6371; // Earth radius in km
+    const R = 6371;
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLng = (lng2 - lng1) * (Math.PI / 180);
     const a =
@@ -167,7 +165,7 @@ export default function ViewAllIssuesRoute() {
       Math.sin(dLng / 2) *
       Math.sin(dLng / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // distance in km
+    return R * c;
   }
 
   function getStatusColor(status: string) {
@@ -203,14 +201,14 @@ export default function ViewAllIssuesRoute() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Started to Resolve
+                {t("startedToResolve")}
               </>
             ) : (
               <>
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                In Progress
+                {t("inProgress")}
               </>
             )}
           </button>
@@ -227,14 +225,14 @@ export default function ViewAllIssuesRoute() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Resolving...
+                {t("resolving")}
               </>
             ) : (
               <>
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                Mark Resolved
+                {t("markResolved")}
               </>
             )}
           </button>
@@ -252,14 +250,14 @@ export default function ViewAllIssuesRoute() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Closing...
+                {t("closing")}
               </>
             ) : (
               <>
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
-                Close Issue
+                {t("closeIssue")}
               </>
             )}
           </button>
@@ -305,10 +303,10 @@ export default function ViewAllIssuesRoute() {
 
           <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
             <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-medium text-white flex-shrink-0">
-              {getInitial(issue.createdByName || "A")}
+              {getInitial(issue.createdByName || t("anonymous"))}
             </div>
             <span className="text-xs text-gray-700 font-medium truncate">
-              {issue.createdByName || "Anonymous"}
+              {issue.createdByName || t("anonymous")}
             </span>
           </div>
 
@@ -359,10 +357,10 @@ export default function ViewAllIssuesRoute() {
 
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-medium text-white flex-shrink-0">
-                  {getInitial(issue.createdByName || "A")}
+                  {getInitial(issue.createdByName || t("anonymous"))}
                 </div>
                 <span className="text-sm text-gray-700 font-medium">
-                  {issue.createdByName || "Anonymous"}
+                  {issue.createdByName || t("anonymous")}
                 </span>
               </div>
             </div>
@@ -376,78 +374,70 @@ export default function ViewAllIssuesRoute() {
 
   if (loading) {
     return (
-      <>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header Skeleton */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-            <div>
-              <div className="h-8 w-48 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse mb-2"></div>
-              <div className="h-4 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-            </div>
-            <div className="h-10 w-32 hidden md:flex bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+          <div>
+            <div className="h-8 w-48 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse mb-2"></div>
+            <div className="h-4 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
           </div>
+          <div className="h-10 w-32 hidden md:flex bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded animate-pulse"></div>
+        </div>
 
-          {/* Filter Skeleton */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i}>
-                  <div className="h-4 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-2"></div>
-                  <div className="h-10 w-full bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Cards Skeleton */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-                <div className="aspect-video bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 animate-pulse"></div>
-                <div className="p-5">
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="h-5 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-                    <div className="h-6 w-16 bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
-                  </div>
-                  <div className="space-y-2 mb-4">
-                    <div className="h-4 w-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-                    <div className="h-4 w-3/4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-                  </div>
-                  <div className="h-3 w-24 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-4"></div>
-                  <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
-                    <div className="w-7 h-7 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded-full animate-pulse"></div>
-                    <div className="h-3 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
-                  </div>
-                </div>
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i}>
+                <div className="h-4 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-2"></div>
+                <div className="h-10 w-full bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
               </div>
             ))}
           </div>
         </div>
 
-      </>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+              <div className="aspect-video bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 animate-pulse"></div>
+              <div className="p-5">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="h-5 w-32 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                  <div className="h-6 w-16 bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded animate-pulse"></div>
+                </div>
+                <div className="space-y-2 mb-4">
+                  <div className="h-4 w-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 w-3/4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                </div>
+                <div className="h-3 w-24 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse mb-4"></div>
+                <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
+                  <div className="w-7 h-7 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 rounded-full animate-pulse"></div>
+                  <div className="h-3 w-20 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 
   return (
     <div className="max-w-7xl [font-family:var(--font-poppins)] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
           <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900">
-            All Issues
+            {t("title")}
             {role === 'authority' && (
               <span className="ml-2 px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
-                Authority View
+                {t("authorityView")}
               </span>
             )}
           </h1>
           <p className="text-gray-600 mt-1 text-sm sm:text-base">
-            {filteredIssues.length} {filteredIssues.length === 1 ? 'issue' : 'issues'} found
+            {t("issuesFound", { count: filteredIssues.length })}
           </p>
         </div>
 
-        {/* View Toggle */}
-        <div className="hidden  md:flex items-center bg-gray-100 rounded-lg p-1 w-fit">
+        <div className="hidden md:flex items-center bg-gray-100 rounded-lg p-1 w-fit">
           <button
             onClick={() => setViewMode("grid")}
             className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${viewMode === "grid"
@@ -458,7 +448,7 @@ export default function ViewAllIssuesRoute() {
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
-            <span className="hidden xs:inline">Grid</span>
+            <span className="hidden xs:inline">{t("gridView")}</span>
           </button>
           <button
             onClick={() => setViewMode("list")}
@@ -470,24 +460,22 @@ export default function ViewAllIssuesRoute() {
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
             </svg>
-            <span className="hidden xs:inline">List</span>
+            <span className="hidden xs:inline">{t("listView")}</span>
           </button>
         </div>
       </div>
 
-      {/* Filters */}
       <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Search Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Search Location</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t("searchLocation")}</label>
             <div className="relative">
               <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input
                 type="text"
-                placeholder="Search by city..."
+                placeholder={t("searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 text-sm"
@@ -495,9 +483,8 @@ export default function ViewAllIssuesRoute() {
             </div>
           </div>
 
-          {/* Use My Location Button */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Location Filter</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t("locationFilter")}</label>
             <button
               onClick={handleUseMyLocation}
               disabled={isGettingLocation}
@@ -509,7 +496,7 @@ export default function ViewAllIssuesRoute() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Getting Location...
+                  {t("gettingLocation")}
                 </>
               ) : (
                 <>
@@ -517,7 +504,7 @@ export default function ViewAllIssuesRoute() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  Use My Location
+                  {t("useMyLocation")}
                 </>
               )}
             </button>
@@ -526,59 +513,55 @@ export default function ViewAllIssuesRoute() {
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                Location detected - Filtering by distance
+                {t("locationDetected")}
               </p>
             )}
           </div>
 
-          {/* Distance Filter - only show if user location is available */}
           {userLocation && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Distance</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t("distance")}</label>
               <select
                 value={distance}
                 onChange={(e) => setDistance(Number(e.target.value))}
                 className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white text-sm"
               >
-                <option value={1}>Within 1 km</option>
-                <option value={2}>Within 2 km</option>
-                <option value={5}>Within 5 km</option>
-                <option value={10}>Within 10 km</option>
+                <option value={1}>{t("within1km")}</option>
+                <option value={2}>{t("within2km")}</option>
+                <option value={5}>{t("within5km")}</option>
+                <option value={10}>{t("within10km")}</option>
               </select>
             </div>
           )}
 
-          {/* Status Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t("status")}</label>
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
               className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white text-sm"
             >
-              <option value="All">All Statuses</option>
-              <option value="open">Open</option>
-              <option value="in-progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-              <option value="closed">Closed</option>
+              <option value="All">{t("allStatuses")}</option>
+              <option value="open">{t("open")}</option>
+              <option value="in-progress">{t("inProgress")}</option>
+              <option value="resolved">{t("resolved")}</option>
+              <option value="closed">{t("closed")}</option>
             </select>
           </div>
         </div>
 
-        {/* Clear Location Filter */}
         {userLocation && (
           <div className="mt-4 pt-4 border-t border-gray-200">
             <button
               onClick={() => setUserLocation(null)}
               className="text-sm text-red-600 hover:text-red-700 font-medium"
             >
-              Clear location filter
+              {t("clearLocationFilter")}
             </button>
           </div>
         )}
       </div>
 
-      {/* Issues Display */}
       {filteredIssues.length > 0 ? (
         <div className={
           viewMode === "grid"
@@ -600,9 +583,9 @@ export default function ViewAllIssuesRoute() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No issues found</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t("noIssuesFound")}</h3>
           <p className="text-gray-600 max-w-sm mx-auto">
-            Try adjusting your search criteria or filters to find what you're looking for.
+            {t("noIssuesDescription")}
           </p>
         </div>
       )}

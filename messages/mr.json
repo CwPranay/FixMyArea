@@ -168,5 +168,45 @@
       "successMessage": "धन्यवाद! तुमची तक्रार यशस्वीरित्या नोंदवण्यात आली आहे.",
       "validationError": "कृपया सर्व आवश्यक फील्ड भरा"
     }
-  }
+  },
+  "allIssues": {
+      "title": "सर्व समस्या",
+      "authorityView": "अधिकारी दृश्य",
+      "issuesFound": "{count} {count, plural, one {समस्या} other {समस्या}} सापडल्या",
+      "gridView": "ग्रिड",
+      "listView": "यादी",
+      "searchLocation": "स्थान शोधा",
+      "searchPlaceholder": "शहरानुसार शोधा...",
+      "locationFilter": "स्थान फिल्टर",
+      "useMyLocation": "माझ्या ठिकाणाहून शोधा",
+      "gettingLocation": "स्थान मिळवले जात आहे...",
+      "locationDetected": "स्थान आढळले - अंतरानुसार फिल्टरिंग",
+      "distance": "अंतर",
+      "within1km": "1 किमी मध्ये",
+      "within2km": "2 किमी मध्ये",
+      "within5km": "5 किमी मध्ये",
+      "within10km": "10 किमी मध्ये",
+      "status": "स्थिती",
+      "allStatuses": "सर्व स्थिती",
+      "open": "उघडे",
+      "inProgress": "चालू आहे",
+      "resolved": "सोडवले",
+      "closed": "बंद",
+      "clearLocationFilter": "स्थान फिल्टर साफ करा",
+      "noIssuesFound": "कोणतीही समस्या सापडली नाही",
+      "noIssuesDescription": "तुम्ही काय शोधत आहात ते शोधण्यासाठी तुमची शोध निकष किंवा फिल्टर समायोजित करण्याचा प्रयत्न करा.",
+      "startedToResolve": "सोडवणे सुरू केले",
+      "resolving": "सोडवले जात आहे...",
+      "markResolved": "सोडवलेले चिन्हांकित करा",
+      "closing": "बंद केले जात आहे...",
+      "closeIssue": "समस्या बंद करा",
+      "anonymous": "अनामिक",
+      "geolocationError": "तुमच्या ब्राउझरद्वारे जिओलोकेशन समर्थित नाही.",
+      "locationAccessDenied": "स्थान प्रवेश नाकारला. कृपया स्थान परवानग्या सक्षम करा.",
+      "locationUnavailable": "स्थान माहिती उपलब्ध नाही.",
+      "locationTimeout": "स्थान विनंती वेळ संपली.",
+      "unknownLocationError": "स्थान मिळवताना एक अज्ञात त्रुटी आली.",
+      "updateStatusError": "समस्या स्थिती अद्यतनित करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा."
+    }
+  
 }
