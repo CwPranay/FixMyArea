@@ -218,5 +218,48 @@
       "locationTimeout": "Location request timed out.",
       "unknownLocationError": "An unknown error occurred while retrieving location.",
       "updateStatusError": "Failed to update issue status. Please try again."
+    },
+  "Testimonials": {
+    "title": "Community Stories",
+    "subtitle": "See what our users are saying about FixMyArea",
+    "user1": {
+      "name": "Rahul Kumar",
+      "location": "Andheri, Mumbai",
+      "quote": "I reported a broken streetlight and it was fixed within 48 hours. The app made the process incredibly simple."
+    },
+    "user2": {
+      "name": "Sanya Patel",
+      "location": "Borivali, Mumbai",
+      "quote": "Being able to track the progress of my complaint gives me confidence that my voice is being heard."
+    },
+    "user3": {
+      "name": "Amit Mehta",
+      "location": "Thane, Mumbai",
+      "quote": "The multi-language support means everyone in our community can participate in making it better."
     }
+  },
+  "FAQ": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Get answers to common questions about using FixMyArea",
+    "anonymity": {
+      "question": "Can I report issues anonymously?",
+      "answer": "While you need an account to report issues, but if you report without login in app your report will be anonyms to others also your personal information is never shared publicly. Only your area/locality is shown with the reported issue."
+    },
+    "process": {
+      "question": "How does the reporting process work?",
+      "answer": "Simply select the issue type, add photos, mark the location on the map, and provide a description. Our system automatically routes it to the relevant authority."
+    },
+    "languages": {
+      "question": "What languages are supported?",
+      "answer": "Currently, we support English, Hindi, and Marathi. You can switch languages anytime from the settings menu."
+    },
+    "response": {
+      "question": "How long until I get a response?",
+      "answer": "Most issues receive initial acknowledgment within 24 hours. Resolution time varies based on the type and complexity of the issue."
+    },
+    "verification": {
+      "question": "How are issues verified?",
+      "answer": "Local authorities verify reported issues through photo evidence and site visits when necessary. Community members can also upvote to confirm existing issues."
+    }
+  }
 }
