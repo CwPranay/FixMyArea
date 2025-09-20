@@ -63,7 +63,7 @@ export default function ImpactStats() {
       icon: '⚡',
     },
     {
-      value: 10000,
+      value: 1000,
       suffix: '+',
       label: t('citizensHelped'),
       icon: '👥',
