@@ -17,7 +17,7 @@ export default function HowItWorksSection() {
   if (role === "admin") return null;
 
   return (
-    <section className="py-16 px-4 sm:px-6 bg-gray-50 [font-family:var(--font-poppins)]">
+    <section className="py-16 howitworks px-4 sm:px-6 bg-gray-50 [font-family:var(--font-poppins)]">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {t('title')}

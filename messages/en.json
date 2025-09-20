@@ -261,5 +261,26 @@
       "question": "How are issues verified?",
       "answer": "Local authorities verify reported issues through photo evidence and site visits when necessary. Community members can also upvote to confirm existing issues."
     }
+  },
+  "Footer": {
+    "about": {
+      "title": "About FixMyArea",
+      "description": "A community-driven platform for reporting and resolving local civic issues. Together, we can make our neighborhoods better."
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "home": "Home",
+      "howItWorks": "How It Works",
+      "features": "Features",
+      "reportIssue": "Report Issue",
+      "contact": "Contact"
+    },
+    "contact": {
+      "title": "Contact Us"
+    },
+    "language": {
+      "title": "Choose Language"
+    },
+    "copyright": "All rights reserved."
   }
 }

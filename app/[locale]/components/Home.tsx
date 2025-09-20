@@ -7,6 +7,7 @@ import Features from './FeaturesSection';
 import ImpactStats from './Impact';
 import TestimonialsSection from './TestimonialsSection';
 import FaqSection from './FaqSection';
+import Footer from './Footer';
 
 export default function HomeClient() {
   return (
@@ -17,6 +18,7 @@ export default function HomeClient() {
       <ImpactStats/>
       <TestimonialsSection />
       <FaqSection />
+      <Footer/>
     </>
   );
 }
