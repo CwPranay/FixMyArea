@@ -3,7 +3,7 @@
 
 import HeroSection from './Herosection';
 import HowItWorksSection from './HowItWorks';
-import RecentIssues from './RecentIssues';
+import RecentIssues from './FeaturesSection';
 
 export default function HomeClient() {
   return (

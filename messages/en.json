@@ -41,25 +41,24 @@
       "description": "The local authority resolves the issue."
     }
   },
-  "RecentIssues": {
-    "title": "Recent Issues",
-    "viewAll": "View All Issues",
-    "issues": {
-      "pothole": {
-        "title": "Pothole on Main Street",
-        "description": "Damaging vehicles. Needs repair.",
-        "location": "Andheri West, Mumbai"
-      },
-      "streetlight": {
-        "title": "Streetlight Outage",
-        "description": "Streetlight not working for 2 weeks.",
-        "location": "Juhu, Mumbai"
-      },
-      "garbageOverflow": {
-        "title": "Garbage Overflow",
-        "description": "No collection for 3 days.",
-        "location": "Bandra, Mumbai"
-      }
+  "Features": {
+    "title": "Key Features",
+    "subtitle": "Everything you need to report, track, and resolve local issues.",
+    "locationBased": {
+      "title": "Location-Based Reports",
+      "description": "Pinpoint exact problem areas using GPS and maps."
+    },
+    "multiLanguage": {
+      "title": "Multi-Language Support",
+      "description": "Report issues in English, Hindi, or Marathi."
+    },
+    "photoEvidence": {
+      "title": "Photo Evidence",
+      "description": "Attach photos to strengthen your complaint."
+    },
+    "trackProgress": {
+      "title": "Track Progress",
+      "description": "Stay updated on your report until it's resolved."
     }
   },
   "RoleModal": {
