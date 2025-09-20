@@ -28,17 +28,18 @@
   },
   "HowItWorks": {
     "title": "How It Works",
+    "subtitle": "Follow these simple steps to report and track civic issues in your area",
     "step1": {
-      "title": "Report an Issue",
-      "description": "Log any issue in your area."
+      "title": "Locate Issue",
+      "description": "Pin the exact location of the civic issue on our interactive map"
     },
     "step2": {
-      "title": "Community Feedback",
-      "description": "Other users can comment on your report."
+      "title": "Report Details",
+      "description": "Add photos and describe the issue in your preferred language"
     },
     "step3": {
-      "title": "Issue Resolved",
-      "description": "The local authority resolves the issue."
+      "title": "Track Progress",
+      "description": "Get real-time updates as authorities work on the solution"
     }
   },
   "Features": {

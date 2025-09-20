@@ -9,6 +9,10 @@ import TestimonialsSection from './TestimonialsSection';
 import FaqSection from './FaqSection';
 import Footer from './Footer';
 
+const commonSectionClasses = "section-padding [font-family:var(--font-poppins)]";
+const lightSection = `${commonSectionClasses} bg-slate-50`;
+const darkSection = `${commonSectionClasses} bg-white`;
+
 export default function HomeClient() {
   return (
     <>

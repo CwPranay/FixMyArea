@@ -42,7 +42,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-b from-white to-gray-50 border-t border-gray-100 pt-12 pb-6 [font-family:var(--font-poppins)]">
+    <footer className="bg-white border-t border-slate-200 pt-16 pb-8 [font-family:var(--font-poppins)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* About Section */}
@@ -74,7 +74,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 hover:text-blue-600 transition-colors"
+                    className="text-blue-600 hover:text-blue-700 transition-colors"
                   >
                     {social.icon}
                   </a>

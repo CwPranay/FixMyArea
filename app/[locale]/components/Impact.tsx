@@ -98,7 +98,7 @@ export default function ImpactStats() {
             >
               <div className="text-3xl mb-2">{stat.icon}</div>
               <div className="flex items-center justify-center space-x-1">
-                <Counter value={stat.value} />
+                <Counter value={stat.value}  />
                 <span className="text-4xl sm:text-5xl font-bold text-blue-600">
                   {stat.suffix}
                 </span>

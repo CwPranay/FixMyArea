@@ -1,13 +1,20 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  --background:  rgb(249 250 251);
-  --foreground: #ffffff;
-  --primary-btn: linear-gradient(to right, #3b82f6, #06b6d4); 
-  --secondary-btn: linear-gradient(to right, #ffffff, #e2e8f0);
-
-
+  --primary: #2563eb;    /* blue-600 */
+  --primary-light: #3b82f6;  /* blue-500 */
+  --primary-dark: #1d4ed8;   /* blue-700 */
+  --accent: #0ea5e9;     /* sky-500 */
+  --background: #f8fafc;  /* slate-50 */
+  --text: #1e293b;       /* slate-800 */
+  --text-light: #64748b; /* slate-500 */
 }
+
+
 button{
   cursor :pointer;
 }

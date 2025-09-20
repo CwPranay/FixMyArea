@@ -19,11 +19,14 @@ export default function HowItWorksSection() {
   return (
     <section className="py-16 howitworks px-4 sm:px-6 bg-gray-50 [font-family:var(--font-poppins)]">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
+        <h2 className="text-2xl sm:text-3xl  font-bold text-center mb-4 text-gray-900">
           {t('title')}
         </h2>
+        <p className="text-center mb-12 text-gray-700">
+          {t('subtitle')}
+        </p>
 
-        <div className="relative">
+        <div className="relative mt-16">
           {/* Timeline line - hidden on mobile */}
           <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-blue-200 -translate-y-1/2" />
 
@@ -38,7 +41,7 @@ export default function HowItWorksSection() {
                 className="relative"
               >
                 {/* Step number bubble */}
-                <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl font-bold mb-4 mx-auto md:mb-8 relative z-10">
+                <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold mb-4 mx-auto md:mb-8 relative z-10">
                   {index + 1}
                 </div>
 
