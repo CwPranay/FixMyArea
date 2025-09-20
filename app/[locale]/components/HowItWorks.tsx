@@ -1,47 +1,59 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import {useAuth} from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
+import { motion } from 'framer-motion';
 
 export default function HowItWorksSection() {
   const t = useTranslations('HowItWorks');
-  const {role} = useAuth();
+  const { role } = useAuth();
 
   const steps = [
-    { key:"step1", icon: '📍' },
-    { key:"step2", icon: '📝' },
-    { key:"step3", icon: '⚙️' }
+    { key: "step1", icon: '📍' },
+    { key: "step2", icon: '📝' },
+    { key: "step3", icon: '⚙️' }
   ];
-  if(role==="admin"){
-    return null
-  }
 
-  else
+  if (role === "admin") return null;
+
   return (
-    <section
-      className="py-12 mt-14 lg:mt-0 px-4 sm:px-6 md:px-8 bg-gray-50 [font-family:var(--font-poppins)]"
-      id="how-it-works"
-    >
-      <div className="max-w-6xl mx-auto text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 text-gray-900">
+    <section className="py-16 px-4 sm:px-6 bg-gray-50 [font-family:var(--font-poppins)]">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {t('title')}
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center p-6 sm:p-8 bg-white rounded-2xl shadow-md transition hover:shadow-lg"
-            >
-              <div className="text-5xl mb-4">{step.icon}</div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 text-gray-800 text-center">
-                {t(`${step.key}.title`)}
-              </h3>
-              <p className="text-gray-600 text-sm sm:text-base text-center leading-relaxed">
-                {t(`${step.key}.description`)}
-              </p>
-            </div>
-          ))}
+        <div className="relative">
+          {/* Timeline line - hidden on mobile */}
+          <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-blue-200 -translate-y-1/2" />
+
+          <div className="grid md:grid-cols-3 gap-8 relative">
+            {steps.map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                className="relative"
+              >
+                {/* Step number bubble */}
+                <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl font-bold mb-4 mx-auto md:mb-8 relative z-10">
+                  {index + 1}
+                </div>
+
+                <div className="text-center">
+                  <div className="text-4xl mb-4">{step.icon}</div>
+                  <h3 className="text-lg font-semibold mb-2 text-gray-800">
+                    {t(`${step.key}.title`)}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed max-w-xs mx-auto">
+                    {t(`${step.key}.description`)}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -3,14 +3,16 @@
 
 import HeroSection from './Herosection';
 import HowItWorksSection from './HowItWorks';
-import RecentIssues from './FeaturesSection';
+import Features from './FeaturesSection';
+import ImpactStats from './Impact';
 
 export default function HomeClient() {
   return (
     <>
       <HeroSection />
       <HowItWorksSection />
-      <RecentIssues />
+      <Features/>
+      <ImpactStats/>
     </>
   );
 }

@@ -61,6 +61,14 @@
       "description": "Stay updated on your report until it's resolved."
     }
   },
+  "ImpactStats": {
+    "title": "Making a Real Difference",
+    "subtitle": "FixMyArea empowers citizens to turn complaints into real actions.",
+    "unreported": "Local issues go unreported without citizen action",
+    "fasterResolution": "Faster resolution when issues are tracked collectively",
+    "citizensHelped": "Citizens already benefited from reporting",
+    "availability": "Always available to report issues"
+  },
   "RoleModal": {
     "signup": "Sign up as",
     "user": "User",
