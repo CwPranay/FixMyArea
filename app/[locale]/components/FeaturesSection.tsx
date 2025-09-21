@@ -7,10 +7,10 @@ export default function Features() {
   const t = useTranslations('Features');
 
   const features = [
-    { key: 'locationBased', icon: '📍', color: 'from-blue-600 to-blue-700' },
-    { key: 'multiLanguage', icon: '🌐', color: 'from-blue-600 to-blue-700' },
-    { key: 'photoEvidence', icon: '📸', color: 'from-blue-600 to-blue-700' },
-    { key: 'trackProgress', icon: '📊', color: 'from-blue-600 to-blue-700' }
+    { key: 'locationBased', icon: '📍', color: 'blue-gradient' },
+    { key: 'multiLanguage', icon: '🌐', color: 'blue-gradient' },
+    { key: 'photoEvidence', icon: '📸', color: 'blue-gradient' },
+    { key: 'trackProgress', icon: '📊', color: 'blue-gradient' }
   ];
 
   return (

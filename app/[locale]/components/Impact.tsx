@@ -39,7 +39,7 @@ function Counter({ value, duration = 2 }: { value: number; duration?: number }) 
     <motion.span
       ref={ref}
       animate={controls}
-      className="text-4xl sm:text-5xl font-bold text-blue-600"
+      className="text-4xl sm:text-5xl font-bold blue-gradient-text"
     >
       {count}
     </motion.span>
@@ -97,9 +97,9 @@ export default function ImpactStats() {
               className="text-center"
             >
               <div className="text-3xl mb-2">{stat.icon}</div>
-              <div className="flex items-center justify-center space-x-1">
+              <div className="flex items-center blue-gradient-text justify-center space-x-1">
                 <Counter value={stat.value}  />
-                <span className="text-4xl sm:text-5xl font-bold text-blue-600">
+                <span className="text-4xl sm:text-5xl font-bold blue-gradient-text">
                   {stat.suffix}
                 </span>
               </div>

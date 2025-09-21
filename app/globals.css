@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
   --primary: #2563eb;    /* blue-600 */
   --primary-light: #3b82f6;  /* blue-500 */
@@ -62,6 +58,14 @@ body{
   border: none;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
   transition: all 0.3s ease;
+}
+.blue-gradient{
+   background-image: linear-gradient(to right, #3b82f6, #06b6d4);
+}
+.blue-gradient-text{
+  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .btn-primary-gradient:hover {

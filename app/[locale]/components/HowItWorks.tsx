@@ -41,7 +41,7 @@ export default function HowItWorksSection() {
                 className="relative"
               >
                 {/* Step number bubble */}
-                <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold mb-4 mx-auto md:mb-8 relative z-10">
+                <div className="w-12 h-12 rounded-full blue-gradient text-white flex items-center justify-center text-xl font-bold mb-4 mx-auto md:mb-8 relative z-10">
                   {index + 1}
                 </div>
 
