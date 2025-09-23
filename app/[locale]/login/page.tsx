@@ -32,7 +32,10 @@ export default function LoginPage() {
         console.log("Redirecting with locale:", locale);
 
         router.push(`/${locale}/admin/dashboard`);
-      } else {
+      }
+      
+      
+      else {
         router.push(`/${locale}`);
       }
     }

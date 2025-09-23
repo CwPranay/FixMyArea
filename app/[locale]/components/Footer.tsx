@@ -74,7 +74,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-700 transition-colors"
+                    className="text-blue-500 hover:text-blue-600 transition-colors"
                   >
                     {social.icon}
                   </a>

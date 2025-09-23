@@ -51,7 +51,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
     ...(!user || user?.role === "user"
       ? [{ name: t('reportIssue'), href: `/${locale}/report-issue` }]
       : []),
-       ...(!user || user?.role === "user"
+       ...( user?.role === "user"
       ? [{ name: t('myIssue'), href: `/${locale}/my-issue` }]
       : []),
     { name: t('viewAllIssue'), href: `/${locale}/viewAll-issues` }
