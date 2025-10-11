@@ -136,6 +136,18 @@
       "maxFileSize": "Maximum file size",
       "maxFiles": "Maximum files",
       "allowedFormats": "Allowed formats"
+    },
+    "ForgetPassword": {
+      "title": "Reset Password",
+      "description": "Enter your email address and we'll send you a link to reset your password",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "resetButton": "Send Reset Link",
+      "sending": "Sending...",
+      "resetLinkSent": "Password reset link has been sent to your email",
+      "resetLinkError": "Failed to send reset link. Please try again",
+      "backToLogin": "Back to Login",
+      "secureReset": "Secure Password Reset"
     }
   },
   "reportIssue": {
