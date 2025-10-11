@@ -3,9 +3,12 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
 
 export default function FaqSection() {
   const t = useTranslations('FAQ');
+  const {role} = useAuth();
+ 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const faqs = [
@@ -19,6 +22,8 @@ export default function FaqSection() {
   const toggleFaq = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+   if (role === "admin") return null;
 
   return (
     <section className="py-12 px-4 sm:px-6 bg-white [font-family:var(--font-poppins)]">

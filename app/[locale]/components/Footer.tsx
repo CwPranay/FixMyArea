@@ -3,10 +3,12 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Footer() {
   const t = useTranslations('Footer');
   const pathname = usePathname();
+  const {role} = useAuth();
 
   const languages = [
     { code: 'en', name: 'English' },
@@ -40,7 +42,7 @@ export default function Footer() {
       href: 'https://linkedin.com/company/fixmyarea' 
     }
   ];
-
+  if (role === "admin") return null;
   return (
     <footer className="bg-white border-t border-slate-200 pt-16 pb-8 [font-family:var(--font-poppins)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">

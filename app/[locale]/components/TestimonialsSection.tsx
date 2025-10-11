@@ -2,9 +2,12 @@
 
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
 
 export default function TestimonialsSection() {
   const t = useTranslations('Testimonials');
+  const {role} = useAuth();
+  if (role === "admin") return null;
 
   const testimonials = [
     { key: 'user1', initials: 'RK', color: 'from-blue-400 to-blue-600' },

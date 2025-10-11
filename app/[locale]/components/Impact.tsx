@@ -4,10 +4,13 @@ import { useTranslations } from 'next-intl';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 function Counter({ value, duration = 2 }: { value: number; duration?: number }) {
   const controls = useAnimation();
   const [count, setCount] = useState(0);
+  
+  
   const [ref, inView] = useInView({ triggerOnce: true });
 
   useEffect(() => {
@@ -75,7 +78,8 @@ export default function ImpactStats() {
       icon: '🌐',
     },
   ];
-
+  const {role} = useAuth();
+   if (role === "admin") return null;
   return (
     <section className="py-16 px-4 sm:px-6 bg-gray-50 [font-family:var(--font-poppins)]">
       <div className="max-w-6xl mx-auto">

@@ -187,6 +187,7 @@
       "issuesFound": "{count} {count, plural, one {issue} other {issues}} found",
       "gridView": "Grid",
       "listView": "List",
+      "noImageUploaded": "No image uploaded",
       "searchLocation": "Search Location",
       "searchPlaceholder": "Search by city...",
       "locationFilter": "Location Filter",

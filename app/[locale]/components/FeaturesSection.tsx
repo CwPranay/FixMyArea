@@ -2,9 +2,13 @@
 
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Features() {
   const t = useTranslations('Features');
+  const {role} = useAuth();
+
+
 
   const features = [
     { key: 'locationBased', icon: '📍', color: 'blue-gradient' },
@@ -12,7 +16,8 @@ export default function Features() {
     { key: 'photoEvidence', icon: '📸', color: 'blue-gradient' },
     { key: 'trackProgress', icon: '📊', color: 'blue-gradient' }
   ];
-
+    if (role === "admin") return null;
+    
   return (
     <section className="py-6 sm:py-12 px-4 sm:px-6 bg-gradient-to-br from-slate-50 via-white to-blue-50 [font-family:var(--font-poppins)]">
       <div className="max-w-7xl mx-auto">
