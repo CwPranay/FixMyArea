@@ -12,6 +12,8 @@ const userSchema = new Schema({
     enum: ["pending", "approved", "rejected"],
     default: "pending"
   }, // Verification status
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 }, { timestamps: true });
 
 export default models.User || model("User", userSchema);
