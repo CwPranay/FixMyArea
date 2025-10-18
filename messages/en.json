@@ -145,10 +145,27 @@
       "resetButton": "Send Reset Link",
       "sending": "Sending...",
       "resetLinkSent": "Password reset link has been sent to your email",
-      "resetLinkError": "Failed to send reset link. Please try again",
+       "serverError": "Something went wrong. Please try again",
+      "userNotFound": "No user found with this email",
       "backToLogin": "Back to Login",
       "secureReset": "Secure Password Reset"
+    } ,
+    "ResetPassword": {
+      "title": "Set New Password",
+      "description": "Enter your new password below to reset it",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Enter your new password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your new password",
+      "resetButton": "Reset Password",
+      "resetting": "Resetting...",
+      "passwordResetSuccess": "Your password has been reset successfully. You can now log in.",
+      "backToLogin": "Back to Login",
+      "invalidToken": "The reset link is invalid or has expired.",
+      "serverError": "Something went wrong. Please try again.",
+      "passwordMismatch": "Passwords do not match"
     }
+
   },
   "reportIssue": {
     "title": "Report an Issue",

@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export default function ForgetPassword() {
   const t = useTranslations('Auth.ForgetPassword');
   const locale = useLocale();
+  
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -18,13 +20,21 @@ export default function ForgetPassword() {
     setMessage("");
 
     try {
-      const res = await axios.post("/api/auth/forget-password", { email });
-      setMessage(t('resetLinkSent'));
-    } catch (error: any) {
-      setMessage(error.response?.data?.error || t('resetLinkError'));
-    } finally {
-      setLoading(false);
+      const res = await fetch("/api/auth/forget-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email,locale }),
+      });
+
+      const data = await res.json();
+      // just pass the code directly, no double prefix
+      setMessage(t(data.code || "serverError"));
+
+    } catch (err: any) {
+      setMessage(t("serverError"));
     }
+
+    setLoading(false);
   };
 
   return (
@@ -47,11 +57,10 @@ export default function ForgetPassword() {
           </div>
 
           {message && (
-            <div className={`p-3 rounded-lg text-sm text-center mb-4 ${
-              message === t('resetLinkSent')
-                ? "bg-green-50 text-green-700 border border-green-200"
-                : "bg-red-50 text-red-700 border border-red-200"
-            }`}>
+            <div className={`p-3 rounded-lg text-sm text-center mb-4 ${message === t('resetLinkSent')
+              ? "bg-green-50 text-green-700 border border-green-200"
+              : "bg-red-50 text-red-700 border border-red-200"
+              }`}>
               {message}
             </div>
           )}

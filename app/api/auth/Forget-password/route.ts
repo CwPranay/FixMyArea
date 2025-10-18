@@ -5,41 +5,48 @@ import crypto from "crypto";
 const nodemailer = require("nodemailer");
 
 
+
 export async function POST(request: Request) {
-  await connectDB();
-    const { email } = await request.json();
+    
+    await connectDB();
+    
+    const { email,locale } = await request.json();
     try {
-        const user = await User.findOne({email});
-        if(!user){
-            return NextResponse.json({error:"User not found"},{status:404});
+        const user = await User.findOne({ email });
+        if (!user) {
+            return NextResponse.json({ code: "userNotFound" }, { status: 404 });
         }
-        const token =crypto.randomBytes(32).toString("hex");
+        const token = crypto.randomBytes(32).toString("hex");
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
         await user.save();
 
-        const resetLink=`${process.env.NEXT_PUBLIC_BASE_URL}/reset-password/${token}`;
-         const transporter=nodemailer.createTransport({
-            service:"Gmail",
-            auth:{
-                user:process.env.EMAIL,
-                pass:process.env.PASSWORD
+        const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}/reset-password/${token}`;
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD
             }
-         })
+        })
 
-         await transporter.sendMail({
-            from:process.env.EMAIL,
-            to:user.email,
+        await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: user.email,
             subject: "FixMyArea Password Reset",
-            html: `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password. This link is valid for 1 hour.</p>`
-         })
+            text: `You requested a password reset. Click this link: ${resetLink}. This link is valid for 1 hour.`,
+            html: `<p>You requested a password reset. Click <a href="${resetLink}">here</a>. This link is valid for 1 hour.</p>`,
+        });
 
-         return NextResponse.json({message:"Password reset link sent to your email"},{status:200});
+
+        return NextResponse.json({ code: "resetLinkSent" }, { status: 200 });
 
     }
-    catch(err){
-        return NextResponse.json({error:"Internal Server Error"},{status:500});
+    catch (err: any) {
+        console.error("Error in forgot-password route:", err);
+        return NextResponse.json({ code: "serverError" }, { status: 500 });
     }
+
 
 }
 
