@@ -3,11 +3,11 @@ import {connectDB} from '@/lib/db';
 import User from '@/models/user';
 import bcrypt from 'bcryptjs';
 
-export async function POST(request: Request, {params}: {params: {token: string}}) {
+export async function POST(request: Request,  context: { params: Promise<{ token: string }> }) {
    
     await connectDB();
     
-    const {token} =await params;
+    const { token } = await context.params;
     const {password}=await request.json();
     try{
 
