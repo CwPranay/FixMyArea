@@ -60,4 +60,8 @@ export async function POST(request: Request) {
 
 }
 
+export async function GET() {
+  return NextResponse.json({ msg: "GET not allowed" }, { status: 405 });
+}
+
 
