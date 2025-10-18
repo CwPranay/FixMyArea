@@ -7,10 +7,10 @@ const nodemailer = require("nodemailer");
 
 
 export async function POST(request: Request) {
-    
+
     await connectDB();
-    
-    const { email,locale } = await request.json();
+
+    const { email, locale } = await request.json();
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -33,9 +33,19 @@ export async function POST(request: Request) {
         await transporter.sendMail({
             from: process.env.EMAIL,
             to: user.email,
-            subject: "FixMyArea Password Reset",
-            text: `You requested a password reset. Click this link: ${resetLink}. This link is valid for 1 hour.`,
-            html: `<p>You requested a password reset. Click <a href="${resetLink}">here</a>. This link is valid for 1 hour.</p>`,
+            subject: `FixMyArea Password Reset - ${Date.now()}`,
+
+            html: `
+    <div style="font-family:sans-serif;font-size:15px;color:#333;">
+      <p>You requested a password reset for your FixMyArea account.</p>
+      <p>
+        Click <a href="${resetLink}" style="color:#007bff;">here</a> to reset your password.<br />
+        Or copy and paste this link into your browser:<br />
+        <a href="${resetLink}" style="color:#007bff;">${resetLink}</a>
+      </p>
+      <p>This link is valid for 1 hour.</p>
+    </div>
+  `,
         });
 
 

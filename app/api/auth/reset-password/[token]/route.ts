@@ -6,7 +6,8 @@ import bcrypt from 'bcryptjs';
 export async function POST(request: Request, {params}: {params: {token: string}}) {
    
     await connectDB();
-    const {token} = params;
+    
+    const {token} =await params;
     const {password}=await request.json();
     try{
 
@@ -22,7 +23,7 @@ export async function POST(request: Request, {params}: {params: {token: string}}
         user.resetPasswordToken=undefined;
         user.resetPasswordExpires=undefined;
         await user.save();
-        return NextResponse.json({code:"passswordResetSuccess"},{status:200});
+        return NextResponse.json({code:"passwordResetSuccess"},{status:200});
     }
     catch(err){
         return NextResponse.json({code:"serverError"},{status:500});
