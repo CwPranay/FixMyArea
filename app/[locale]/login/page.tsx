@@ -160,7 +160,7 @@ export default function LoginPage() {
             {/* Forgot Password Link */}
             <div className="text-right">
               <Link
-                href={`/${locale}/ForgetPassword`}
+                href={`/${locale}/forget-password`}
                 className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
               >
                 {t('forgotPassword')}
