@@ -349,13 +349,16 @@ export default function Header({
                     <p className="text-sm font-medium text-gray-900">{user.name}</p>
                     <p className="text-xs text-gray-500">{user.email}</p>
                   </div>
-                  <Link
-                    href="/profile"
-                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => setShowDropdown(false)}
+                  <button
+                    onClick={() => {
+                      setShowDropdown(false);
+                      router.push(`/${locale}/profile-settings`);
+                    }}
+                    className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     {t('profile.settings')}
-                  </Link>
+                  </button>
+
                   <button
                     onClick={handleLogout}
                     className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
