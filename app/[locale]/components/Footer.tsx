@@ -64,7 +64,8 @@ export default function Footer() {
             </h3>
             <div className="space-y-3 text-sm text-gray-600">
               <p className="flex items-center gap-2">
-                <span className="text-blue-500">📧</span> info@fixmyarea.com
+                <span className="text-blue-500">📧</span> 
+                                              infofixmyarea@gmail.com
               </p>
               <p className="flex items-center gap-2">
                 <span className="text-blue-500">📞</span> 1800-FIX-AREA

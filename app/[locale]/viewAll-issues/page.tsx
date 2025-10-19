@@ -33,6 +33,8 @@ export default function ViewAllIssuesRoute() {
   const [geoError, setGeoError] = useState<string | null>(null);
   const [isGettingLocation, setIsGettingLocation] = useState<boolean>(false);
 
+
+
   const locations = ["All", ...new Set(
     issues
       .map((i: Issue) => i.location?.address)
@@ -43,6 +45,7 @@ export default function ViewAllIssuesRoute() {
     const matchesLocation = selectedLocation === "All" || i.location.address === selectedLocation;
     const matchesSearch = i.location.address.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === "All" || i.status.toLowerCase() === selectedStatus.toLowerCase();
+
 
     if (userLocation && i.location.coordinates && i.location.coordinates.length === 2) {
       const [issueLng, issueLat] = i.location.coordinates;
@@ -85,7 +88,7 @@ export default function ViewAllIssuesRoute() {
       (error) => {
         console.error("Geolocation error:", error);
         let errorMessage = t("unknownLocationError");
-        
+
         switch (error.code) {
           case error.PERMISSION_DENIED:
             errorMessage = t("locationAccessDenied");
@@ -100,7 +103,7 @@ export default function ViewAllIssuesRoute() {
             errorMessage = t("unknownLocationError");
             break;
         }
-        
+
         setGeoError(errorMessage);
         alert(errorMessage);
         setIsGettingLocation(false);
@@ -268,9 +271,12 @@ export default function ViewAllIssuesRoute() {
 
   function GridIssueCard({ issue }: { issue: Issue }) {
     const hasImage = issue.images && issue.images.length > 0;
+    const [lng, lat] = issue.location.coordinates;
+
 
     return (
-      <div className="group bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 overflow-hidden">
+      <div className="group bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 overflow-hidden flex flex-col">
+        {/* Image */}
         <div className="relative aspect-video overflow-hidden bg-gray-100">
           {hasImage ? (
             <Image
@@ -292,45 +298,66 @@ export default function ViewAllIssuesRoute() {
           )}
         </div>
 
-        <div className="p-4 sm:p-5">
-          <div className="flex items-start justify-between mb-3">
-            <h3 className="text-base sm:text-lg font-medium text-gray-900 capitalize line-clamp-2 pr-2">
-              {issue.title}
-            </h3>
-            <span className={`px-2 py-1 text-xs font-medium rounded-md whitespace-nowrap ${getStatusColor(issue.status)}`}>
-              {issue.status}
-            </span>
-          </div>
-
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">
-            {issue.description}
-          </p>
-
-          <div className="flex items-center text-xs text-gray-500 mb-4">
-            <svg className="w-3.5 h-3.5 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span className="truncate">{issue.location.address}</span>
-          </div>
-
-          <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
-            <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-medium text-white flex-shrink-0">
-              {getInitial(issue.createdByName || t("anonymous"))}
+        {/* Card content */}
+        <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between">
+          <div>
+            {/* Title and status */}
+            <div className="flex items-start justify-between mb-3">
+              <h3 className="text-base sm:text-lg font-medium text-gray-900 capitalize line-clamp-2 pr-2">
+                {issue.title}
+              </h3>
+              <span className={`px-2 py-1 text-xs font-medium rounded-md whitespace-nowrap ${getStatusColor(issue.status)}`}>
+                {issue.status}
+              </span>
             </div>
-            <span className="text-xs text-gray-700 font-medium truncate">
-              {issue.createdByName || t("anonymous")}
-            </span>
+
+            {/* Description */}
+            <p className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">
+              {issue.description}
+            </p>
+
+            {/* Address */}
+            <div className="flex items-center text-xs text-gray-500 mb-4 overflow-hidden">
+              <svg className="w-3.5 h-3.5 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="truncate text-blue-600 hover:underline block w-full"
+                title="Open in Google Maps"
+              >
+                {issue.location.address}
+              </a>
+            </div>
           </div>
 
-          <AuthorityControls issue={issue} />
+          {/* Footer: Username and controls */}
+          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-medium text-white flex-shrink-0">
+                {getInitial(issue.createdByName || t("anonymous"))}
+              </div>
+              <span className="text-xs text-gray-700 font-medium truncate max-w-[120px] sm:max-w-[150px]">
+                {issue.createdByName || t("anonymous")}
+              </span>
+            </div>
+
+            {/* AuthorityControls aligned to right */}
+            <AuthorityControls issue={issue} />
+          </div>
         </div>
       </div>
+
     );
   }
 
   function ListIssueCard({ issue }: { issue: Issue }) {
     const hasImage = issue.images && issue.images.length > 0;
+    const [lng, lat] = issue.location.coordinates;
+
 
     return (
       <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 p-4 sm:p-6">
@@ -372,24 +399,33 @@ export default function ViewAllIssuesRoute() {
               {issue.description}
             </p>
 
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="flex items-center text-sm text-gray-500">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 w-full">
+              <div className="flex items-center text-sm text-gray-500 min-w-0">
                 <svg className="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="truncate">{issue.location.address}</span>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="truncate text-blue-600 hover:underline block w-full"
+                  title="Open in Google Maps"
+                >
+                  {issue.location.address}
+                </a>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-medium text-white flex-shrink-0">
                   {getInitial(issue.createdByName || t("anonymous"))}
                 </div>
-                <span className="text-sm text-gray-700 font-medium">
+                <span className="text-sm text-gray-700 font-medium truncate max-w-[120px] sm:max-w-[150px]">
                   {issue.createdByName || t("anonymous")}
                 </span>
               </div>
             </div>
+
 
             <AuthorityControls issue={issue} />
           </div>
