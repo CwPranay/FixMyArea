@@ -1,6 +1,6 @@
 "use client";
 import { usePathname, useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Menu, MapPin, LogOut, User, Settings } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -41,6 +41,7 @@ export default function Header({
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated, logout } = useAuth();
+  const locale =useLocale();
 
   const handleLogout = async () => {
     setShowDropdown(false);
@@ -177,7 +178,7 @@ export default function Header({
                       <button
                         onClick={() => {
                           setShowDropdown(false);
-                          router.push(`/`);
+                          router.push(`/${locale}/profile-settings`);
                         }}
                         className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
                       >

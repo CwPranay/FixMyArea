@@ -24,11 +24,18 @@ export default function ViewAllIssuesRoute() {
   const t = useTranslations("myIssues");
   const router = useRouter();
   const locale = useLocale();
+  const {role}=useAuth()
   const { issues, loading, refreshIssues } = useIssues();
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+   useEffect(() => {
+    if (role === 'authority') {
+      router.push(`/${locale}/viewAll-issues`);
+    }
+  }, [role, router, locale]);
 
   const filteredIssues = issues.filter((i: Issue) => {
     if (!user) return false;

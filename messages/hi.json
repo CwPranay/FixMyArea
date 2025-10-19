@@ -141,7 +141,23 @@
       "backToLogin": "लॉगिन पर वापस जाएं",
       "secureReset": "सुरक्षित पासवर्ड रीसेट"
     },
-    "myIssues": {
+    
+    "ResetPassword": {
+      "title": "अपना पासवर्ड रीसेट करें",
+      "description": "नया पासवर्ड सेट करने के लिए नीचे अपना नया पासवर्ड दर्ज करें",
+      "newPassword": "नया पासवर्ड",
+      "newPasswordPlaceholder": "अपना नया पासवर्ड दर्ज करें",
+      "confirmPassword": "पासवर्ड की पुष्टि करें",
+      "confirmPasswordPlaceholder": "अपने नए पासवर्ड की पुष्टि करें",
+      "resetButton": "पासवर्ड रीसेट करें",
+      "resetting": "रीसेट हो रहा है...",
+      "successMessage": "पासवर्ड सफलतापूर्वक रीसेट हो गया! अब आप लॉगिन कर सकते हैं।",
+      "serverError": "कुछ गलत हो गया। कृपया पुनः प्रयास करें",
+      "passwordMismatch": "दोनों पासवर्ड मेल नहीं खाते",
+      "backToLogin": "लॉगिन पर वापस जाएं"
+    }
+  },
+  "myIssues": {
       "title": "मेरी शिकायतें",
       "issuesFound": "{count, plural, =0 {कोई शिकायत नहीं मिली} =1 {1 शिकायत मिली} other {# शिकायतें मिलीं}}",
       "gridView": "ग्रिड व्यू",
@@ -160,21 +176,37 @@
       "noImageUploaded": "कोई चित्र अपलोड नहीं किया गया",
       "anonymous": "गुमनाम"
     },
-    "ResetPassword": {
-      "title": "अपना पासवर्ड रीसेट करें",
-      "description": "नया पासवर्ड सेट करने के लिए नीचे अपना नया पासवर्ड दर्ज करें",
+    "profileSettings": {
+      "title": "प्रोफ़ाइल सेटिंग्स",
+      "subtitle": "अपनी खाता जानकारी और प्राथमिकताएं प्रबंधित करें",
+      "profileInfo": "प्रोफ़ाइल जानकारी",
+      "profileInfoDesc": "अपने व्यक्तिगत विवरण अपडेट करें",
+      "changePassword": "पासवर्ड बदलें",
+      "changePasswordDesc": "अपने खाते को सुरक्षित रखने के लिए पासवर्ड अपडेट करें",
+      "name": "नाम",
+      "email": "ईमेल",
+      "role": "भूमिका",
+      "authorityRole": "अधिकारी",
+      "citizenRole": "नागरिक",
+      "edit": "संपादित करें",
+      "change": "बदलें",
+      "saveChanges": "परिवर्तन सहेजें",
+      "saving": "सहेजा जा रहा है...",
+      "cancel": "रद्द करें",
+      "currentPassword": "वर्तमान पासवर्ड",
       "newPassword": "नया पासवर्ड",
-      "newPasswordPlaceholder": "अपना नया पासवर्ड दर्ज करें",
-      "confirmPassword": "पासवर्ड की पुष्टि करें",
-      "confirmPasswordPlaceholder": "अपने नए पासवर्ड की पुष्टि करें",
-      "resetButton": "पासवर्ड रीसेट करें",
-      "resetting": "रीसेट हो रहा है...",
-      "successMessage": "पासवर्ड सफलतापूर्वक रीसेट हो गया! अब आप लॉगिन कर सकते हैं।",
-      "serverError": "कुछ गलत हो गया। कृपया पुनः प्रयास करें",
-      "passwordMismatch": "दोनों पासवर्ड मेल नहीं खाते",
-      "backToLogin": "लॉगिन पर वापस जाएं"
-    }
-  },
+      "confirmPassword": "नया पासवर्ड पुष्टि करें",
+      "updatePassword": "पासवर्ड अपडेट करें",
+      "updating": "अपडेट हो रहा है...",
+      "passwordRequirement": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए",
+      "passwordHiddenMessage": "सुरक्षा कारणों से, आपका पासवर्ड छिपा हुआ है। इसे अपडेट करने के लिए 'बदलें' पर क्लिक करें।",
+      "profileUpdateSuccess": "प्रोफ़ाइल सफलतापूर्वक अपडेट हो गई!",
+      "profileUpdateError": "प्रोफ़ाइल अपडेट करने में विफल। कृपया पुनः प्रयास करें।",
+      "passwordUpdateSuccess": "पासवर्ड सफलतापूर्वक अपडेट हो गया!",
+      "passwordUpdateError": "पासवर्ड अपडेट करने में विफल। कृपया अपना वर्तमान पासवर्ड जांचें।",
+      "passwordMismatch": "नए पासवर्ड मेल नहीं खाते",
+      "passwordTooShort": "पासवर्ड कम से कम 6 अक्षर लंबा होना चाहिए"
+    },
   "reportIssue": {
     "title": "समस्या रिपोर्ट करें",
     "subtitle": "आपके सामने आई समस्याओं की रिपोर्ट करके हमारे समुदाय को बेहतर बनाने में मदद करें",
