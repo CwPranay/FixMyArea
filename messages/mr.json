@@ -156,7 +156,26 @@
       "passwordMismatch": "दोन्ही पासवर्ड वेगळे आहेत",
       "serverError": "काहीतरी चुकीचे झाले. कृपया पुन्हा प्रयत्न करा"
     }
+    
 
+  },"myIssues": {
+    "title": "माझ्या तक्रारी",
+    "issuesFound": "{count, plural, =0 {कोणतीही तक्रार आढळली नाही} =1 {1 तक्रार आढळली} other {# तक्रारी आढळल्या}}",
+    "gridView": "ग्रिड व्ह्यू",
+    "listView": "लिस्ट व्ह्यू",
+    "searchLocation": "शोधा",
+    "searchPlaceholder": "स्थान किंवा शीर्षकानुसार शोधा...",
+    "status": "स्थिती",
+    "allStatuses": "सर्व स्थिती",
+    "open": "उघडा",
+    "inProgress": "प्रगतीपथावर",
+    "resolved": "निराकरण झाले",
+    "closed": "बंद",
+    "noIssuesFound": "कोणतीही तक्रार आढळली नाही",
+    "noIssuesDescription": "तुम्ही अद्याप कोणतीही तक्रार नोंदवलेली नाही. तुमच्या परिसरात नवीन तक्रार नोंदवून सुरुवात करा.",
+    "reportNewIssue": "नवीन तक्रार नोंदवा",
+    "noImageUploaded": "कोणतीही प्रतिमा अपलोड केलेली नाही",
+    "anonymous": "अनामिक"
   },
  "reportIssue": {
     "title": "तक्रार नोंदवा",

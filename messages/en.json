@@ -249,7 +249,26 @@
       "locationTimeout": "Location request timed out.",
       "unknownLocationError": "An unknown error occurred while retrieving location.",
       "updateStatusError": "Failed to update issue status. Please try again."
-    },
+    },"myIssues": {
+    "title": "My Issues",
+    "issuesFound": "{count, plural, =0 {No issues found} =1 {1 issue found} other {# issues found}}",
+    "gridView": "Grid View",
+    "listView": "List View",
+    "searchLocation": "Search",
+    "searchPlaceholder": "Search by location or title...",
+    "status": "Status",
+    "allStatuses": "All Statuses",
+    "open": "Open",
+    "inProgress": "In Progress",
+    "resolved": "Resolved",
+    "closed": "Closed",
+    "noIssuesFound": "No Issues Found",
+    "noIssuesDescription": "You haven't reported any issues yet. Start by reporting a new issue in your area.",
+    "reportNewIssue": "Report New Issue",
+    "noImageUploaded": "No image uploaded",
+    "anonymous": "Anonymous"
+  },
+    
   "Testimonials": {
     "title": "Community Stories",
     "subtitle": "See what our users are saying about FixMyArea",

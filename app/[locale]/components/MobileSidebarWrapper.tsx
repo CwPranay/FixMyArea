@@ -52,7 +52,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
       ? [{ name: t('reportIssue'), href: `/${locale}/report-issue` }]
       : []),
        ...( user?.role === "user"
-      ? [{ name: t('myIssue'), href: `/${locale}/my-issue` }]
+      ? [{ name: t('myIssue'), href: `/${locale}/my-issues` }]
       : []),
     { name: t('viewAllIssue'), href: `/${locale}/viewAll-issues` }
   ];
