@@ -363,5 +363,65 @@
       "title": "Choose Language"
     },
     "copyright": "All rights reserved."
+  },
+  "AuthorityDashboard": {
+    "title": "Authority Command Center",
+    "subtitle": "Real-time insights and civic issue management",
+    "loading": "Loading dashboard...",
+    "retry": "Retry",
+    "failedToLoad": "Failed to load data",
+    "exportReport": "Export Report",
+    "exporting": "Exporting...",
+    "exportSuccess": "Report exported successfully!",
+    "exportError": "Failed to export report. Please try again.",
+    "kpi": {
+      "overallEfficiency": "Overall Efficiency",
+      "mostReported": "Most Reported",
+      "reports": "reports",
+      "topHotspot": "Top Hotspot",
+      "more": "more",
+      "avgResponseTime": "Avg Response Time",
+      "days": "days",
+      "overdueIssues": "Overdue Issues",
+      "pendingDays": "Pending >7 days"
+    },
+    "charts": {
+      "issuesByCategory": "Issues by Category",
+      "newVsResolved": "New vs Resolved Issues",
+      "departmentPerformance": "Department Performance",
+      "loadingChart": "Loading chart..."
+    },
+    "attention": {
+      "title": "Needs Attention",
+      "items": "items",
+      "noUrgentIssues": "No urgent issues at the moment 🎉",
+      "takeAction": "Take Action",
+      "loading": "Loading...",
+      "viewAllPending": "View All Pending Issues",
+      "daysOverdue": "days overdue",
+      "critical": "Critical",
+      "rating": "Rating",
+      "unassigned": "Unassigned"
+    },
+    "feedback": {
+      "title": "Citizen Feedback",
+      "distribution": "Feedback Distribution",
+      "satisfactionIndex": "Satisfaction Index",
+      "outOf": "Out of 100",
+      "recentComments": "Recent Comments"
+    },
+    "categories": {
+      "roadDamage": "Road Damage",
+      "garbage": "Garbage",
+      "streetlights": "Streetlights",
+      "waterSupply": "Water Supply",
+      "others": "Others"
+    },
+    "departments": {
+      "roads": "Roads",
+      "sanitation": "Sanitation",
+      "electricity": "Electricity",
+      "water": "Water"
+    }
   }
 }

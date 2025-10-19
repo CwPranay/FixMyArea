@@ -5,6 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useAuth } from '@/context/AuthContext';
 import AdminDashboard from '../admin/dashboard/page';
+import LoadingButton from './LoadingButton';
 const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
 
 export default function HeroSection() {
@@ -32,18 +33,16 @@ export default function HeroSection() {
             {t('subTitle')}
           </p>
           <div className="flex  sm:flex-row gap-4">
-            <Link
-              href={`/${locale}/report-issue`}
-              className="btn-primary-gradient text-white px-6 py-2 rounded-md transition hover:opacity-90 shadow text-center"
-            >
-              {t('ReportButton')}
-            </Link>
-            <Link
-              href={`/${locale}/viewAll-issues`}
-              className="btn-secondary-glass px-6 py-2 rounded-md transition hover:opacity-90 shadow text-center"
-            >
-              {t('viewAllIssue')}
-            </Link>
+            <LoadingButton
+              onClick={() => window.location.href = `/${locale}/report-issue`}
+              text={t('ReportButton')}
+              className="btn-primary-gradient text-white px-6 py-2 rounded-md shadow text-center"
+            />
+            <LoadingButton
+              onClick={() => window.location.href = `/${locale}/viewAll-issues`}
+              text={t('viewAllIssue')}
+              className="btn-secondary-glass px-6 py-2 rounded-md shadow text-center"
+            />
           </div>
         </div>
 

@@ -41,13 +41,34 @@ export default function Header({
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated, logout } = useAuth();
-  const locale =useLocale();
+  const locale = useLocale();
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [signupLoading, setSignupLoading] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
 
   const handleLogout = async () => {
     setShowDropdown(false);
-    await logout();      // clears context state
-    router.refresh();    // refresh server components if needed
-    router.push("/");    // optional: redirect home
+    setLogoutLoading(true);
+    await logout();
+    router.refresh();
+    router.push("/");
+    setLogoutLoading(false);
+  };
+
+  const handleLoginClick = () => {
+    setLoginLoading(true);
+    setTimeout(() => {
+      onLoginClick();
+      setLoginLoading(false);
+    }, 300);
+  };
+
+  const handleSignupClick = () => {
+    setSignupLoading(true);
+    setTimeout(() => {
+      onSignupClick();
+      setSignupLoading(false);
+    }, 300);
   };
   const getInitials = (name: string) => {
     return name
