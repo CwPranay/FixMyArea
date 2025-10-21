@@ -34,12 +34,14 @@ export default function HeroSection() {
           </p>
           <div className="flex  sm:flex-row gap-4">
             <LoadingButton
+            loadingText={t('ReportButton')}
               onClick={() => window.location.href = `/${locale}/report-issue`}
               text={t('ReportButton')}
               className="btn-primary-gradient text-white px-6 py-2 rounded-md shadow text-center"
             />
             <LoadingButton
               onClick={() => window.location.href = `/${locale}/viewAll-issues`}
+              loadingText={t('viewAllIssue')}
               text={t('viewAllIssue')}
               className="btn-secondary-glass px-6 py-2 rounded-md shadow text-center"
             />
