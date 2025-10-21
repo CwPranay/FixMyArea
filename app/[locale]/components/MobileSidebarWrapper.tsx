@@ -14,6 +14,7 @@ type MobileSidebarWrapperProps = {
 
 export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperProps) {
   const t = useTranslations('Header');
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isSignupModalOpen, setSignupModalOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
     ...(!user || user?.role === "user"
       ? [{ name: t('reportIssue'), href: `/${locale}/report-issue` }]
       : []),
-       ...( user?.role === "user"
+    ...(user?.role === "user"
       ? [{ name: t('myIssue'), href: `/${locale}/my-issues` }]
       : []),
     { name: t('viewAllIssue'), href: `/${locale}/viewAll-issues` }
@@ -66,7 +67,15 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
         mounted={mounted}
         navLinks={navLinks}
         onLogout={handleLogout}
-        onLoginClick={() => router.push(`/${locale}/login`)}
+        onLoginClick={() => {
+          router.push(`/${locale}/login`);
+          // tiny delay to ensure UI updates
+          setTimeout(() => {
+            const headerButtons = document.querySelectorAll('button');
+            headerButtons.forEach((btn) => btn.removeAttribute('disabled'));
+          }, 500);
+        }}
+
         onSignupClick={() => setSignupModalOpen(true)}
       />
 

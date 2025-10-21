@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 interface LoadingButtonProps {
@@ -17,6 +18,7 @@ export default function LoadingButton({
   loadingText
 }: LoadingButtonProps) {
   const [loading, setLoading] = useState(false);
+  const pathname = usePathname();
 
   const handleClick = () => {
     if (loading) return;
@@ -27,6 +29,11 @@ export default function LoadingButton({
       onClick();
     }, 200);
   };
+
+  useEffect(() => {
+    setLoading(false);
+  }, [pathname]);
+
 
   return (
     <button

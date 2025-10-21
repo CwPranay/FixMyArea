@@ -1,6 +1,7 @@
 'use client';
 import { X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import LoadingButton from './LoadingButton';
 
 
 interface RoleModalProps {
@@ -21,18 +22,23 @@ export default function RoleModal({ isOpen, onClose, onSelect }: RoleModalProps)
         <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">{t('signup')}</h2>
 
         <div className="flex flex-col sm:flex-row gap-4">
-          <button
+          <LoadingButton
             onClick={() => onSelect('user')}
+            text=  {t('user')}
+            loadingText=  {t('user')}
+
             className="flex-1 btn-primary-gradient px-5 py-3 btn-primary text-white rounded-lg font-semibold transition"
-          >
-            {t('user')}
-          </button>
-          <button
+          />
+          
+          
+          <LoadingButton
             onClick={() => onSelect('authority')}
+            text=  {t('authority')}
+            loadingText=  {t('authority')}
             className="flex-1 px-5 py-3 btn-secondary-glass text-white rounded-lg font-semibold transition"
-          >
-           {t('authority')}
-          </button>
+          />
+           
+          
         </div>
 
         <button

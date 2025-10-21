@@ -6,6 +6,7 @@ import { Menu, MapPin, LogOut, User, Settings } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import LoadingButton from './LoadingButton';
 
 type UserData = {
   id: string;
@@ -54,14 +55,20 @@ export default function Header({
     router.push("/");
     setLogoutLoading(false);
   };
+  useEffect(() => {
+    // Whenever pathname changes, reset all loading states
+    setLoginLoading(false);
+    setSignupLoading(false);
+    setLogoutLoading(false);
+  }, [pathname]);
 
-  const handleLoginClick = () => {
+
+  const handleLoginClick = async () => {
     setLoginLoading(true);
-    setTimeout(() => {
-      onLoginClick();
-      setLoginLoading(false);
-    }, 300);
+    await onLoginClick(); // this should push to login
+    // No need to manually set false; useEffect on pathname handles it
   };
+
 
   const handleSignupClick = () => {
     setSignupLoading(true);
@@ -227,12 +234,14 @@ export default function Header({
               </div>
             ) : (
               <div className="flex space-x-4 ml-3">
-                <button
-                  onClick={onLoginClick}
+                <LoadingButton
+                  onClick={handleLoginClick}
+                  text={t('login')}
+                  loadingText={t('login')}
                   className="btn-primary-gradient text-white px-4 py-2 rounded-md transition hover:opacity-90 shadow"
-                >
-                  {t('login')}
-                </button>
+                />
+
+
                 <button
                   onClick={onSignupClick}
                   className="btn-secondary-glass px-4 py-2 rounded-md transition hover:opacity-90 shadow"
@@ -313,7 +322,7 @@ export default function Header({
             ) : (
               <div className="flex space-x-4 ml-3">
                 <button
-                  onClick={onLoginClick}
+                  onClick={handleLoginClick}
                   className="btn-primary-gradient text-white px-4 py-2 rounded-md transition hover:opacity-90 shadow"
                 >
                   {t('login')}
