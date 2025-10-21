@@ -14,7 +14,7 @@ export default function LoadingButton({
   onClick, 
   text, 
   className = "",
-  loadingText = "Loading..."
+  loadingText
 }: LoadingButtonProps) {
   const [loading, setLoading] = useState(false);
 
