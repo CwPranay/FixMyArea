@@ -321,12 +321,12 @@ export default function Header({
               </div>
             ) : (
               <div className="flex space-x-4 ml-3">
-                <button
+                <LoadingButton
                   onClick={handleLoginClick}
+                  text={t('login')}
+                  loadingText={t('login')}
                   className="btn-primary-gradient text-white px-4 py-2 rounded-md transition hover:opacity-90 shadow"
-                >
-                  {t('login')}
-                </button>
+                />
                 <button
                   onClick={onSignupClick}
                   className="btn-secondary-glass px-4 py-2 rounded-md transition hover:opacity-90 shadow"
@@ -378,12 +378,12 @@ export default function Header({
               )}
             </div>
           ) : (
-            <button
-              onClick={onLoginClick}
-              className="btn-primary-gradient text-white px-3 py-1.5 text-sm rounded-md transition hover:opacity-90 shadow"
-            >
-              {t('login')}
-            </button>
+            <LoadingButton
+                  onClick={handleLoginClick}
+                  text={t('login')}
+                  loadingText={t('login')}
+                  className="btn-primary-gradient text-white px-4 py-2 rounded-md transition hover:opacity-90 shadow"
+                />
           )}
         </div>
       </div>
