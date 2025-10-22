@@ -205,12 +205,14 @@ export default function LoginPage() {
               />
                
               
-              <Link
-                href={`/${locale}/signup?role=authority`}
+              <LoadingButton
+                onClick={() => router.push(`/${locale}/signup?role=authority`)}
+                text={t('signUpAuthority')}
+                loadingText={t('signUpAuthority')}
                 className="w-full px-4 py-3 text-center border btn-primary-gradient bg-blue-50 rounded-xl hover:bg-blue-100 hover:border-blue-400 transition-colors"
-              >
+              />
                 {t('signUpAuthority')}
-              </Link>
+              
             </div>
           </div>
         </div>
