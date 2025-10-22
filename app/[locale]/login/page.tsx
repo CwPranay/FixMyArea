@@ -8,6 +8,7 @@ import axios from "axios";
 import Link from "next/link";
 
 import { useAuth } from '@/context/AuthContext'; // adjust path
+import LoadingButton from "../components/LoadingButton";
 
 
 
@@ -196,12 +197,14 @@ export default function LoginPage() {
               {t('noAccount')}
             </p>
             <div className="flex flex-col space-y-2">
-              <Link
-                href={`/${locale}/signup?role=user`}
+              <LoadingButton
+                onClick={() => router.push(`/${locale}/signup?role=user`)}
+                text={t('signUpUser')}
+                loadingText={t('signUpUser')}
                 className="w-full px-4 py-3 btn-secondary-glass text-center border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-400 transition-colors"
-              >
-                {t('signUpUser')}
-              </Link>
+              />
+               
+              
               <Link
                 href={`/${locale}/signup?role=authority`}
                 className="w-full px-4 py-3 text-center border btn-primary-gradient bg-blue-50 rounded-xl hover:bg-blue-100 hover:border-blue-400 transition-colors"
