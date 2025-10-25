@@ -24,11 +24,20 @@
     "title": "Spotted a Problem? Fix It Here.",
     "subTitle": " From potholes to streetlights — raise it, track it, solve it.",
     "ReportButton": "Report an Issue",
-    "viewAllIssue": "View All Issues"
+    "viewAllIssue": "View All Issues",
+    "badge": "Community-Driven Platform",
+    "issuesResolved": "Issues Resolved",
+    "activeAreas": "Active Areas",
+    "trustedBy": "Trusted by",
+    "citizens": "citizens",
+    "realTimeUpdates": "Real-time Updates",
+    "trackReports": "Track your reports instantly"
   },
   "HowItWorks": {
     "title": "How It Works",
     "subtitle": "Follow these simple steps to report and track civic issues in your area",
+    "badge": "Simple Process",
+    "ctaButton": "Start Reporting Issues Now",
     "step1": {
       "title": "Locate Issue",
       "description": "Pin the exact location of the civic issue on our interactive map"
@@ -45,6 +54,9 @@
   "Features": {
     "title": "Key Features",
     "subtitle": "Everything you need to report, track, and resolve local issues.",
+    "badge": "Powerful Features",
+    "ctaText": "Ready to make a difference in your community?",
+    "ctaButton": "Get Started Now",
     "locationBased": {
       "title": "Location-Based Reports",
       "description": "Pinpoint exact problem areas using GPS and maps."
@@ -65,6 +77,8 @@
   "ImpactStats": {
     "title": "Making a Real Difference",
     "subtitle": "FixMyArea empowers citizens to turn complaints into real actions.",
+    "badge": "Real Impact",
+    "bottomText": "Join thousands making a difference",
     "unreported": "Local issues go unreported without citizen action",
     "fasterResolution": "Faster resolution when issues are tracked collectively",
     "citizensHelped": "Citizens already benefited from reporting",
@@ -303,6 +317,7 @@
   "Testimonials": {
     "title": "Community Stories",
     "subtitle": "See what our users are saying about FixMyArea",
+    "badge": "Success Stories",
     "user1": {
       "name": "Rahul Kumar",
       "location": "Andheri, Mumbai",
@@ -322,6 +337,9 @@
   "FAQ": {
     "title": "Frequently Asked Questions",
     "subtitle": "Get answers to common questions about using FixMyArea",
+    "badge": "Got Questions?",
+    "ctaText": "Still have questions?",
+    "ctaButton": "Contact Support",
     "anonymity": {
       "question": "Can I report issues anonymously?",
       "answer": "While you need an account to report issues, but if you report without login in app your report will be anonyms to others also your personal information is never shared publicly. Only your area/locality is shown with the reported issue."

@@ -117,22 +117,22 @@ END OF REPORT
       {/* Toast Notification */}
       {notification && (
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: -50, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -50, scale: 0.9 }}
           className="fixed top-20 right-4 z-50 max-w-md"
         >
-          <div className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-lg border ${
+          <div className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border backdrop-blur-sm ${
             notification.type === 'success'
-              ? 'bg-green-50 border-green-200 text-green-800'
-              : 'bg-red-50 border-red-200 text-red-800'
+              ? 'bg-green-50/90 border-green-300 text-green-800'
+              : 'bg-red-50/90 border-red-300 text-red-800'
           }`}>
             {notification.type === 'success' ? (
-              <CheckCircle className="w-5 h-5 flex-shrink-0" />
+              <CheckCircle className="w-6 h-6 flex-shrink-0" />
             ) : (
-              <XCircle className="w-5 h-5 flex-shrink-0" />
+              <XCircle className="w-6 h-6 flex-shrink-0" />
             )}
-            <p className="font-medium">{notification.message}</p>
+            <p className="font-bold">{notification.message}</p>
           </div>
         </motion.div>
       )}
@@ -147,18 +147,18 @@ END OF REPORT
           <motion.button
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.05, y: -2 }}
+            whileHover={{ scale: 1.08, y: -4 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleExportReport}
             disabled={exporting}
-            className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-medium transition-all shadow-md ${
+            className={`flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-white font-bold transition-all shadow-xl ${
               exporting 
                 ? 'bg-gray-400 cursor-not-allowed' 
-                : 'bg-gradient-to-r from-green-500 to-green-600 hover:shadow-lg'
+                : 'bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:shadow-2xl hover:shadow-green-200'
             }`}
           >
-            <FileDown className={`w-5 h-5 ${exporting ? 'animate-bounce' : ''}`} />
-            <span>{exporting ? t('exporting') : t('exportReport')}</span>
+            <FileDown className={`w-6 h-6 ${exporting ? 'animate-bounce' : ''}`} />
+            <span className="text-lg">{exporting ? t('exporting') : t('exportReport')}</span>
           </motion.button>
         </div>
       </motion.div>

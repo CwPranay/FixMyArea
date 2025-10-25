@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import MobileSidebarWrapper from './components/MobileSidebarWrapper';
+import { ToastProvider } from './components/Toast';
+import PageTransition from './components/PageTransition';
 import 'leaflet/dist/leaflet.css';
 
 type Props = {
@@ -32,7 +34,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <MobileSidebarWrapper>{children}</MobileSidebarWrapper>
+      <ToastProvider>
+        <MobileSidebarWrapper>
+          <PageTransition>{children}</PageTransition>
+        </MobileSidebarWrapper>
+      </ToastProvider>
     </NextIntlClientProvider>
   );
 }

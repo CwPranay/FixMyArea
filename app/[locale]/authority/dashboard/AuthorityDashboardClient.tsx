@@ -75,18 +75,27 @@ export default function AuthorityDashboardClient() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
             {/* Header */}
-            <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+            <header className="bg-white/70 backdrop-blur-xl border-b border-white/20 sticky top-0 z-50 shadow-lg shadow-blue-100/50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                            <motion.h1 
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 bg-clip-text text-transparent"
+                            >
                                 {t('title')}
-                            </h1>
-                            <p className="text-sm mt-1 text-gray-600">
+                            </motion.h1>
+                            <motion.p 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.1 }}
+                                className="text-sm mt-2 text-slate-600 font-medium"
+                            >
                                 {t('subtitle')}
-                            </p>
+                            </motion.p>
                         </div>
                     </div>
                 </div>
@@ -101,7 +110,7 @@ export default function AuthorityDashboardClient() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8"
                 >
                     <StatsCard
                         title={t('kpi.overallEfficiency')}
@@ -143,7 +152,7 @@ export default function AuthorityDashboardClient() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8"
+                    className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8"
                 >
                     <TrendChart />
                 </motion.div>

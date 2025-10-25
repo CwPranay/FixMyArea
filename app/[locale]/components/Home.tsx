@@ -10,6 +10,8 @@ import TestimonialsSection from './TestimonialsSection';
 import FaqSection from './FaqSection';
 import Footer from './Footer';
 import AuthorityDashboardClient from '../authority/dashboard/AuthorityDashboardClient';
+import BackToTop from './BackToTop';
+import CookieConsent from './CookieConsent';
 
 const commonSectionClasses = "section-padding [font-family:var(--font-poppins)]";
 const lightSection = `${commonSectionClasses} bg-slate-50`;
@@ -33,6 +35,8 @@ export default function HomeClient() {
       <TestimonialsSection />
       <FaqSection />
       <Footer/>
+      <BackToTop />
+      <CookieConsent />
     </>
   );
 }

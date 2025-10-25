@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import RoleModal from './RoleModal';
 import { useLocale } from 'next-intl';
 import { useAuth } from '@/context/AuthContext'; // Use centralized auth
+import Breadcrumbs from './Breadcrumbs';
 
 type MobileSidebarWrapperProps = {
   children: ReactNode;
@@ -93,6 +94,8 @@ export default function MobileSidebarWrapper({ children }: MobileSidebarWrapperP
           navLinks={navLinks}
         />
       )}
+
+      <Breadcrumbs />
 
       <main className="relative">{children}</main>
     </div>
