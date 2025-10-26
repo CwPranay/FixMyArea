@@ -83,8 +83,8 @@ export default function ImpactStats() {
       suffix: '/7',
       label: t('availability'),
       icon: Clock,
-      gradient: 'from-purple-500 to-pink-500',
-      bgGradient: 'from-purple-50 to-pink-50'
+      gradient: 'from-teal-500 to-cyan-500',
+      bgGradient: 'from-teal-50 to-cyan-50'
     },
   ];
 

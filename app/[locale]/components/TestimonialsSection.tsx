@@ -12,21 +12,21 @@ export default function TestimonialsSection() {
   if (role === "admin") return null;
 
   const testimonials = [
-    { 
-      key: 'user1', 
-      initials: 'RK', 
+    {
+      key: 'user1',
+      initials: 'RK',
       gradient: 'from-blue-500 to-cyan-500',
       bgGradient: 'from-blue-50 to-cyan-50'
     },
-    { 
-      key: 'user2', 
-      initials: 'SP', 
-      gradient: 'from-purple-500 to-pink-500',
-      bgGradient: 'from-purple-50 to-pink-50'
+    {
+      key: 'user2',
+      initials: 'SP',
+      gradient: 'from-cyan-500 to-teal-500',
+      bgGradient: 'from-cyan-50 to-teal-50'
     },
-    { 
-      key: 'user3', 
-      initials: 'AM', 
+    {
+      key: 'user3',
+      initials: 'AM',
       gradient: 'from-orange-500 to-red-500',
       bgGradient: 'from-orange-50 to-red-50'
     }
@@ -37,7 +37,7 @@ export default function TestimonialsSection() {
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-10 left-10 w-72 h-72 bg-blue-400/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-72 h-72 bg-purple-400/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 right-10 w-72 h-72 bg-cyan-400/5 rounded-full blur-3xl"></div>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -48,7 +48,7 @@ export default function TestimonialsSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full mb-4 border border-blue-100">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-full mb-4 border border-blue-100">
             <Quote className="w-4 h-4 text-blue-600" />
             <span className="text-sm font-medium text-blue-600">{t('badge')}</span>
           </div>
@@ -76,7 +76,7 @@ export default function TestimonialsSection() {
               <div className="relative h-full bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden">
                 {/* Gradient background on hover */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${testimonial.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-                
+
                 {/* Content */}
                 <div className="relative z-10">
                   {/* Quote icon */}

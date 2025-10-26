@@ -211,7 +211,7 @@ export default function LoginPage() {
                 loadingText={t('signUpAuthority')}
                 className="w-full px-4 py-3 text-center border btn-primary-gradient bg-blue-50 rounded-xl hover:bg-blue-100 hover:border-blue-400 transition-colors"
               />
-                {t('signUpAuthority')}
+                
               
             </div>
           </div>

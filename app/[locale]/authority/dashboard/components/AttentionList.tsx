@@ -81,7 +81,7 @@ export default function AttentionList() {
         );
       case "unassigned":
         return (
-          <span className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
+          <span className="flex items-center gap-1 px-2 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-medium">
             <UserX className="w-3 h-3" />
             {t('unassigned')}
           </span>

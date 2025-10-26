@@ -31,7 +31,7 @@ export default function FaqSection() {
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-400/5 rounded-full blur-3xl"></div>
       </div>
 
       <div className="max-w-4xl mx-auto relative z-10">
@@ -41,7 +41,7 @@ export default function FaqSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full mb-4 border border-blue-100">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-full mb-4 border border-blue-100">
             <HelpCircle className="w-4 h-4 text-blue-600" />
             <span className="text-sm font-medium text-blue-600">{t('badge')}</span>
           </div>
@@ -80,7 +80,7 @@ export default function FaqSection() {
                     </h3>
                     <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
                       openIndex === index 
-                        ? 'bg-gradient-to-br from-blue-500 to-purple-500 rotate-180' 
+                        ? 'bg-gradient-to-br from-blue-500 to-cyan-500 rotate-180' 
                         : 'bg-gray-100 group-hover:bg-blue-50'
                     }`}>
                       {openIndex === index ? (
@@ -122,13 +122,24 @@ export default function FaqSection() {
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <div className="inline-block bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-100">
+          <div className="inline-block bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 border border-blue-100">
             <p className="text-gray-700 mb-4 font-medium">{t('ctaText')}</p>
             <button
               onClick={() => {
-                window.open('https://mail.google.com/mail/?view=cm&fs=1&to=infofixmyarea@gmail.com&su=Support Request from FixMyArea', '_blank');
+                const email = 'infofixmyarea@gmail.com';
+                const subject = 'Support Request from FixMyArea';
+                const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+                
+                // Try mailto first
+                window.location.href = mailtoLink;
+                
+                // Fallback: If mailto doesn't work (no email client), open Gmail
+                setTimeout(() => {
+                  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}`;
+                  window.open(gmailUrl, '_blank');
+                }, 500);
               }}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all cursor-pointer"
             >
               <span>{t('ctaButton')}</span>
               <span>→</span>

@@ -48,7 +48,7 @@ export default function Footer() {
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
@@ -81,7 +81,7 @@ export default function Footer() {
                 strokeLinejoin="round"
               />
             </svg>
-            <span className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               FixMyArea
             </span>
           </div>
@@ -93,7 +93,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* About Section */}
           <div className="md:col-span-1">
-            <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               {t('about.title')}
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -103,7 +103,7 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div className="md:col-span-1">
-            <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               {t('contact.title')}
             </h3>
             <div className="space-y-4 text-sm">
@@ -111,13 +111,13 @@ export default function Footer() {
                 href="mailto:infofixmyarea@gmail.com"
                 className="flex items-center gap-3 text-gray-400 hover:text-blue-400 transition-colors group"
               >
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <span className="text-xl">📧</span>
                 </div>
                 <span>infofixmyarea@gmail.com</span>
               </a>
               <div className="flex items-center gap-3 text-gray-400">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
                   <span className="text-xl">📞</span>
                 </div>
                 <span>1800-FIX-AREA</span>
@@ -131,7 +131,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-gray-400 hover:text-white hover:from-blue-500 hover:to-purple-500 transition-all transform hover:scale-110 hover:-translate-y-1"
+                    className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center text-gray-400 hover:text-white hover:from-blue-500 hover:to-cyan-500 transition-all transform hover:scale-110 hover:-translate-y-1"
                   >
                     {social.icon}
                   </a>
@@ -142,7 +142,7 @@ export default function Footer() {
 
           {/* Language Switcher */}
           <div className="md:col-span-1">
-            <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               {t('language.title')}
             </h3>
             <div className="space-y-3">
@@ -150,7 +150,7 @@ export default function Footer() {
                 <Link
                   key={lang.code}
                   href={`/${lang.code}${pathname?.substring(3) || ''}`}
-                  className="block px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-purple-500/20 transition-all transform hover:translate-x-2"
+                  className="block px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-cyan-500/20 transition-all transform hover:translate-x-2"
                 >
                   {lang.name}
                 </Link>

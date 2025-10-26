@@ -25,8 +25,8 @@ export default function Features() {
     { 
       key: 'photoEvidence', 
       icon: Camera, 
-      gradient: 'from-purple-500 to-pink-500',
-      bgGradient: 'from-purple-50 to-pink-50'
+      gradient: 'from-cyan-500 to-teal-500',
+      bgGradient: 'from-cyan-50 to-teal-50'
     },
     { 
       key: 'trackProgress', 

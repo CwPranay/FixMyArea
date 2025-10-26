@@ -104,10 +104,22 @@ const Sidebar = ({ menuOpen, setMenuOpen, mounted, navLinks }: SidebarProps) => 
           <div className="mt-auto pt-6">
             <button
               onClick={() => {
-                window.open('https://mail.google.com/mail/?view=cm&fs=1&to=infofixmyarea@gmail.com&su=Support Request from FixMyArea', '_blank');
+                const email = 'infofixmyarea@gmail.com';
+                const subject = 'Support Request from FixMyArea';
+                const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+                
+                // Try mailto first
+                window.location.href = mailtoLink;
+                
+                // Fallback: If mailto doesn't work (no email client), open Gmail
+                setTimeout(() => {
+                  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}`;
+                  window.open(gmailUrl, '_blank');
+                }, 500);
+                
                 setMenuOpen(false);
               }}
-              className="w-full bg-blue-50 hover:bg-blue-100 rounded-xl p-4 border border-blue-100 transition-all duration-200 text-left"
+              className="block w-full bg-blue-50 hover:bg-blue-100 rounded-xl p-4 border border-blue-100 transition-all duration-200 text-left"
             >
               <p className="text-sm font-semibold text-gray-800 mb-1">Need Help?</p>
               <p className="text-xs text-gray-600">Contact our support team</p>
