@@ -167,9 +167,7 @@ export default function Footer() {
           <p className="text-sm text-gray-500">
             © {new Date().getFullYear()} FixMyArea. {t('copyright')}
           </p>
-          <p className="text-xs text-gray-600 mt-2">
-            Made with ❤️ for better communities
-          </p>
+          
         </div>
       </div>
     </footer>
