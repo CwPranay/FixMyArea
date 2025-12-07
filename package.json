@@ -27,7 +27,7 @@
     "lucide": "^0.532.0",
     "lucide-react": "^0.525.0",
     "mongoose": "^8.17.1",
-    "next": "^15.4.4",
+    "next": "^15.4.8",
     "next-auth": "^4.24.11",
     "next-i18next": "^15.4.2",
     "next-intl": "^4.3.4",
